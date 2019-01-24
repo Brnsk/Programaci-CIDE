@@ -20,6 +20,8 @@ public class EscriuFitxerNombres {
 				}
 			}
 			bwNumeros.close();
+			brSenars.close();
+			brParells.close();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
