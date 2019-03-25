@@ -2,5 +2,11 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector J 8.0/mysql-connector-java-8.0.13.jar"/>
+	<classpathentry kind="lib" path="D:/01.Descargas/PRU04E05Parking_Miquel_Frau.jar"/>
+	<classpathentry kind="lib" path="D:/01.Descargas/PRU04E05Parking_Guille_Diaz.jar"/>
+	<classpathentry kind="lib" path="D:/01.Descargas/PRU04E05Parking_Pablo_Florit.jar"/>
+	<classpathentry kind="lib" path="/Brnsk/src/misMetodos"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Brnsk"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
