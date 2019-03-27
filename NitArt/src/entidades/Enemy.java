@@ -2,12 +2,9 @@ package entidades;
 
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.Timer;
 
 import game.Panel;
 
@@ -26,10 +23,10 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	private int y;
 	
 	//Velocidad
-	private int speed;
+	protected static int speed;
 	
-	//Timer
-	private Timer timer;
+	//Vida
+	public int pv = 3;
 	
 	public Enemy() {
 		iniciar();
@@ -44,17 +41,7 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 		
 		x = 200;
 		y = 200;
-		speed = 3;
-		
-		//Timer que llama al metodo mover cada 20 ms
-		timer = new Timer(40,new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-					mover();
-					moverDiagonal();
-			}
-		});
-		timer.start();
+		speed = 2;
 	}
 	
 	private void imagen() {
@@ -88,24 +75,30 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	public void moverDiagonal() {
 		if(x > Panel.player.getX() && y > Panel.player.getY()){
 			//arriba izquierda
-			y -= speed-2;
-			x -= speed-2;
+			y -= speed-1;
+			x -= speed-1;
 			
 		}else if(x < Panel.player.getX() && y > Panel.player.getY()){
 			//arriba derecha
-			y -= speed-2;
-			x += speed-2;
+			y -= speed-1;
+			x += speed-1;
 			
 		}else if (x > Panel.player.getX() && y < Panel.player.getY()){
 			//abajo izquierda
-			y += speed-2;
-			x -= speed-2;
+			y += speed-1;
+			x -= speed-1;
 			
 		}else if(x < Panel.player.getX() && y < Panel.player.getY()){
 			//abajo derecha
-			y += speed-2;
-			x += speed-2;
+			y += speed-1;
+			x += speed-1;
 		}
 		this.setLocation(x, y);
+	}
+
+	@Override
+	public void disparar() {
+		// TODO Auto-generated method stub
+		
 	}
 }

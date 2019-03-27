@@ -2,17 +2,11 @@ package entidades;
 
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.Panel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.Timer;
 
-import game.Juego;
 import game.Ventana;
 
 @SuppressWarnings("serial")
@@ -37,24 +31,18 @@ public class Player extends JLabel implements JugadorEnemigos{
 	public boolean bulletDown;
 	public boolean bulletLeft;
 	public boolean bulletRight;
-	
 	public boolean disparando;
 	
 	public Bala bala;
-	public Bala bala2;
-	public Bala bala3;
-	public Bala bala4;
+	
+	public ArrayList <Bala> cargador;
 	
 	//Velocidad
 	public static int speed;
 	
 	//Tamaño
-	public static final int WIDTH = 80;
-	public static final int HEIGHT = 80;
-	
-	//Timer
-	private Timer timer;
-	private ActionListener actionlistener;
+	public final int WIDTH = 80;
+	public final int HEIGHT = 80;
 	
 	public Player() {
 		iniciar();
@@ -78,17 +66,15 @@ public class Player extends JLabel implements JugadorEnemigos{
 		bulletDown = false;
 		bulletLeft = false;
 		bulletRight = false;
+		disparando = false;
+		
+		cargador = new ArrayList <Bala>();
 		
 		//Velocidad
-		speed = 5;
+		speed = 6;
 		
 		//Insertar imagen
 		imagen();
-		actionListener();
-		
-		//Timer que llama al metodo mover cada 20 ms
-		timer = new Timer(20, actionlistener);
-		timer.start();
 	}
 	
 	//Añadir imagen a jlabel
@@ -97,54 +83,13 @@ public class Player extends JLabel implements JugadorEnemigos{
 		icon = new ImageIcon(img.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 	}
 	
-	//Metodo que llama a mover cada 20 ms
-	private void actionListener() {
-		actionlistener = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				mover();
-				
-				if(bala != null) {
-					if(bala.y > 150 && bala.y < Ventana.HEIGHT-150-bala.HEIGHT && bala.x < Ventana.WIDTH-150-bala.WIDTH && bala.x > 150) {
-						disparar();
-						
-					}else {
-						
-						eliminarBala();
-						
-						bala.setIcon(null);
-						bala = null;
-						
-					}
-				}
-			}
-		};
-	}
-	
-	//Metodo que llama a mover cada 20 ms BETA
-	/*public void activarMovimiento() {
-		while(!Juego.gameover) {
-			
-			mover();
-			
-			//Dormir 20 ms
-			try {
-				Thread.sleep(20);
-			} catch (InterruptedException e) {
-				System.out.println(e.getMessage());
-			}
-		}
-	}*/
-	
 	//Eliminar bala
-	private void eliminarBala() {
-		disparando = false;
+	/*private void eliminarBala() {
 		bulletUp = false;
 		bulletDown = false;
 		bulletRight = false;
 		bulletLeft = false;
-	}
+	}*/
 	
 	//Comprobar si el personaje se encuentra en el "Tablero"
 	private void comprobarPosicion() {
@@ -170,24 +115,31 @@ public class Player extends JLabel implements JugadorEnemigos{
 	
 	//================ METODOS INTERFAZ COMUN ENTRE JUGADOR Y ENEMIGOS ================
 	
-	//Aun no implementado en la interfaz
-	public void disparar() {
-		
-		if(bulletUp) {
-			bala.y -= Bala.speed;
-			bala.setLocation(bala.x , bala.y);
+	@Override
+	public void disparar() {	
+		for(int i = 0; i < cargador.size(); i++) {
+			bala = cargador.get(i);
 			
-		}else if(bulletDown) {
-			bala2.y += Bala.speed;
-			bala2.setLocation(bala2.x , bala2.y);
+			if(bala.direccion.equals("up")) {
+				bala.y -= Bala.speed;
+				bala.setLocation(bala.x, bala.y);
+				
+			}else if(bala.direccion.equals("down")) {
+				bala.y += Bala.speed;
+				bala.setLocation(bala.x, bala.y);
+				
+			}else if(bala.direccion.equals("left")) {
+				bala.x -= Bala.speed;
+				bala.setLocation(bala.x, bala.y);
+				
+			}else if(bala.direccion.equals("right")) {
+				bala.x += Bala.speed;
+				bala.setLocation(bala.x, bala.y);
+			}
 			
-		}else if(bulletRight) {
-			bala4.x += Bala.speed;
-			bala4.setLocation(bala4.x , bala4.y);
-			
-		}else if(bulletLeft) {
-			bala3.x -= Bala.speed;
-			bala3.setLocation(bala3.x , bala3.y);
+			if(!bala.comprobarPosicion()) {
+				cargador.remove(bala);
+			}
 		}
 	}
 	

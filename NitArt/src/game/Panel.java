@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -15,8 +16,11 @@ import entidades.Player;
 @SuppressWarnings("serial")
 public class Panel extends JPanel implements KeyListener{
 	public static Player player;
-	private Enemy enemy;
 	private int key;
+	
+	public Enemy enemy;
+	
+	ArrayList <Enemy> enemigos = new ArrayList<Enemy>();
 	
 	
 	//CONSTRUCTOR
@@ -37,6 +41,7 @@ public class Panel extends JPanel implements KeyListener{
 	private void iniciar() {
 		player = new Player();
 		enemy = new Enemy();
+		enemigos.add(enemy);
 	}
 	
 	@Override
@@ -67,30 +72,41 @@ public class Panel extends JPanel implements KeyListener{
 			player.right = true;
 		}
 		//=========== Balas ===============
-		switch(key) {
-		case KeyEvent.VK_UP:
-			
-			player.bulletUp = true;
-			player.disparando = true;
-			
-			player.bala = new Bala(player.getX(),player.getY());
-			Ventana.panel.add(player.bala);
-
-		break;
-		case KeyEvent.VK_DOWN:
-			
-			player.bulletDown = true;
-			player.disparando = true;
-		break;
-		case KeyEvent.VK_LEFT:
-			
-			player.bulletLeft = true;
-			player.disparando = true;
-		break;
-		case KeyEvent.VK_RIGHT:
-			
-			player.bulletRight = true;
-			player.disparando = true;
+		
+		if(!player.disparando) {
+			switch(key) {
+			case KeyEvent.VK_UP:
+				player.bulletUp = true;
+				player.disparando = true;
+				
+				player.bala = new Bala(player.getX(),player.getY(),"up");
+				player.cargador.add(player.bala);
+				Ventana.panel.add(player.bala);
+			break;
+			case KeyEvent.VK_DOWN:
+				player.bulletDown = true;
+				player.disparando = true;
+				
+				player.bala = new Bala(player.getX(),player.getY(),"down");
+				player.cargador.add(player.bala);
+				Ventana.panel.add(player.bala);
+			break;
+			case KeyEvent.VK_LEFT:
+				player.bulletLeft = true;
+				player.disparando = true;
+				
+				player.bala = new Bala(player.getX(),player.getY(),"left");
+				player.cargador.add(player.bala);
+				Ventana.panel.add(player.bala);
+			break;
+			case KeyEvent.VK_RIGHT:
+				player.bulletRight = true;
+				player.disparando = true;
+				
+				player.bala = new Bala(player.getX(),player.getY(),"right");
+				player.cargador.add(player.bala);
+				Ventana.panel.add(player.bala);
+			}
 		}
 	}
 
@@ -129,26 +145,6 @@ public class Panel extends JPanel implements KeyListener{
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		/*System.out.println("typed");
-		key = e.getKeyCode();
 		
-		switch(key) {
-		case KeyEvent.VK_UP:
-			player.bulletUp = true;
-		break;
-		case KeyEvent.VK_DOWN:
-			player.bulletDown = true;
-		break;
-		case KeyEvent.VK_LEFT:
-			player.bulletLeft = true;
-		break;
-		case KeyEvent.VK_RIGHT:
-			player.bulletRight = true;
-		}
-		
-		player.bulletRight = false;
-		player.bulletLeft = false;
-		player.bulletDown = false;
-		player.bulletUp =false;*/
 	}
 }
