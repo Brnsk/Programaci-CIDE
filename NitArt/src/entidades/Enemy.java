@@ -6,7 +6,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import game.Panel;
+import game.Juego;
 
 @SuppressWarnings("serial")
 public class Enemy extends JLabel implements JugadorEnemigos{
@@ -28,20 +28,37 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	//Vida
 	public int pv = 3;
 	
-	public Enemy() {
+	//Movimiento
+	public boolean up;
+	public boolean down;
+	public boolean left;
+	public boolean right;
+	
+	protected int name;
+	
+	public Enemy(int name) {
 		iniciar();
 		
 		this.setIcon(icon);
 		this.setSize(new Dimension(WIDTH, HEIGHT));
 		this.setLocation(x, y);
+		this.name = name;
 	}
 	
+	@SuppressWarnings("static-access")
 	private void iniciar() {
 		imagen();
 		
-		x = 200;
-		y = 200;
+		x = (int)(Math.random()*((Juego.ventana.WIDTH-150-this.WIDTH)-150+1)+150);
+		y = (int)(Math.random()*((Juego.ventana.HEIGHT-150-this.HEIGHT)-150+1)+150);
+		
 		speed = 2;
+		
+		//Movimiento
+		up = false;
+		down = false;
+		left = false;
+		right = false;
 	}
 	
 	private void imagen() {
@@ -55,40 +72,46 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 		x = this.getX();
 		y = this.getY();
 		
-		if(x < Panel.player.getX()) {
+		if(x < Juego.ventana.panel.player.getX()) {
 			//mover derecha
-			x += speed;			
-		}else if(x > Panel.player.getX()) {
+			x += speed;
+			
+		}else if(x > Juego.ventana.panel.player.getX()) {
 			//mover izquierda
 			x -= speed;
-		}else if(y < Panel.player.getY()) {
+		}else if(y < Juego.ventana.panel.player.getY()) {
 			//Mover abajo
 			y += speed;
-		}else if(y > Panel.player.getY()) {
+		}else if(y > Juego.ventana.panel.player.getY()) {
 			//Mover arriba
 			y -= speed;
 		}
 		this.setLocation(x, y);
+		
+		up = false;
+		down = false;
+		left = false;
+		right = false;
 	}
 
 	@Override
 	public void moverDiagonal() {
-		if(x > Panel.player.getX() && y > Panel.player.getY()){
+		if(x > Juego.ventana.panel.player.getX() && y > Juego.ventana.panel.player.getY()){
 			//arriba izquierda
 			y -= speed-1;
 			x -= speed-1;
 			
-		}else if(x < Panel.player.getX() && y > Panel.player.getY()){
+		}else if(x < Juego.ventana.panel.player.getX() && y > Juego.ventana.panel.player.getY()){
 			//arriba derecha
 			y -= speed-1;
 			x += speed-1;
 			
-		}else if (x > Panel.player.getX() && y < Panel.player.getY()){
+		}else if (x > Juego.ventana.panel.player.getX() && y < Juego.ventana.panel.player.getY()){
 			//abajo izquierda
 			y += speed-1;
 			x -= speed-1;
 			
-		}else if(x < Panel.player.getX() && y < Panel.player.getY()){
+		}else if(x < Juego.ventana.panel.player.getX() && y < Juego.ventana.panel.player.getY()){
 			//abajo derecha
 			y += speed-1;
 			x += speed-1;
@@ -99,6 +122,22 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	@Override
 	public void disparar() {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void comprobarColision() {
+		
+	}
+
+	@Override
+	public boolean colisionY(int a,int b) {
+		return false;
+	}
+
+	@Override
+	public boolean colisionX(int a, int b) {
+		return false;
 		
 	}
 }

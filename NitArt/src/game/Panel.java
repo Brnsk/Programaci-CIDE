@@ -3,10 +3,12 @@ package game;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import entidades.Bala;
@@ -15,12 +17,16 @@ import entidades.Player;
 
 @SuppressWarnings("serial")
 public class Panel extends JPanel implements KeyListener{
-	public static Player player;
+	public Player player;
 	private int key;
 	
 	public Enemy enemy;
 	
-	ArrayList <Enemy> enemigos = new ArrayList<Enemy>();
+	public ArrayList <Enemy> enemigos = new ArrayList<Enemy>();
+	
+	protected Image suelo;
+
+	protected Image pared;
 	
 	
 	//CONSTRUCTOR
@@ -28,20 +34,33 @@ public class Panel extends JPanel implements KeyListener{
 		iniciar();
 		
 		this.setBackground(Color.PINK.darker());
+		
 		this.setLayout(null);
 		
 		this.setFocusable(true);
 		this.addKeyListener(this);
 		
 		this.add(player);
-		this.add(enemy);
+		this.addEnemies();
 	}
 	
 	//METODOS PROPIOS DE LA CLASE
 	private void iniciar() {
 		player = new Player();
-		enemy = new Enemy();
-		enemigos.add(enemy);
+		suelo = new ImageIcon("D:\\git\\repository\\NitArt\\img\\suelo.jpg").getImage();
+		
+		pared = new ImageIcon("D:\\git\\repository\\NitArt\\img\\suelo.jpg").getImage();
+	}
+	
+	//Añadir enemigos
+	private void addEnemies() {
+		int random = (int)(Math.random()*4 +1);
+		
+		for(int i = 0; i < random; i++) {
+			enemy = new Enemy(i);
+			enemigos.add(enemy);
+			this.add(enemy);
+		}
 	}
 	
 	@Override
@@ -79,33 +98,33 @@ public class Panel extends JPanel implements KeyListener{
 				player.bulletUp = true;
 				player.disparando = true;
 				
-				player.bala = new Bala(player.getX(),player.getY(),"up");
+				player.bala = new Bala(player.getX(),(player.getY()+player.HEIGHT / 2 -20),"up");
 				player.cargador.add(player.bala);
-				Ventana.panel.add(player.bala);
+				Juego.ventana.panel.add(player.bala);
 			break;
 			case KeyEvent.VK_DOWN:
 				player.bulletDown = true;
 				player.disparando = true;
 				
-				player.bala = new Bala(player.getX(),player.getY(),"down");
+				player.bala = new Bala(player.getX(),(player.getY()+player.HEIGHT / 2 -20),"down");
 				player.cargador.add(player.bala);
-				Ventana.panel.add(player.bala);
+				Juego.ventana.panel.add(player.bala);
 			break;
 			case KeyEvent.VK_LEFT:
 				player.bulletLeft = true;
 				player.disparando = true;
 				
-				player.bala = new Bala(player.getX(),player.getY(),"left");
+				player.bala = new Bala(player.getX(),(player.getY()+player.HEIGHT / 2 -20),"left");
 				player.cargador.add(player.bala);
-				Ventana.panel.add(player.bala);
+				Juego.ventana.panel.add(player.bala);
 			break;
 			case KeyEvent.VK_RIGHT:
 				player.bulletRight = true;
 				player.disparando = true;
 				
-				player.bala = new Bala(player.getX(),player.getY(),"right");
+				player.bala = new Bala(player.getX(),(player.getY()+player.HEIGHT / 2 -20),"right");
 				player.cargador.add(player.bala);
-				Ventana.panel.add(player.bala);
+				Juego.ventana.panel.add(player.bala);
 			}
 		}
 	}

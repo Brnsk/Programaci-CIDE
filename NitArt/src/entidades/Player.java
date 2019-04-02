@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import game.Juego;
 import game.Ventana;
 
 @SuppressWarnings("serial")
@@ -37,12 +38,21 @@ public class Player extends JLabel implements JugadorEnemigos{
 	
 	public ArrayList <Bala> cargador;
 	
+	protected int contadorBalas;
+	
 	//Velocidad
 	public static int speed;
 	
 	//Tamaño
 	public final int WIDTH = 80;
-	public final int HEIGHT = 80;
+	public final int HEIGHT = 120;
+	
+	//Vidas
+	public int pv;
+	public int vidaRestante;
+	
+	//Inmunidad
+	public boolean inmunidad = false;
 	
 	public Player() {
 		iniciar();
@@ -70,8 +80,14 @@ public class Player extends JLabel implements JugadorEnemigos{
 		
 		cargador = new ArrayList <Bala>();
 		
+		contadorBalas = 0;
+		
 		//Velocidad
-		speed = 6;
+		speed = 7;
+		
+		//vidas
+		pv = 6;
+		vidaRestante = 6;
 		
 		//Insertar imagen
 		imagen();
@@ -80,6 +96,7 @@ public class Player extends JLabel implements JugadorEnemigos{
 	//Añadir imagen a jlabel
 	private void imagen() {
 		img = new ImageIcon("D:\\git\\repository\\NitArt\\img\\Naruto.png").getImage();
+		img = img.getScaledInstance(1078, 810, Image.SCALE_SMOOTH);
 		icon = new ImageIcon(img.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 	}
 	
@@ -116,9 +133,12 @@ public class Player extends JLabel implements JugadorEnemigos{
 	//================ METODOS INTERFAZ COMUN ENTRE JUGADOR Y ENEMIGOS ================
 	
 	@Override
-	public void disparar() {	
-		for(int i = 0; i < cargador.size(); i++) {
-			bala = cargador.get(i);
+	public void disparar() {
+		
+		contadorBalas = 0;
+		
+		while(contadorBalas < cargador.size()) {
+			bala = cargador.get(contadorBalas);
 			
 			if(bala.direccion.equals("up")) {
 				bala.y -= Bala.speed;
@@ -140,7 +160,13 @@ public class Player extends JLabel implements JugadorEnemigos{
 			if(!bala.comprobarPosicion()) {
 				cargador.remove(bala);
 			}
+			contadorBalas++;
 		}
+	}
+	
+	protected void eliminarBala(int i) {
+		cargador.get(i).setIcon(null);
+		cargador.remove(i);
 	}
 	
 	@Override
@@ -198,5 +224,118 @@ public class Player extends JLabel implements JugadorEnemigos{
 			x += speed-1;
 		}
 		this.setLocation(x, y);
+	}
+
+	@SuppressWarnings({ "static-access", "unused" })
+	@Override
+	public void comprobarColision() {
+		int playerX = this.x;
+		int pX = playerX - this.speed;
+		int playerY = this.y;
+		int pY = playerY - this.speed;
+		
+		int enemigoX = 0;
+		int eX = 0;
+		int enemigoY = 0;
+		int eY = 0;
+		
+		boolean colision = false;
+		
+		for(int i = 0; i < Juego.ventana.panel.enemigos.size(); i++) {
+			colision = false;
+			
+			enemigoX = Juego.ventana.panel.enemigos.get(i).getX();
+			eX = enemigoX-this.speed;
+			enemigoY = Juego.ventana.panel.enemigos.get(i).getY();
+			eY = enemigoY - this.speed;
+			
+			if(playerX + this.WIDTH >= enemigoX && pX <= eX) {//Colision por la derecha del personaje
+				
+				colision = colisionY(playerY, enemigoY);
+				
+				if(colision) {
+					if(playerY < enemigoY) {
+						this.setLocation(playerX, playerY-4);
+					}else {
+						this.setLocation(playerX, playerY+4);
+					}
+					
+					if(!this.inmunidad) {
+						this.pv--;
+						System.out.println(this.pv);
+					}
+				}
+				
+			}else if(playerX <= enemigoX + Enemy.WIDTH && pX >= eX) {//Colision por la izquierda del personaje
+				
+				colision = colisionY(playerY, enemigoY);
+				
+				if(colision) {
+					if(playerY < enemigoY) {
+						this.setLocation(playerX, playerY-4);
+					}else {
+						this.setLocation(playerX, playerY+4);
+					}
+					
+					if(!this.inmunidad) {
+						this.pv--;
+						System.out.println(this.pv);
+					}
+				}
+			}else if(playerY+this.HEIGHT >= enemigoY && pY < pY) {//Colision por los pies del personaje NO FUNCIONA=======================
+				colision = colisionX(playerX,enemigoX);
+				System.out.println("pies");
+				if(colision) {
+					if(playerX < enemigoX) {
+						this.setLocation(playerX-4, playerY);
+					}else {
+						this.setLocation(playerX+4, playerY);
+					}
+					if(!this.inmunidad) {
+						this.pv--;
+						System.out.println("Pies"+pv);
+						System.out.println(this.inmunidad);
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean colisionY(int playerY, int enemigoY) {
+		int c = this.HEIGHT-20;
+		boolean bool=false;
+		
+		for(int j = 0; j < Enemy.HEIGHT; j++) {
+			
+			if(playerY+c == enemigoY+j) {
+				
+				bool = true;
+			}
+			if(j == Enemy.HEIGHT -1 && c > 40) {
+				
+				c--;
+				j = 0;
+			}
+		}
+		return bool;
+	}
+
+	@Override
+	public boolean colisionX(int playerX, int enemigoX) {
+		int c = this.WIDTH;
+		boolean bool = false;
+		
+		for(int j = 0; j < Enemy.WIDTH; j++) {
+			if(playerX+c == enemigoX+j) {
+				bool = true;
+			}
+			if(j == Enemy.WIDTH-1 && c > 0) {
+				c--;
+				j = 0;
+			}
+		}
+		
+		return bool;
 	}
 }
