@@ -44,8 +44,8 @@ public class Player extends JLabel implements JugadorEnemigos{
 	public static int speed;
 	
 	//Tamaño
-	public final int WIDTH = 80;
-	public final int HEIGHT = 120;
+	public final int WIDTH = 90;
+	public final int HEIGHT = 100;
 	
 	//Vidas
 	public int pv;
@@ -86,8 +86,8 @@ public class Player extends JLabel implements JugadorEnemigos{
 		speed = 7;
 		
 		//vidas
-		pv = 6;
-		vidaRestante = 6;
+		pv = 999;
+		vidaRestante = 999;
 		
 		//Insertar imagen
 		imagen();
@@ -95,7 +95,7 @@ public class Player extends JLabel implements JugadorEnemigos{
 	
 	//Añadir imagen a jlabel
 	private void imagen() {
-		img = new ImageIcon("D:\\git\\repository\\NitArt\\img\\Naruto.png").getImage();
+		img = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player.png").getImage();
 		img = img.getScaledInstance(1078, 810, Image.SCALE_SMOOTH);
 		icon = new ImageIcon(img.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 	}
@@ -241,12 +241,12 @@ public class Player extends JLabel implements JugadorEnemigos{
 		
 		boolean colision = false;
 		
-		for(int i = 0; i < Juego.ventana.panel.enemigos.size(); i++) {
+		for(int i = 0; i < Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.size(); i++) {
 			colision = false;
 			
-			enemigoX = Juego.ventana.panel.enemigos.get(i).getX();
+			enemigoX = Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.get(i).getX();
 			eX = enemigoX-this.speed;
-			enemigoY = Juego.ventana.panel.enemigos.get(i).getY();
+			enemigoY = Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.get(i).getY();
 			eY = enemigoY - this.speed;
 			
 			if(playerX + this.WIDTH >= enemigoX && pX <= eX) {//Colision por la derecha del personaje
@@ -282,11 +282,11 @@ public class Player extends JLabel implements JugadorEnemigos{
 						System.out.println(this.pv);
 					}
 				}
-			}else if(playerY+this.HEIGHT >= enemigoY && pY < pY) {//Colision por los pies del personaje NO FUNCIONA=======================
+			}else if(playerY+this.HEIGHT >= enemigoY && pY <= pY) {//Colision por los pies del personaje NO FUNCIONA=======================
 				colision = colisionX(playerX,enemigoX);
-				System.out.println("pies");
 				if(colision) {
 					if(playerX < enemigoX) {
+						System.out.println("pies");
 						this.setLocation(playerX-4, playerY);
 					}else {
 						this.setLocation(playerX+4, playerY);
@@ -303,7 +303,7 @@ public class Player extends JLabel implements JugadorEnemigos{
 
 	@Override
 	public boolean colisionY(int playerY, int enemigoY) {
-		int c = this.HEIGHT-20;
+		int c = this.HEIGHT-40;
 		boolean bool=false;
 		
 		for(int j = 0; j < Enemy.HEIGHT; j++) {

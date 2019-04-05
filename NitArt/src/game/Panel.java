@@ -100,7 +100,7 @@ public class Panel extends JPanel implements KeyListener{
 				
 				player.bala = new Bala(player.getX(),(player.getY()+player.HEIGHT / 2 -20),"up");
 				player.cargador.add(player.bala);
-				Juego.ventana.panel.add(player.bala);
+				Juego.ventana.paneles[Juego.ventana.panelActual].add(player.bala);
 			break;
 			case KeyEvent.VK_DOWN:
 				player.bulletDown = true;
@@ -108,7 +108,7 @@ public class Panel extends JPanel implements KeyListener{
 				
 				player.bala = new Bala(player.getX(),(player.getY()+player.HEIGHT / 2 -20),"down");
 				player.cargador.add(player.bala);
-				Juego.ventana.panel.add(player.bala);
+				Juego.ventana.paneles[Juego.ventana.panelActual].add(player.bala);
 			break;
 			case KeyEvent.VK_LEFT:
 				player.bulletLeft = true;
@@ -116,7 +116,7 @@ public class Panel extends JPanel implements KeyListener{
 				
 				player.bala = new Bala(player.getX(),(player.getY()+player.HEIGHT / 2 -20),"left");
 				player.cargador.add(player.bala);
-				Juego.ventana.panel.add(player.bala);
+				Juego.ventana.paneles[Juego.ventana.panelActual].add(player.bala);
 			break;
 			case KeyEvent.VK_RIGHT:
 				player.bulletRight = true;
@@ -124,7 +124,7 @@ public class Panel extends JPanel implements KeyListener{
 				
 				player.bala = new Bala(player.getX(),(player.getY()+player.HEIGHT / 2 -20),"right");
 				player.cargador.add(player.bala);
-				Juego.ventana.panel.add(player.bala);
+				Juego.ventana.paneles[Juego.ventana.panelActual].add(player.bala);
 			}
 		}
 	}

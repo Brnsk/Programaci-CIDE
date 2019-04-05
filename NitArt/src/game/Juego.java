@@ -1,7 +1,12 @@
 package game;
 
+import java.awt.Image;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.swing.ImageIcon;
+
+import entidades.Enemy;
 
 @SuppressWarnings("static-access")
 public class Juego {
@@ -27,15 +32,26 @@ public class Juego {
 	protected static TimerTask task =  new TimerTask() {
 		@Override
 		public void run() {
-			ventana.panel.player.disparando = false;
+			if(!gameover && start && ventana.panelActual > -1) {
+				ventana.paneles[ventana.panelActual].player.disparando = false;
+			}	
 		}
-		
 	};
 	
 	private void running() {
-		while(!Juego.gameover) {
+		int fps = 0;
+		System.out.println("fuera bucle");//Print obligatorio
+		
+		while(!Juego.gameover && start && ventana.panelActual > -1) {
 			
 			movimiento();
+			
+			if(fps == 3) {
+				sprites();
+				fps = 0;
+			}else {
+				fps++;
+			}
 			
 			disparos();
 			
@@ -45,27 +61,26 @@ public class Juego {
 			
 			inmunidad();
 			
-			//cambiarHabitacion();
+			cambiarHabitacion();
 			
 			esperar();
 		}
 	}
 	
-	
 	//Movimiento de entidades
 	private void movimiento() {
-		ventana.panel.player.mover();
+		ventana.paneles[ventana.panelActual].player.mover();
 		
-		for(int i = 0; i < ventana.panel.enemigos.size(); i++) {
-			ventana.panel.enemigos.get(i).mover();
-			ventana.panel.enemigos.get(i).moverDiagonal();
+		for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
+			ventana.paneles[ventana.panelActual].enemigos.get(i).mover();
+			ventana.paneles[ventana.panelActual].enemigos.get(i).moverDiagonal();
 		}
 	}
 	
 	//Disparos de entidades
 	private void disparos() {
-		if(ventana.panel.player.cargador.size() > 0) {
-			ventana.panel.player.disparar();
+		if(ventana.paneles[ventana.panelActual].player.cargador.size() > 0) {
+			ventana.paneles[ventana.panelActual].player.disparar();
 		}
 	}
 	
@@ -80,24 +95,24 @@ public class Juego {
 	
 	//Comprobar Colisiones
 	private void colisiones() {
-		ventana.panel.enemy.comprobarColision();
-		ventana.panel.player.comprobarColision();
+		ventana.paneles[ventana.panelActual].enemy.comprobarColision();
+		ventana.paneles[ventana.panelActual].player.comprobarColision();
 	}
 	
 	//Comprobar vida de entidades
 	private void comprobarVidas() {
 		//Player
-		if(ventana.panel.player.pv == 0) {
+		if(ventana.paneles[ventana.panelActual].player.pv == 0) {
 			gameover = true;
 			System.out.println("ADIOS");
 		}
 		
 		//Enemigos
-		for(int i = 0; i < ventana.panel.enemigos.size(); i++) {
-			if(ventana.panel.enemigos.get(i).pv == 0) {
+		for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
+			if(ventana.paneles[ventana.panelActual].enemigos.get(i).pv == 0) {
 				
-				ventana.panel.enemigos.get(i).setIcon(null);
-				ventana.panel.enemigos.remove(i);
+				ventana.paneles[ventana.panelActual].enemigos.get(i).setIcon(null);
+				ventana.paneles[ventana.panelActual].enemigos.remove(i);
 			}
 		}
 	}
@@ -106,22 +121,40 @@ public class Juego {
 	private void inmunidad() {
 		cont++;
 		
-		if(!ventana.panel.player.inmunidad && (ventana.panel.player.pv < ventana.panel.player.vidaRestante)) {
+		if(!ventana.paneles[ventana.panelActual].player.inmunidad && (ventana.paneles[ventana.panelActual].player.pv < ventana.paneles[ventana.panelActual].player.vidaRestante)) {
 			
-			ventana.panel.player.vidaRestante--;
-			ventana.panel.player.inmunidad = true;
+			ventana.paneles[ventana.panelActual].player.vidaRestante--;
+			ventana.paneles[ventana.panelActual].player.inmunidad = true;
 		}else if(cont > 50){
 			
 			cont = 0;
-			ventana.panel.player.inmunidad = false;
+			ventana.paneles[ventana.panelActual].player.inmunidad = false;
 		}
 	}
 	
 	//Cambiar de habitacion
 	private void cambiarHabitacion() {
-		if(ventana.panel.enemigos.size() == 0) {
-			ventana.remove(ventana.panel);
-			//ventana.add(new Panel());
+		if(ventana.paneles[ventana.panelActual].enemigos.size() == 0) {
+			
+			ventana.addPanel();
+		}
+	}
+	
+	//Animaciones
+	private void sprites() {
+		//ENEMIGOS
+		for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
+			Enemy enemigo = ventana.paneles[ventana.panelActual].enemigos.get(i);
+			
+			//if(enemigo.down && !enemigo.left && !enemigo.right && !enemigo.up) {
+				if(enemigo.getIcon() == enemigo.imagenes[0] || enemigo.getIcon() == enemigo.imagenes[2]) {
+					enemigo.setIcon(new ImageIcon(enemigo.imagenes[1].getScaledInstance(enemigo.WIDTH, enemigo.HEIGHT, Image.SCALE_SMOOTH)));
+					System.out.println("pene");
+				}else {
+					enemigo.setIcon(new ImageIcon(enemigo.imagenes[2].getScaledInstance(enemigo.WIDTH, enemigo.HEIGHT, Image.SCALE_SMOOTH)));
+					System.out.println("jamon");
+				}
+			//}
 		}
 	}
 	
@@ -129,6 +162,8 @@ public class Juego {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Juego juego = new Juego();
-		juego.running();
+		while(true) {
+			juego.running();
+		}
 	}
 }

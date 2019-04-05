@@ -69,7 +69,7 @@ public class Bala extends JLabel {
 	private boolean comprobarX() {
 		boolean posicionX = false;
 		
-		if(this.x <= 150 - Juego.ventana.panel.player.WIDTH || this.x >= Juego.ventana.WIDTH - 150 - this.WIDTH + Juego.ventana.panel.player.WIDTH) {
+		if(this.x <= 150 - Juego.ventana.paneles[Juego.ventana.panelActual].player.WIDTH || this.x >= Juego.ventana.WIDTH - 150 - this.WIDTH + Juego.ventana.paneles[Juego.ventana.panelActual].player.WIDTH) {
 			posicionX = false;
 		}else {
 			posicionX = true;
@@ -82,7 +82,7 @@ public class Bala extends JLabel {
 	private boolean comprobarY() {
 		boolean posicionY = false;
 		
-		if(this.y >= Juego.ventana.HEIGHT - 150 - this.HEIGHT + Juego.ventana.panel.player.HEIGHT || this.y <= 150 - this.HEIGHT - Juego.ventana.panel.player.HEIGHT) {
+		if(this.y >= Juego.ventana.HEIGHT - 150 - this.HEIGHT + Juego.ventana.paneles[Juego.ventana.panelActual].player.HEIGHT || this.y <= 150 - this.HEIGHT - Juego.ventana.paneles[Juego.ventana.panelActual].player.HEIGHT) {
 			posicionY = false;
 		}else {
 			posicionY = true;
@@ -106,13 +106,13 @@ public class Bala extends JLabel {
 		boolean colision = false;
 		
 		try {
-			for(int i = 0; i < Juego.ventana.panel.enemigos.size(); i++) {
+			for(int i = 0; i < Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.size(); i++) {
 				colision = false;
 				
-				enemigoX = Juego.ventana.panel.enemigos.get(i).getX();
+				enemigoX = Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.get(i).getX();
 				eX = enemigoX - Enemy.speed;
 				
-				enemigoY = Juego.ventana.panel.enemigos.get(i).getY();
+				enemigoY = Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.get(i).getY();
 				eY = enemigoY - Enemy.speed;
 			
 				//COLISION CON ENEMIGOS (DE LAS BALAS)
@@ -137,12 +137,13 @@ public class Bala extends JLabel {
 					}
 				}
 				if(colision) {
-					Juego.ventana.panel.player.eliminarBala(Juego.ventana.panel.player.contadorBalas);
-					Juego.ventana.panel.enemigos.get(i).pv--;
+					Juego.ventana.paneles[Juego.ventana.panelActual].player.eliminarBala(Juego.ventana.paneles[Juego.ventana.panelActual].player.contadorBalas);
+					Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.get(i).pv--;
 				}
 			}
 		}catch(Exception e) {
 			System.out.println("Error en la colision de la bala con el enemigo");
+			System.out.println(e.getMessage());
 		}
 		
 		return colision;
