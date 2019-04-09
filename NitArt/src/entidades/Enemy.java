@@ -10,13 +10,17 @@ import game.Juego;
 
 @SuppressWarnings("serial")
 public class Enemy extends JLabel implements JugadorEnemigos{
+	//Fps de la clase triEnemy
+	public int triFps = 0;
+	
 	
 	public Image[] imagenes;
-	private ImageIcon icon;
+	protected ImageIcon icon;
+	public int currImg;
 	
 	//Tamaño
-	public static final int WIDTH = 80;
-	public static final int HEIGHT = 80;
+	public static final int WIDTH = 95;
+	public static final int HEIGHT = 95;
 	
 	//Coordenadas
 	private int x;
@@ -34,7 +38,7 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	public boolean left;
 	public boolean right;
 	
-	protected int name;
+	public int name;
 	
 	public Enemy(int name) {
 		iniciar();
@@ -61,18 +65,25 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 		right = false;
 	}
 	
-	private void imagenes() {
+	protected void imagenes() {
 		imagenes = new Image[6];
 		
 		//Preparar imagen principal
-		imagenes[0] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadfront.png").getImage();
-		icon = new ImageIcon(imagenes[0].getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
+		imagenes[0] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadfront.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		icon = new ImageIcon(imagenes[0]);
+		currImg = 0;
 		
-		//Paso1
-		imagenes[1] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadFrontPaso1.png").getImage();
+		//Caminando de frente paso1
+		imagenes[1] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadFrontPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		
-		//Paso2
-		imagenes[2] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadFrontPaso2.png").getImage();
+		//Caminando de frente paso2
+		imagenes[2] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadFrontPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		
+		//Caminando de espaldas paso1
+		imagenes[3] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadBackPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+				
+		//Caminando de espaldas paso2
+		imagenes[4] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadBackPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 	}
 
 	@Override
@@ -85,28 +96,36 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 			x += speed;
 			right = true;
 			
+			left = false;
+			up = false;
+			down= false;
+			
 		}else if(x > Juego.ventana.paneles[Juego.ventana.panelActual].player.getX()) {
 			//mover izquierda
 			x -= speed;
 			left = true;
 			
+			right = false;
+			up = false;
+			down= false;
 		}else if(y < Juego.ventana.paneles[Juego.ventana.panelActual].player.getY()) {
 			//Mover abajo
 			y += speed;
 			down = true;
 			
+			left = false;
+			up = false;
+			right= false;
 		}else if(y > Juego.ventana.paneles[Juego.ventana.panelActual].player.getY()) {
 			//Mover arriba
 			y -= speed;
 			up = true;
 			
+			left = false;
+			right = false;
+			down= false;
 		}
 		this.setLocation(x, y);
-		
-		up = false;
-		down = false;
-		left = false;
-		right = false;
 	}
 
 	@Override
@@ -116,20 +135,41 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 			y -= speed-1;
 			x -= speed-1;
 			
+			up = true;
+			left = true;
+			
+			right = false;
+			down= false;
 		}else if(x < Juego.ventana.paneles[Juego.ventana.panelActual].player.getX() && y > Juego.ventana.paneles[Juego.ventana.panelActual].player.getY()){
 			//arriba derecha
 			y -= speed-1;
 			x += speed-1;
 			
+			up = true;
+			right = true;
+			
+			left = false;
+			down= false;
 		}else if (x > Juego.ventana.paneles[Juego.ventana.panelActual].player.getX() && y < Juego.ventana.paneles[Juego.ventana.panelActual].player.getY()){
 			//abajo izquierda
 			y += speed-1;
 			x -= speed-1;
 			
+			down = true;
+			left = true;
+			
+			right = false;
+			up = false;
 		}else if(x < Juego.ventana.paneles[Juego.ventana.panelActual].player.getX() && y < Juego.ventana.paneles[Juego.ventana.panelActual].player.getY()){
 			//abajo derecha
 			y += speed-1;
 			x += speed-1;
+			
+			down = true;
+			right = true;
+			
+			left = false;
+			up = false;
 		}
 		this.setLocation(x, y);
 	}
@@ -140,6 +180,7 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 		
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void comprobarColision() {
 		boolean colision = false;
@@ -161,6 +202,12 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 							cambio = 1;
 						}else if(colision && cambio == 1) {
 							enemigo.setLocation(enemigo.x + this.speed, enemigo.y - this.speed);
+							cambio = 2;
+						}else if(colision && cambio == 2) {
+							enemigo.setLocation(enemigo.x + this.speed, enemigo.y + this.speed);
+							cambio = 3;
+						}else if(colision && cambio == 3) {
+							enemigo.setLocation(enemigo.x - this.speed, enemigo.y - this.speed);
 							cambio = 0;
 						}
 					}
@@ -169,6 +216,7 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 		}
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public boolean colisionY(int enemigoY,int otroEnemigoY) {
 		int c = this.HEIGHT-40;

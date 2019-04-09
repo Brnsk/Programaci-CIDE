@@ -14,8 +14,9 @@ import game.Ventana;
 public class Player extends JLabel implements JugadorEnemigos{
 	
 	//Atributos para la imagen del pj
-	private Image img;
+	public int currImage;
 	private ImageIcon icon;
+	public Image[] imagenes;
 	
 	//Coordenadas
 	private int x;
@@ -95,9 +96,25 @@ public class Player extends JLabel implements JugadorEnemigos{
 	
 	//Añadir imagen a jlabel
 	private void imagen() {
-		img = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player.png").getImage();
-		img = img.getScaledInstance(1078, 810, Image.SCALE_SMOOTH);
-		icon = new ImageIcon(img.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
+		imagenes = new Image[14];
+		imagenes[0] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerFront.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		icon = new ImageIcon(imagenes[0]);
+		currImage = 0;
+		
+		imagenes[1] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerFrontPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de frente paso 1
+		imagenes[2] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerFrontPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de frente paso 2
+		imagenes[3] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerBackPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de espalda paso 1
+		imagenes[4] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerBackPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de espalda paso 2
+		imagenes[5] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerLeft.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la izquierda
+		imagenes[6] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerLeftPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la izquierda paso 1
+		imagenes[7] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerLeftPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la izquierda paso 2
+		imagenes[8] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerLeftPaso3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la izquierda paso 3
+		imagenes[9] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerRight.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la derecha
+		imagenes[10] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerRightPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la derecha paso 1
+		imagenes[11] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerRightPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la derecha paso 2
+		imagenes[12] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerRightPaso3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la derecha paso 3
+		imagenes[13] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerBack.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de espalda
+		
 	}
 	
 	//Eliminar bala
@@ -282,7 +299,7 @@ public class Player extends JLabel implements JugadorEnemigos{
 						System.out.println(this.pv);
 					}
 				}
-			}else if(playerY+this.HEIGHT >= enemigoY && pY <= pY) {//Colision por los pies del personaje NO FUNCIONA=======================
+			}else if(playerY+this.HEIGHT >= enemigoY && pY <= eY) {//Colision por los pies del personaje NO FUNCIONA=======================
 				colision = colisionX(playerX,enemigoX);
 				if(colision) {
 					if(playerX < enemigoX) {

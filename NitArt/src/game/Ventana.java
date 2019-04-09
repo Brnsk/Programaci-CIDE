@@ -37,7 +37,6 @@ public class Ventana extends JFrame {
 		//this.setMaximumSize(new Dimension(this.WIDTH,this.HEIGHT)); // NOT WORKING
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.add(menu);
-		//this.addPanel();
 		this.setVisible(true);
 	}
 	
@@ -48,21 +47,21 @@ public class Ventana extends JFrame {
 	
 	//Metodo paint
 	public void paint(Graphics2D g) {
-			g.drawImage(this.paneles[panelActual].suelo, 150, 150, 928, 660, Color.pink.darker(), null);
-			g.setColor(Color.BLACK);
-			if(this.panelActual > 0) {
-				g.fillOval(200, 400, 50, 50);
-			}
+		g.drawImage(this.paneles[panelActual].suelo, 150, 150, 928, 660, Color.pink.darker(), null);
+		g.setColor(Color.BLACK);
 			
-		//g.fillRect(0, 0, 150, HEIGHT);
-		//g.fillRect(0, 0, WIDTH, 150);
-		//g.fillRect(0, HEIGHT - 150, WIDTH, 150);
-		//g.fillRect(WIDTH - 150, 0, 150, HEIGHT);
+		g.fillOval(200, 400, 50, 50);//Cambiar de sala
+			
+			
+		g.fillRect(0, 0, 150, HEIGHT);
+		g.fillRect(0, 0, WIDTH, 150);
+		g.fillRect(0, HEIGHT - 150, WIDTH, 150);
+		g.fillRect(WIDTH - 150, 0, 150, HEIGHT);
 	}
 	
 	protected void addPanel() {
+		System.out.println(panelActual);
 		panel = new Panel();
-		
 		panelActual++;
 		
 		paneles[panelActual] = panel;

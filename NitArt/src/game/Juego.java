@@ -7,6 +7,7 @@ import java.util.TimerTask;
 import javax.swing.ImageIcon;
 
 import entidades.Enemy;
+import entidades.Player;
 
 @SuppressWarnings("static-access")
 public class Juego {
@@ -32,38 +33,42 @@ public class Juego {
 	protected static TimerTask task =  new TimerTask() {
 		@Override
 		public void run() {
-			if(!gameover && start && ventana.panelActual > -1) {
+			if(!gameover && start && ventana.panelActual > -1 && ventana.paneles[ventana.panelActual].player.disparando) {
 				ventana.paneles[ventana.panelActual].player.disparando = false;
-			}	
+			}
 		}
 	};
 	
 	private void running() {
 		int fps = 0;
-		System.out.println("fuera bucle");//Print obligatorio
+		System.out.println("");//Print obligatorio
 		
 		while(!Juego.gameover && start && ventana.panelActual > -1) {
-			
-			movimiento();
-			
-			if(fps == 3) {
-				sprites();
-				fps = 0;
-			}else {
-				fps++;
+			try {
+				if(fps == 4) {
+					sprites();
+					fps = 0;
+				}else {
+					fps++;
+				}
+				
+				movimiento();
+				
+				disparos();
+				
+				colisiones();
+				
+				comprobarVidas();
+				
+				inmunidad();
+				
+				cambiarHabitacion();
+				
+				esperar();
+			}catch(Exception e) {
+				System.out.println("Error en el bucle principal");
+				e.printStackTrace();
 			}
-			
-			disparos();
-			
-			colisiones();
-			
-			comprobarVidas();
-			
-			inmunidad();
-			
-			cambiarHabitacion();
-			
-			esperar();
 		}
 	}
 	
@@ -95,7 +100,9 @@ public class Juego {
 	
 	//Comprobar Colisiones
 	private void colisiones() {
-		ventana.paneles[ventana.panelActual].enemy.comprobarColision();
+		for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
+			ventana.paneles[ventana.panelActual].enemigos.get(i).comprobarColision();
+		}
 		ventana.paneles[ventana.panelActual].player.comprobarColision();
 	}
 	
@@ -121,7 +128,8 @@ public class Juego {
 	private void inmunidad() {
 		cont++;
 		
-		if(!ventana.paneles[ventana.panelActual].player.inmunidad && (ventana.paneles[ventana.panelActual].player.pv < ventana.paneles[ventana.panelActual].player.vidaRestante)) {
+		if(!ventana.paneles[ventana.panelActual].player.inmunidad && 
+				(ventana.paneles[ventana.panelActual].player.pv < ventana.paneles[ventana.panelActual].player.vidaRestante)) {
 			
 			ventana.paneles[ventana.panelActual].player.vidaRestante--;
 			ventana.paneles[ventana.panelActual].player.inmunidad = true;
@@ -134,7 +142,9 @@ public class Juego {
 	
 	//Cambiar de habitacion
 	private void cambiarHabitacion() {
-		if(ventana.paneles[ventana.panelActual].enemigos.size() == 0) {
+		if(ventana.paneles[ventana.panelActual].enemigos.size() == 0 && (ventana.paneles[ventana.panelActual].player.getX() >= 150 &&
+				ventana.paneles[ventana.panelActual].player.getX() <= 250) &&
+				(ventana.paneles[ventana.panelActual].player.getY() >= 350 && ventana.paneles[ventana.panelActual].player.getY() <= 450)) {
 			
 			ventana.addPanel();
 		}
@@ -142,27 +152,132 @@ public class Juego {
 	
 	//Animaciones
 	private void sprites() {
-		//ENEMIGOS
+		//ENEMIGOS=========
+		
+		//SadEnemy
+		sadSprites();
+		
+		//TriEnemy
+		triSprites();
+		
+		//PLAYER=========
+		playerSprites();
+	}
+	
+	private void sadSprites() {
 		for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
 			Enemy enemigo = ventana.paneles[ventana.panelActual].enemigos.get(i);
 			
-			//if(enemigo.down && !enemigo.left && !enemigo.right && !enemigo.up) {
-				if(enemigo.getIcon() == enemigo.imagenes[0] || enemigo.getIcon() == enemigo.imagenes[2]) {
-					enemigo.setIcon(new ImageIcon(enemigo.imagenes[1].getScaledInstance(enemigo.WIDTH, enemigo.HEIGHT, Image.SCALE_SMOOTH)));
-					System.out.println("pene");
-				}else {
-					enemigo.setIcon(new ImageIcon(enemigo.imagenes[2].getScaledInstance(enemigo.WIDTH, enemigo.HEIGHT, Image.SCALE_SMOOTH)));
-					System.out.println("jamon");
+			if(enemigo.down && enemigo.name < 10) {
+				if(enemigo.currImg == 0 || enemigo.currImg == 2 || enemigo.currImg == 3 || enemigo.currImg == 4) {
+					enemigo.setIcon(new ImageIcon(enemigo.imagenes[1]));
+					enemigo.currImg = 1;
+				}else if(enemigo.currImg == 1){
+					enemigo.setIcon(new ImageIcon(enemigo.imagenes[2]));
+					enemigo.currImg = 2;
 				}
-			//}
+			}else if(enemigo.up && enemigo.name < 10){
+				if(enemigo.currImg == 4 || enemigo.currImg == 2 || enemigo.currImg == 1 || enemigo.currImg == 0) {
+					enemigo.setIcon(new ImageIcon(enemigo.imagenes[3]));
+					enemigo.currImg = 3;
+				}else if(enemigo.currImg == 3) {
+					enemigo.setIcon(new ImageIcon(enemigo.imagenes[4]));
+					enemigo.currImg = 4;
+				}
+			}
 		}
 	}
+	
+	private void triSprites() {
+		for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
+			Enemy enemigo = ventana.paneles[ventana.panelActual].enemigos.get(i);
+			
+			if(enemigo.down && enemigo.name >= 20 && enemigo.name < 30 && enemigo.triFps == 2) {
+				if(enemigo.currImg == 0) {
+					enemigo.setIcon(new ImageIcon(enemigo.imagenes[1]));
+					enemigo.currImg = 1;
+					enemigo.triFps = 0;
+				}else if(enemigo.currImg == 1){
+					enemigo.setIcon(new ImageIcon(enemigo.imagenes[0]));
+					enemigo.currImg = 0;
+					enemigo.triFps = 0;
+				}
+			}else if(enemigo.up && enemigo.name >= 20 && enemigo.name < 30 && enemigo.triFps == 2){
+				if(enemigo.currImg == 0) {
+					enemigo.setIcon(new ImageIcon(enemigo.imagenes[1]));
+					enemigo.currImg = 1;
+					enemigo.triFps = 0;
+				}else if(enemigo.currImg == 1) {
+					enemigo.setIcon(new ImageIcon(enemigo.imagenes[0]));
+					enemigo.currImg = 0;
+					enemigo.triFps = 0;
+				}
+			}else{
+				enemigo.triFps++;
+			}
+		}
+	}
+	
+	//Sprites para el player
+	private void playerSprites() {
+		Player player = ventana.paneles[ventana.panelActual].player;
+		
+		if(!player.down && !player.up && !player.left && !player.right) {//Si el personaje NO se mueve
+			
+			player.setIcon(new ImageIcon(player.imagenes[0]));
+		}else if(player.up && !player.down && !player.left && !player.right) {//Si el personaje va hacia arriba
+			
+			if(player.currImage >= 0 && player.currImage <= 13 && player.currImage != 4) {//Paso 1
+				player.setIcon(new ImageIcon(player.imagenes[4]));
+				player.currImage = 4;
+			}else if(player.currImage == 4) {//Paso 2
+				player.setIcon(new ImageIcon(player.imagenes[3]));
+				player.currImage = 3;
+			}
+		}else if(!player.up && player.down && !player.left && !player.right){//Si el personaje va hacia abajo
+			
+			if(player.currImage >= 0 && player.currImage <= 13 && player.currImage != 2) {//Paso 1
+				player.setIcon(new ImageIcon(player.imagenes[2]));
+				player.currImage = 2;
+			}else if(player.currImage == 2) {//Paso 2
+				player.setIcon(new ImageIcon(player.imagenes[1]));
+				player.currImage = 1;
+			}
+		}else if(!player.up && !player.down && player.left && !player.right){//Si el personaje va hacia la izquierda
+			
+			if(player.currImage >= 0 && player.currImage <= 13 && player.currImage != 6 && player.currImage != 7) {//Paso 1
+				player.setIcon(new ImageIcon(player.imagenes[6]));
+				player.currImage = 6;
+			}else if(player.currImage == 6) {//Paso 2
+				player.setIcon(new ImageIcon(player.imagenes[7]));
+				player.currImage = 7;
+			}else if(player.currImage == 7) {//Paso 3
+				player.setIcon(new ImageIcon(player.imagenes[8]));
+				player.currImage = 8;
+			}
+		}else if(!player.up && !player.down && !player.left && player.right){//Si el personaje va hacia la derecha
+			
+			if(player.currImage >= 0 && player.currImage <= 13 && player.currImage != 10 && player.currImage != 11) {//Paso 1
+				player.setIcon(new ImageIcon(player.imagenes[10]));
+				player.currImage = 10;
+			}else if(player.currImage == 10) {//Paso 2
+				player.setIcon(new ImageIcon(player.imagenes[11]));
+				player.currImage = 11;
+			}else if(player.currImage == 11) {//Paso 3
+				player.setIcon(new ImageIcon(player.imagenes[12]));
+				player.currImage = 12;
+			}
+		}
+	}
+	
+	//Metodo Pausa
+		//Si no te funcion posa un print dins el bucle
 	
 	//MAIN======================
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Juego juego = new Juego();
-		while(true) {
+		while(!juego.start || juego.start) {
 			juego.running();
 		}
 	}

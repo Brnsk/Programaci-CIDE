@@ -14,13 +14,16 @@ import javax.swing.JPanel;
 import entidades.Bala;
 import entidades.Enemy;
 import entidades.Player;
+import entidades.TriEnemy;
 
 @SuppressWarnings("serial")
 public class Panel extends JPanel implements KeyListener{
 	public Player player;
 	private int key;
 	
-	public Enemy enemy;
+	private Enemy enemy;
+	private TriEnemy triEnemy;
+	
 	
 	public ArrayList <Enemy> enemigos = new ArrayList<Enemy>();
 	
@@ -40,13 +43,26 @@ public class Panel extends JPanel implements KeyListener{
 		this.setFocusable(true);
 		this.addKeyListener(this);
 		
-		this.add(player);
 		this.addEnemies();
 	}
 	
 	//METODOS PROPIOS DE LA CLASE
 	private void iniciar() {
-		player = new Player();
+		if(Juego.ventana.panelActual <= 0) {
+			player = new Player();
+			this.add(player);
+		}else {
+			player = Juego.ventana.paneles[Juego.ventana.panelActual-1].player;
+			this.add(player);
+			
+			player.setLocation(1000,400);
+			
+			player.up = false;
+			player.down = false;
+			player.right = false;
+			player.left = false;
+		}
+		
 		suelo = new ImageIcon("D:\\git\\repository\\NitArt\\img\\suelo.jpg").getImage();
 		
 		pared = new ImageIcon("D:\\git\\repository\\NitArt\\img\\suelo.jpg").getImage();
@@ -54,12 +70,28 @@ public class Panel extends JPanel implements KeyListener{
 	
 	//Añadir enemigos
 	private void addEnemies() {
-		int random = (int)(Math.random()*4 +1);
-		
-		for(int i = 0; i < random; i++) {
-			enemy = new Enemy(i);
-			enemigos.add(enemy);
-			this.add(enemy);
+
+		if (Juego.ventana.panelActual == 0) {//A partir del primer panel con enemigos
+			int random = (int)(Math.random()*4 +1);
+			
+			for(int i = 0; i < random; i++) {
+				enemy = new Enemy(i);
+				enemigos.add(enemy);
+				this.add(enemy);
+			}
+		}else if(Juego.ventana.panelActual >= 1) {
+			int random = (int)(Math.random()*6 +1);
+			
+			for(int i = 0; i < random; i+=2) {
+				enemy = new Enemy(i);
+				enemigos.add(enemy);
+				
+				triEnemy = new TriEnemy(i);//Para distinguirlos
+				enemigos.add(triEnemy);
+				
+				this.add(enemy);
+				this.add(triEnemy);
+			}
 		}
 	}
 	
@@ -89,6 +121,8 @@ public class Panel extends JPanel implements KeyListener{
 		break;
 		case KeyEvent.VK_D:
 			player.right = true;
+		break;
+		case KeyEvent.VK_ESCAPE:
 		}
 		//=========== Balas ===============
 		
@@ -98,7 +132,7 @@ public class Panel extends JPanel implements KeyListener{
 				player.bulletUp = true;
 				player.disparando = true;
 				
-				player.bala = new Bala(player.getX(),(player.getY()+player.HEIGHT / 2 -20),"up");
+				player.bala = new Bala(player.getX() + (player.WIDTH/2),(player.getY()+player.HEIGHT / 2 -20),"up");
 				player.cargador.add(player.bala);
 				Juego.ventana.paneles[Juego.ventana.panelActual].add(player.bala);
 			break;
@@ -106,7 +140,7 @@ public class Panel extends JPanel implements KeyListener{
 				player.bulletDown = true;
 				player.disparando = true;
 				
-				player.bala = new Bala(player.getX(),(player.getY()+player.HEIGHT / 2 -20),"down");
+				player.bala = new Bala(player.getX() + (player.WIDTH/2), (player.getY()+player.HEIGHT / 2 -20),"down");
 				player.cargador.add(player.bala);
 				Juego.ventana.paneles[Juego.ventana.panelActual].add(player.bala);
 			break;
@@ -114,7 +148,7 @@ public class Panel extends JPanel implements KeyListener{
 				player.bulletLeft = true;
 				player.disparando = true;
 				
-				player.bala = new Bala(player.getX(),(player.getY()+player.HEIGHT / 2 -20),"left");
+				player.bala = new Bala(player.getX() + (player.WIDTH/2), (player.getY()+player.HEIGHT / 2 -20),"left");
 				player.cargador.add(player.bala);
 				Juego.ventana.paneles[Juego.ventana.panelActual].add(player.bala);
 			break;
@@ -122,7 +156,7 @@ public class Panel extends JPanel implements KeyListener{
 				player.bulletRight = true;
 				player.disparando = true;
 				
-				player.bala = new Bala(player.getX(),(player.getY()+player.HEIGHT / 2 -20),"right");
+				player.bala = new Bala(player.getX() + (player.WIDTH/2), (player.getY()+player.HEIGHT / 2 -20),"right");
 				player.cargador.add(player.bala);
 				Juego.ventana.paneles[Juego.ventana.panelActual].add(player.bala);
 			}
