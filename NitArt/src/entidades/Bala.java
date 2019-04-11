@@ -93,49 +93,18 @@ public class Bala extends JLabel {
 	
 	//Comprobar colision de la bala con un enemigo
 	private boolean comprobarColision() {	
-		int balaX = this.x;
-		int bX = balaX - this.speed;
-		int enemigoX = 0;
-		int eX = 0;
-		
-		int balaY = this.y;
-		int bY = balaY - this.speed;
-		int enemigoY = 0;
-		int eY = 0;
-		
 		boolean colision = false;
 		
 		try {
 			for(int i = 0; i < Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.size(); i++) {
 				colision = false;
 				
-				enemigoX = Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.get(i).getX();
-				eX = enemigoX - Enemy.speed;
-				
-				enemigoY = Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.get(i).getY();
-				eY = enemigoY - Enemy.speed;
+				Enemy enemigo = Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.get(i);
 			
-				//COLISION CON ENEMIGOS (DE LAS BALAS)
-				
-				//Disparos en eje X (Derecha o Izquierda)
-				if(balaX + this.WIDTH >= enemigoX && bX <= eX || balaX >= enemigoX + Enemy.WIDTH && bX <= eX + Enemy.WIDTH) {
-					for(int j = 0; j < Enemy.HEIGHT; j++) {
-						if(balaY + this.HEIGHT == enemigoY + j) {//Derecha?
-							colision = true;
-						}else if(balaY == enemigoY + j) {//Izquierda?
-							colision = true;
-						}
-					}
-				//Disparos en eje Y (Arriba o Abajo)
-				}else if(balaY >= enemigoY && bY <= eY || balaY >= enemigoY + Enemy.HEIGHT && bY <= eY + Enemy.HEIGHT) {
-					for(int j = 0; j < Enemy.WIDTH; j++) {
-						if(balaX + this.WIDTH == enemigoX + j) {//Arriba?
-							colision = true;
-						}else if(balaX == enemigoX + j) {//Abajo?
-							colision = true;
-						}
-					}
+				if(this.getBounds().intersects(enemigo.getBounds())) {
+					colision = true;
 				}
+				
 				if(colision) {
 					Juego.ventana.paneles[Juego.ventana.panelActual].player.eliminarBala(Juego.ventana.paneles[Juego.ventana.panelActual].player.contadorBalas);
 					Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.get(i).pv--;

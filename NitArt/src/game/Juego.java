@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 
 import entidades.Enemy;
 import entidades.Player;
+import entidades.TriEnemy;
 
 @SuppressWarnings("static-access")
 public class Juego {
@@ -76,10 +77,10 @@ public class Juego {
 	private void movimiento() {
 		ventana.paneles[ventana.panelActual].player.mover();
 		
-		for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
-			ventana.paneles[ventana.panelActual].enemigos.get(i).mover();
-			ventana.paneles[ventana.panelActual].enemigos.get(i).moverDiagonal();
-		}
+		/*for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
+				ventana.paneles[ventana.panelActual].enemigos.get(i).mover();
+				ventana.paneles[ventana.panelActual].enemigos.get(i).moverDiagonal();
+		}*/
 	}
 	
 	//Disparos de entidades
@@ -164,6 +165,7 @@ public class Juego {
 		playerSprites();
 	}
 	
+	//Sprites para SadEnemy
 	private void sadSprites() {
 		for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
 			Enemy enemigo = ventana.paneles[ventana.panelActual].enemigos.get(i);
@@ -188,31 +190,37 @@ public class Juego {
 		}
 	}
 	
+	//Sprites para TriEnemy
 	private void triSprites() {
 		for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
 			Enemy enemigo = ventana.paneles[ventana.panelActual].enemigos.get(i);
 			
-			if(enemigo.down && enemigo.name >= 20 && enemigo.name < 30 && enemigo.triFps == 2) {
-				if(enemigo.currImg == 0) {
-					enemigo.setIcon(new ImageIcon(enemigo.imagenes[1]));
-					enemigo.currImg = 1;
-					enemigo.triFps = 0;
-				}else if(enemigo.currImg == 1){
-					enemigo.setIcon(new ImageIcon(enemigo.imagenes[0]));
-					enemigo.currImg = 0;
-					enemigo.triFps = 0;
+			if(enemigo.name >=20 && enemigo.name <= 30 && enemigo.triFps == 1) {
+				if(enemigo.down) {//Si el enemigo esta yendo hacia abajo
+					if(enemigo.currImg == 0) {//TOP
+						enemigo.setIcon(new ImageIcon(enemigo.imagenes[2]));
+						enemigo.currImg = 2;
+					}else if(enemigo.currImg == 2) {//MIDDLE
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[1]));
+							enemigo.currImg = 1;
+					}else if(enemigo.currImg == 1) {//BOTTOM
+						enemigo.setIcon(new ImageIcon(enemigo.imagenes[2]));
+						enemigo.currImg = 2;
+					}
+				}else if(enemigo.up) {//Si el enemigo se esta moviendo hacia arriba
+					if(enemigo.currImg == 0) {//TOP
+						enemigo.setIcon(new ImageIcon(enemigo.imagenes[2]));
+						enemigo.currImg = 2;
+					}else if(enemigo.currImg == 2) {//MIDDLE
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[0]));
+							enemigo.currImg = 0;
+					}else if(enemigo.currImg == 1) {//BOTTOM
+						enemigo.setIcon(new ImageIcon(enemigo.imagenes[2]));
+						enemigo.currImg = 2;
+					}
 				}
-			}else if(enemigo.up && enemigo.name >= 20 && enemigo.name < 30 && enemigo.triFps == 2){
-				if(enemigo.currImg == 0) {
-					enemigo.setIcon(new ImageIcon(enemigo.imagenes[1]));
-					enemigo.currImg = 1;
-					enemigo.triFps = 0;
-				}else if(enemigo.currImg == 1) {
-					enemigo.setIcon(new ImageIcon(enemigo.imagenes[0]));
-					enemigo.currImg = 0;
-					enemigo.triFps = 0;
-				}
-			}else{
+				enemigo.triFps = 0;
+			}else {
 				enemigo.triFps++;
 			}
 		}
@@ -225,7 +233,7 @@ public class Juego {
 		if(!player.down && !player.up && !player.left && !player.right) {//Si el personaje NO se mueve
 			
 			player.setIcon(new ImageIcon(player.imagenes[0]));
-		}else if(player.up && !player.down && !player.left && !player.right) {//Si el personaje va hacia arriba
+		}else if(player.up) {//Si el personaje va hacia arriba
 			
 			if(player.currImage >= 0 && player.currImage <= 13 && player.currImage != 4) {//Paso 1
 				player.setIcon(new ImageIcon(player.imagenes[4]));
@@ -234,7 +242,7 @@ public class Juego {
 				player.setIcon(new ImageIcon(player.imagenes[3]));
 				player.currImage = 3;
 			}
-		}else if(!player.up && player.down && !player.left && !player.right){//Si el personaje va hacia abajo
+		}else if(player.down){//Si el personaje va hacia abajo
 			
 			if(player.currImage >= 0 && player.currImage <= 13 && player.currImage != 2) {//Paso 1
 				player.setIcon(new ImageIcon(player.imagenes[2]));

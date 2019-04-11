@@ -2,6 +2,7 @@ package entidades;
 
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -243,116 +244,50 @@ public class Player extends JLabel implements JugadorEnemigos{
 		this.setLocation(x, y);
 	}
 
-	@SuppressWarnings({ "static-access", "unused" })
 	@Override
 	public void comprobarColision() {
 		int playerX = this.x;
-		int pX = playerX - this.speed;
 		int playerY = this.y;
-		int pY = playerY - this.speed;
-		
-		int enemigoX = 0;
-		int eX = 0;
-		int enemigoY = 0;
-		int eY = 0;
 		
 		boolean colision = false;
 		
 		for(int i = 0; i < Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.size(); i++) {
+			Enemy enemigo = Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.get(i);
+			Rectangle playerBounds = this.getBounds();
+			
 			colision = false;
 			
-			enemigoX = Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.get(i).getX();
-			eX = enemigoX-this.speed;
-			enemigoY = Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.get(i).getY();
-			eY = enemigoY - this.speed;
+			playerBounds.height = (int) playerBounds.getHeight() - 30;
+			playerBounds.y = (int) playerBounds.getY() + 20;
+			playerBounds.width = (int) playerBounds.getWidth() - 60;
+			playerBounds.x = (int) playerBounds.getX() + 30;
 			
-			if(playerX + this.WIDTH >= enemigoX && pX <= eX) {//Colision por la derecha del personaje
-				
-				colision = colisionY(playerY, enemigoY);
-				
-				if(colision) {
-					if(playerY < enemigoY) {
-						this.setLocation(playerX, playerY-4);
-					}else {
-						this.setLocation(playerX, playerY+4);
-					}
-					
-					if(!this.inmunidad) {
-						this.pv--;
-						System.out.println(this.pv);
-					}
-				}
-				
-			}else if(playerX <= enemigoX + Enemy.WIDTH && pX >= eX) {//Colision por la izquierda del personaje
-				
-				colision = colisionY(playerY, enemigoY);
-				
-				if(colision) {
-					if(playerY < enemigoY) {
-						this.setLocation(playerX, playerY-4);
-					}else {
-						this.setLocation(playerX, playerY+4);
-					}
-					
-					if(!this.inmunidad) {
-						this.pv--;
-						System.out.println(this.pv);
-					}
-				}
-			}else if(playerY+this.HEIGHT >= enemigoY && pY <= eY) {//Colision por los pies del personaje NO FUNCIONA=======================
-				colision = colisionX(playerX,enemigoX);
-				if(colision) {
-					if(playerX < enemigoX) {
-						System.out.println("pies");
-						this.setLocation(playerX-4, playerY);
-					}else {
-						this.setLocation(playerX+4, playerY);
-					}
-					if(!this.inmunidad) {
-						this.pv--;
-						System.out.println("Pies"+pv);
-						System.out.println(this.inmunidad);
-					}
-				}
+			if(playerBounds.intersects(enemigo.getBounds())) {
+				colision = true;
+				colisionando(playerX, playerY);
 			}
 		}
 	}
-
-	@Override
-	public boolean colisionY(int playerY, int enemigoY) {
-		int c = this.HEIGHT-40;
-		boolean bool=false;
+	
+	
+	private void colisionando(int playerX, int playerY) {
 		
-		for(int j = 0; j < Enemy.HEIGHT; j++) {
-			
-			if(playerY+c == enemigoY+j) {
-				
-				bool = true;
-			}
-			if(j == Enemy.HEIGHT -1 && c > 40) {
-				
-				c--;
-				j = 0;
-			}
+		if(this.up && !this.down && !this.left && !this.right) {
+			this.setLocation(playerX, playerY + Player.speed);
+		}else if(!this.up && this.down && !this.left && !this.right) {
+			this.setLocation(playerX, playerY - Player.speed);
+		}else if(!this.up && !this.down && this.left && !this.right) {
+			this.setLocation(playerX + Player.speed, playerY);
+		}else if(!this.up && !this.down && !this.left && this.right) {
+			this.setLocation(playerX - Player.speed, playerY);
+		}else if(!this.up && this.down && !this.left && this.right) {
+			this.setLocation(playerX - Player.speed, playerY - Player.speed);
+		}else if(this.up && !this.down && !this.left && this.right) {
+			this.setLocation(playerX - Player.speed, playerY + Player.speed);
+		}else if(!this.up && this.down && this.left && !this.right) {
+			this.setLocation(playerX + Player.speed, playerY - Player.speed);
+		}else if(this.up && !this.down && this.left && !this.right) {
+			this.setLocation(playerX + Player.speed, playerY + Player.speed);
 		}
-		return bool;
-	}
-
-	@Override
-	public boolean colisionX(int playerX, int enemigoX) {
-		int c = this.WIDTH;
-		boolean bool = false;
-		
-		for(int j = 0; j < Enemy.WIDTH; j++) {
-			if(playerX+c == enemigoX+j) {
-				bool = true;
-			}
-			if(j == Enemy.WIDTH-1 && c > 0) {
-				c--;
-				j = 0;
-			}
-		}
-		
-		return bool;
 	}
 }

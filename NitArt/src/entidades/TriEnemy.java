@@ -10,11 +10,12 @@ public class TriEnemy extends Enemy{
 	public TriEnemy(int name) {
 		super(name);
 		this.name = this.name + 20;
+		this.speed = 2;
 	}
 	
 	@Override
 	protected void imagenes() {
-		this.imagenes = new Image[6];
+		this.imagenes = new Image[9];
 		
 		//Imagen de frente con el boss arriba
 		this.imagenes[0] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\triEnemy\\triEnemyFrontTop.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
@@ -24,16 +25,8 @@ public class TriEnemy extends Enemy{
 		//Imagen de frente con el boss abajo
 		this.imagenes[1] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\triEnemy\\triEnemyFrontBottom.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		
-		//Imagen de frente con el boss arriba con 2 vidas
-		this.imagenes[2] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\triEnemy\\triEnemyFrontTop1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		//Imagen de frente con con todos en linea
+		this.imagenes[2] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\triEnemy\\triEnemyFrontMiddle.png").getImage().getScaledInstance(WIDTH, HEIGHT / 2, Image.SCALE_SMOOTH);
 		
-		//Imagen de frente con el boss arriba con 1 vida
-		this.imagenes[3] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\triEnemy\\triEnemyFrontTop2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-				
-		//Imagen de frente con el boss abajo con 2 vidas
-		this.imagenes[4] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\triEnemy\\triEnemyFrontBottom1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-		
-		//Imagen de frente con el boss abajo con 1 vidas
-		this.imagenes[5] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\triEnemy\\triEnemyFrontBottom2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 	}
 }

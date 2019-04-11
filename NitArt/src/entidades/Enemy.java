@@ -2,6 +2,7 @@ package entidades;
 
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -13,10 +14,10 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	//Fps de la clase triEnemy
 	public int triFps = 0;
 	
-	
 	public Image[] imagenes;
 	protected ImageIcon icon;
 	public int currImg;
+	
 	
 	//Tamaño
 	public static final int WIDTH = 95;
@@ -40,6 +41,7 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	
 	public int name;
 	
+	//CONSTRUCTOR
 	public Enemy(int name) {
 		iniciar();
 		
@@ -93,7 +95,6 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 		
 		if(x < Juego.ventana.paneles[Juego.ventana.panelActual].player.getX()) {
 			//mover derecha
-			x += speed;
 			right = true;
 			
 			left = false;
@@ -102,7 +103,6 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 			
 		}else if(x > Juego.ventana.paneles[Juego.ventana.panelActual].player.getX()) {
 			//mover izquierda
-			x -= speed;
 			left = true;
 			
 			right = false;
@@ -110,7 +110,6 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 			down= false;
 		}else if(y < Juego.ventana.paneles[Juego.ventana.panelActual].player.getY()) {
 			//Mover abajo
-			y += speed;
 			down = true;
 			
 			left = false;
@@ -118,13 +117,24 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 			right= false;
 		}else if(y > Juego.ventana.paneles[Juego.ventana.panelActual].player.getY()) {
 			//Mover arriba
-			y -= speed;
 			up = true;
 			
 			left = false;
 			right = false;
 			down= false;
 		}
+		
+		
+		if(right && !left && !up && !down) {//derecha
+			x += speed;
+		}else if(!right && left && !up && !down) {//izquierda
+			x -= speed;
+		}else if(!right && !left && up && !down) {//arriba
+			y -= speed;
+		}else if(!right && !left && !up && down) {//abajo
+			y += speed;
+		}
+		
 		this.setLocation(x, y);
 	}
 
@@ -132,9 +142,6 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	public void moverDiagonal() {
 		if(x > Juego.ventana.paneles[Juego.ventana.panelActual].player.getX() && y > Juego.ventana.paneles[Juego.ventana.panelActual].player.getY()){
 			//arriba izquierda
-			y -= speed-1;
-			x -= speed-1;
-			
 			up = true;
 			left = true;
 			
@@ -142,9 +149,6 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 			down= false;
 		}else if(x < Juego.ventana.paneles[Juego.ventana.panelActual].player.getX() && y > Juego.ventana.paneles[Juego.ventana.panelActual].player.getY()){
 			//arriba derecha
-			y -= speed-1;
-			x += speed-1;
-			
 			up = true;
 			right = true;
 			
@@ -152,9 +156,6 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 			down= false;
 		}else if (x > Juego.ventana.paneles[Juego.ventana.panelActual].player.getX() && y < Juego.ventana.paneles[Juego.ventana.panelActual].player.getY()){
 			//abajo izquierda
-			y += speed-1;
-			x -= speed-1;
-			
 			down = true;
 			left = true;
 			
@@ -162,15 +163,27 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 			up = false;
 		}else if(x < Juego.ventana.paneles[Juego.ventana.panelActual].player.getX() && y < Juego.ventana.paneles[Juego.ventana.panelActual].player.getY()){
 			//abajo derecha
-			y += speed-1;
-			x += speed-1;
-			
 			down = true;
 			right = true;
 			
 			left = false;
 			up = false;
 		}
+		
+		if(right && !left && up && !down) {//arriba derecha
+			y -= speed-1;
+			x += speed-1;
+		}else if(!right && left && up && !down) {//arriba izquierda
+			y -= speed-1;
+			x -= speed-1;
+		}else if(!right && left && !up && down) {//abajo izquierda
+			y += speed-1;
+			x -= speed-1;
+		}else if(right && !left && !up && down) {//abajo derecha
+			y += speed-1;
+			x += speed-1;
+		}
+		
 		this.setLocation(x, y);
 	}
 
@@ -180,66 +193,98 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 		
 	}
 
-	@SuppressWarnings("static-access")
+	
 	@Override
 	public void comprobarColision() {
 		boolean colision = false;
-		int cambio = 0;
 		
 		for(int i = 0; i < Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.size(); i++) {
+			colision = false;
 			for(int j = 0; j < Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.size(); j++) {
 				
 				Enemy enemigo = Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.get(i);
 				Enemy otroEnemigo = Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.get(j);
 				
+				Rectangle enemigoBounds;
+				Rectangle playerBounds;
+				
 				if(i == j) {
 					continue;
 				}else {
-					if((enemigo.x + this.WIDTH) >= otroEnemigo.x && (enemigo.x - this.speed) <= (otroEnemigo.x - this.speed)) {//Choque entre enemigos por la derecha del actual
-						colision = colisionY(enemigo.y,otroEnemigo.y);
-						if(colision  && cambio == 0) {
-							enemigo.setLocation(enemigo.x - this.speed, enemigo.y + this.speed);
-							cambio = 1;
-						}else if(colision && cambio == 1) {
-							enemigo.setLocation(enemigo.x + this.speed, enemigo.y - this.speed);
-							cambio = 2;
-						}else if(colision && cambio == 2) {
-							enemigo.setLocation(enemigo.x + this.speed, enemigo.y + this.speed);
-							cambio = 3;
-						}else if(colision && cambio == 3) {
-							enemigo.setLocation(enemigo.x - this.speed, enemigo.y - this.speed);
-							cambio = 0;
-						}
+					//Hitbox del enemigpo
+					enemigoBounds = enemigo.getBounds();
+					
+					/*enemigoBounds.height = (int) enemigoBounds.getHeight() - 30;
+					enemigoBounds.y = (int) enemigoBounds.getY() + 20;
+					enemigoBounds.width = (int) enemigoBounds.getWidth() - 60;
+					enemigoBounds.x = (int) enemigoBounds.getX() + 30;*/
+					
+					//Hitbox del player
+					playerBounds = Juego.ventana.paneles[Juego.ventana.panelActual].player.getBounds();
+					
+					playerBounds.height = (int) playerBounds.getHeight() - 30;
+					playerBounds.y = (int) playerBounds.getY() + 20;
+					playerBounds.width = (int) playerBounds.getWidth() - 60;
+					playerBounds.x = (int) playerBounds.getX() + 30;
+						
+					if(enemigoBounds.intersects(otroEnemigo.getBounds()) || enemigoBounds.intersects(playerBounds)) {
+						colision = true;
+						colisionando(enemigo, otroEnemigo);
 					}
 				}
 			}
 		}
 	}
 
-	@SuppressWarnings("static-access")
-	@Override
-	public boolean colisionY(int enemigoY,int otroEnemigoY) {
-		int c = this.HEIGHT-40;
-		boolean bool=false;
-		
-		for(int j = 0; j < Enemy.HEIGHT; j++) {
-			
-			if(enemigoY+c == otroEnemigoY+j) {
-				
-				bool = true;
-			}
-			if(j == Enemy.HEIGHT -1 && c > 40) {
-				
-				c--;
-				j = 0;
-			}
-		}
-		return bool;
-	}
 
-	@Override
-	public boolean colisionX(int a, int b) {
-		return false;
+	public void colisionando(Enemy enemigo, Enemy otroEnemigo) {
+		//Colision entre enemigos ==========================================
+		//Enemigo
+		if(enemigo.up && !enemigo.left && !enemigo.right && !enemigo.down) {
+			enemigo.setLocation(enemigo.x, enemigo.y + Enemy.speed +1);
+			
+		}else if(enemigo.left && !enemigo.up && !enemigo.right && !enemigo.down) {
+			enemigo.setLocation(enemigo.x + Enemy.speed +1, enemigo.y);
+			
+		}else if(enemigo.right && !enemigo.left && !enemigo.up && !enemigo.down) {
+			enemigo.setLocation(enemigo.x  - Enemy.speed -1, enemigo.y);
+			
+		}else if(enemigo.down && !enemigo.left && !enemigo.right && !enemigo.up) {
+			enemigo.setLocation(enemigo.x, enemigo.y - Enemy.speed -1);
+			
+		}else if(enemigo.up && enemigo.left && !enemigo.right && !enemigo.down) {
+			enemigo.setLocation(enemigo.x + Enemy.speed +1, enemigo.y + Enemy.speed +1);
+			
+		}else if(enemigo.up && !enemigo.left && enemigo.right && !enemigo.down) {
+			enemigo.setLocation(enemigo.x - Enemy.speed -1, enemigo.y + Enemy.speed +1);
+			
+		}else if(!enemigo.up && enemigo.left && !enemigo.right && enemigo.down) {
+			enemigo.setLocation(enemigo.x + Enemy.speed +1, enemigo.y - Enemy.speed -1);
+			
+		}else if(!enemigo.up && !enemigo.left && enemigo.right && enemigo.down) {
+			enemigo.setLocation(enemigo.x - Enemy.speed -1, enemigo.y - Enemy.speed -1);
+		}
 		
+		
+		//Otro enemigo
+		/*if(otroEnemigo.up && !otroEnemigo.left && !otroEnemigo.right && !otroEnemigo.down) {
+			otroEnemigo.setLocation(otroEnemigo.x, otroEnemigo.y - Enemy.speed);
+		}else if(otroEnemigo.left && !otroEnemigo.up && !otroEnemigo.right && !otroEnemigo.down) {
+			otroEnemigo.setLocation(otroEnemigo.x - Enemy.speed , otroEnemigo.y);
+		}else if(otroEnemigo.right && !otroEnemigo.left && !otroEnemigo.up && !otroEnemigo.down) {
+			otroEnemigo.setLocation(otroEnemigo.x  + Enemy.speed , otroEnemigo.y);
+		}else if(otroEnemigo.down && !otroEnemigo.left && !otroEnemigo.right && !otroEnemigo.up) {
+			otroEnemigo.setLocation(otroEnemigo.x, otroEnemigo.y + Enemy.speed);
+		}else if(otroEnemigo.up && otroEnemigo.left && !otroEnemigo.right && !otroEnemigo.down) {
+			otroEnemigo.setLocation(otroEnemigo.x - Enemy.speed, otroEnemigo.y - Enemy.speed);
+		}else if(otroEnemigo.up && !otroEnemigo.left && otroEnemigo.right && !otroEnemigo.down) {
+			otroEnemigo.setLocation(otroEnemigo.x + Enemy.speed, otroEnemigo.y - Enemy.speed);
+		}else if(!otroEnemigo.up && otroEnemigo.left && !otroEnemigo.right && otroEnemigo.down) {
+			otroEnemigo.setLocation(otroEnemigo.x - Enemy.speed, otroEnemigo.y + Enemy.speed);
+		}else if(!otroEnemigo.up && !otroEnemigo.left && otroEnemigo.right && otroEnemigo.down) {
+			otroEnemigo.setLocation(otroEnemigo.x + Enemy.speed, otroEnemigo.y + Enemy.speed);
+		}*/
+		
+		//Colision con el jugador =========================================
 	}
 }
