@@ -64,8 +64,6 @@ public class Panel extends JPanel implements KeyListener{
 		}
 		
 		suelo = new ImageIcon("D:\\git\\repository\\NitArt\\img\\suelo.jpg").getImage();
-		
-		pared = new ImageIcon("D:\\git\\repository\\NitArt\\img\\suelo.jpg").getImage();
 	}
 	
 	//Añadir enemigos
@@ -86,7 +84,7 @@ public class Panel extends JPanel implements KeyListener{
 				enemy = new Enemy(i);
 				enemigos.add(enemy);
 				
-				triEnemy = new TriEnemy(i);//Para distinguirlos
+				triEnemy = new TriEnemy(i);
 				enemigos.add(triEnemy);
 				
 				this.add(enemy);

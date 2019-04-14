@@ -25,7 +25,7 @@ public class Menu extends JPanel {
 	static UIResource posicion = new UIResource();
 
 	private String jugar = "Jugar";
-	private String creditos = "Crèdits";
+	private String creditos = "Credits";
 	private String salir = "Sortir";
 
 	//CONSTRUCTOR

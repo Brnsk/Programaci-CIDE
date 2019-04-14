@@ -55,9 +55,9 @@ public class Juego {
 				
 				movimiento();
 				
-				disparos();
-				
 				colisiones();
+				
+				disparos();
 				
 				comprobarVidas();
 				
