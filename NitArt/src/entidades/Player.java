@@ -85,10 +85,10 @@ public class Player extends JLabel implements JugadorEnemigos{
 		contadorBalas = 0;
 		
 		//Velocidad
-		speed = 7;
+		speed = 15;
 		
 		//vidas
-		pv = 999;
+		pv = 6;
 		vidaRestante = 999;
 		
 		//Insertar imagen
@@ -267,6 +267,11 @@ public class Player extends JLabel implements JugadorEnemigos{
 				colisionando(playerX, playerY);
 			}
 		}
+		
+		//Colision con el Boss
+		if(Juego.ventana.paneles[Juego.ventana.panelActual].boss != null) {
+			colisionBoss();
+		}
 	}
 	
 	
@@ -288,6 +293,32 @@ public class Player extends JLabel implements JugadorEnemigos{
 			this.setLocation(playerX + Player.speed, playerY - Player.speed);
 		}else if(this.up && !this.down && this.left && !this.right) {
 			this.setLocation(playerX + Player.speed, playerY + Player.speed);
+		}
+	}
+	
+	//Colision con el boss
+	private void colisionBoss() {
+		
+		if(Juego.ventana.paneles[Juego.ventana.panelActual].boss.currImg == 7) {
+			
+			boolean colisionRayo = false;
+			Rectangle playerBounds = this.getBounds();
+			
+			playerBounds.height = (int) playerBounds.getHeight() - 30;
+			playerBounds.y = (int) playerBounds.getY() + 20;
+			playerBounds.width = (int) playerBounds.getWidth() - 60;
+			playerBounds.x = (int) playerBounds.getX() + 30;
+			
+			Rectangle bossBounds = Juego.ventana.paneles[Juego.ventana.panelActual].boss.getBounds();
+			
+			bossBounds.x = (int) bossBounds.getX() + 20;
+			bossBounds.width = (int) bossBounds.getWidth() - 470;
+			
+			if(playerBounds.intersects(bossBounds)) {
+				colisionRayo = true;
+				this.pv = 0;
+			}
+			
 		}
 	}
 }

@@ -32,7 +32,7 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	protected int speed;
 	
 	//Vida
-	public int pv = 3;
+	public int pv = 1;
 	
 	//Movimiento
 	public boolean up;
@@ -44,9 +44,14 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	
 	public boolean colision = false;
 	
+	//Spawn points
+	private int[][] spawns = {{150,Ventana.WIDTH -150 - Enemy.WIDTH, 300,400,500,600,700},
+							  {150,Ventana.HEIGHT-150 - Enemy.HEIGHT,300,400,500,600,700}};
+	
 	//CONSTRUCTOR
 	public Enemy(int name) {
 		iniciar();
+		spawn();
 		
 		this.setIcon(icon);
 		this.setSize(new Dimension(WIDTH, HEIGHT));
@@ -58,9 +63,6 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	private void iniciar() {
 		imagenes();
 		
-		x = (int)(Math.random()*((Juego.ventana.WIDTH-150-this.WIDTH)-150+1)+150);
-		y = 150;
-		
 		speed = 5;
 		
 		//Movimiento
@@ -68,6 +70,17 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 		down = false;
 		left = false;
 		right = false;
+	}
+	
+	//Spawn aleatorio
+	private void spawn() {
+		this.x = this.spawns[0][(int)(Math.random()*7)];
+		
+		if(this.x == 150 || this.x == Ventana.WIDTH -150 - Enemy.WIDTH) {
+			this.y = this.spawns[1][(int)(Math.random()*7)];
+		}else {
+			this.y = this.spawns[1][(int)(Math.random()*2)];
+		}
 	}
 	
 	protected void imagenes() {

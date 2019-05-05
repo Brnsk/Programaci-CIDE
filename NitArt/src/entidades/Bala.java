@@ -43,7 +43,7 @@ public class Bala extends JLabel {
 	
 	private void iniciar() {
 		maxRange = 700;
-		speed = 8;
+		speed = 15;
 	}
 	
 	private void imagen() {

@@ -5,6 +5,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 import game.Juego;
+import game.Ventana;
 
 @SuppressWarnings("serial")
 public class TriEnemy extends Enemy{
@@ -13,8 +14,27 @@ public class TriEnemy extends Enemy{
 		super(name);
 		this.name = this.name + 20;
 		this.speed = 2;
-		this.x = this.x;
-		this.y = this.y + 300;
+		
+		corregirPos();
+		
+		this.setLocation(this.x, this.y);
+	}
+	
+	private void corregirPos() {
+		//Corregir x
+		if(this.x < Ventana.WIDTH-this.WIDTH - 500) {
+			this.x += 300;
+		}else {
+			this.x -= 300;
+		}
+		
+		//Corregir y
+		if(this.y < Ventana.HEIGHT-this.HEIGHT- 500) {
+			this.y += 300;
+		}else {
+			this.y -= 300;
+		}
+		
 	}
 	
 	@Override

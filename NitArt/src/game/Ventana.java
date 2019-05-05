@@ -41,7 +41,7 @@ public class Ventana extends JFrame {
 	}
 	
 	private void iniciar() {
-		paneles = new Panel[6];
+		paneles = new Panel[11];
 		menu = new Menu();
 	}
 	

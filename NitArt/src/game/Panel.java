@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import entidades.Bala;
+import entidades.Boss;
 import entidades.Enemy;
 import entidades.Player;
 import entidades.TriEnemy;
@@ -31,6 +32,10 @@ public class Panel extends JPanel implements KeyListener{
 
 	protected Image pared;
 	
+	public Boss boss;
+	
+	private Corazones[] corazones;
+	
 	
 	//CONSTRUCTOR
 	protected Panel() {
@@ -44,10 +49,19 @@ public class Panel extends JPanel implements KeyListener{
 		this.addKeyListener(this);
 		
 		this.addEnemies();
+		
+		this.addVidas();
 	}
 	
 	//METODOS PROPIOS DE LA CLASE
 	private void iniciar() {
+		
+		//Añadir los corazones
+		
+		corazones = new Corazones[6];
+		
+		//Añadir entidades
+		
 		if(Juego.ventana.panelActual <= 0) {
 			player = new Player();
 			this.add(player);
@@ -70,15 +84,15 @@ public class Panel extends JPanel implements KeyListener{
 	private void addEnemies() {
 
 		if (Juego.ventana.panelActual == 0) {//A partir del primer panel con enemigos
-			int random = (int)(Math.random()*4 +1);
+			int random = (int)(Math.random()*2 +1);
 			
 			for(int i = 0; i < random; i++) {
 				enemy = new Enemy(i);
 				enemigos.add(enemy);
 				this.add(enemy);
 			}
-		}else if(Juego.ventana.panelActual >= 1) {
-			int random = (int)(Math.random()*6 +1);
+		}else if(Juego.ventana.panelActual >= 1 && Juego.ventana.panelActual < 3) {
+			int random = (int)(Math.random()*3 +1);
 			
 			for(int i = 0; i < random; i+=2) {
 				enemy = new Enemy(i);
@@ -90,6 +104,44 @@ public class Panel extends JPanel implements KeyListener{
 				this.add(enemy);
 				this.add(triEnemy);
 			}
+		}else if(Juego.ventana.panelActual >= 3 && Juego.ventana.panelActual < 6) {
+			int random = (int)(Math.random()*4 +2);
+			
+			for(int i = 0; i < random; i+=2) {
+				enemy = new Enemy(i);
+				enemigos.add(enemy);
+				
+				triEnemy = new TriEnemy(i);
+				enemigos.add(triEnemy);
+				
+				this.add(enemy);
+				this.add(triEnemy);
+			}
+		}else if(Juego.ventana.panelActual >= 6 && Juego.ventana.panelActual < 9) {
+			int random = (int)(Math.random()*5 +2);
+			
+			for(int i = 0; i < random; i+=2) {
+				enemy = new Enemy(i);
+				enemigos.add(enemy);
+				
+				triEnemy = new TriEnemy(i);
+				enemigos.add(triEnemy);
+				
+				this.add(enemy);
+				this.add(triEnemy);
+			}
+		}else if(Juego.ventana.panelActual >= 9){
+			boss = new Boss();
+			
+			this.add(boss);
+		}
+	}
+	
+	private void addVidas() {
+		for(int i = 0; i < corazones.length; i++) {
+			corazones[i] = new Corazones();
+			Corazones.x += 70;
+			this.add(corazones[i]);
 		}
 	}
 	
@@ -128,7 +180,6 @@ public class Panel extends JPanel implements KeyListener{
 			switch(key) {
 			case KeyEvent.VK_UP:
 				player.bulletUp = true;
-				player.disparando = true;
 				
 				player.bala = new Bala(player.getX() + (player.WIDTH/2),(player.getY()+player.HEIGHT / 2 -20),"up");
 				player.cargador.add(player.bala);
@@ -136,7 +187,6 @@ public class Panel extends JPanel implements KeyListener{
 			break;
 			case KeyEvent.VK_DOWN:
 				player.bulletDown = true;
-				player.disparando = true;
 				
 				player.bala = new Bala(player.getX() + (player.WIDTH/2), (player.getY()+player.HEIGHT / 2 -20),"down");
 				player.cargador.add(player.bala);
@@ -144,7 +194,6 @@ public class Panel extends JPanel implements KeyListener{
 			break;
 			case KeyEvent.VK_LEFT:
 				player.bulletLeft = true;
-				player.disparando = true;
 				
 				player.bala = new Bala(player.getX() + (player.WIDTH/2), (player.getY()+player.HEIGHT / 2 -20),"left");
 				player.cargador.add(player.bala);
@@ -152,12 +201,12 @@ public class Panel extends JPanel implements KeyListener{
 			break;
 			case KeyEvent.VK_RIGHT:
 				player.bulletRight = true;
-				player.disparando = true;
 				
 				player.bala = new Bala(player.getX() + (player.WIDTH/2), (player.getY()+player.HEIGHT / 2 -20),"right");
 				player.cargador.add(player.bala);
 				Juego.ventana.paneles[Juego.ventana.panelActual].add(player.bala);
 			}
+			player.disparando = true;
 		}
 	}
 
