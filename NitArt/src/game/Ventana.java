@@ -47,21 +47,27 @@ public class Ventana extends JFrame {
 	
 	//Metodo paint
 	public void paint(Graphics2D g) {
-		g.drawImage(this.paneles[panelActual].suelo, 150, 150, 928, 660, Color.pink.darker(), null);
-		g.setColor(Color.BLACK);
+		g.drawImage(this.paneles[panelActual].fondo, 0, 0, Ventana.WIDTH, Ventana.HEIGHT, Color.pink.darker(), null);
+		
+		if(panelActual == 10) {
+			g.drawImage(this.paneles[panelActual].suelo2, 150, Ventana.HEIGHT / 2, 928, 330, Color.pink.darker(), null);
+		}else {
+			g.drawImage(this.paneles[panelActual].suelo, 150, 150, 928, 660, Color.pink.darker(), null);
 			
-		g.fillOval(200, 400, 50, 50);//Cambiar de sala
-			
-			
-		g.fillRect(0, 0, 150, HEIGHT);
-		g.fillRect(0, 0, WIDTH, 150);
-		g.fillRect(0, HEIGHT - 150, WIDTH, 150);
-		g.fillRect(WIDTH - 150, 0, 150, HEIGHT);
+			g.setColor(Color.BLACK);
+			g.fillRect(150, Ventana.HEIGHT / 2 -35, 70, 70);//Cambiar de sala
+		}
 	}
 	
 	protected void addPanel() {
 		System.out.println(panelActual);
-		panel = new Panel();
+		if(panelActual < 10) {
+			panel = new Panel();
+			
+		}else {
+			panel = new VictoryPanel();
+		}
+		
 		panelActual++;
 		
 		paneles[panelActual] = panel;

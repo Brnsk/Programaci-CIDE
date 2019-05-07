@@ -141,10 +141,19 @@ public class Player extends JLabel implements JugadorEnemigos{
 	}
 	
 	private void comprobarY() {
-		if( y >= Ventana.HEIGHT - 150 - HEIGHT) {
-			down = false;
-		}else if( y <= 150 - HEIGHT + 20) {
-			up = false;
+		
+		if(Juego.ventana.panelActual == 10) {
+			if(y >= Ventana.HEIGHT - 150 - HEIGHT) {
+				down = false;
+			}else if( y <= Ventana.HEIGHT /2 - (HEIGHT/2) + 20) {
+				up = false;
+			}
+		}else {
+			if(y >= Ventana.HEIGHT - 150 - HEIGHT) {
+				down = false;
+			}else if( y <= 150 - HEIGHT + 20) {
+				up = false;
+			}
 		}
 	}
 	
@@ -244,6 +253,7 @@ public class Player extends JLabel implements JugadorEnemigos{
 		this.setLocation(x, y);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public void comprobarColision() {
 		int playerX = this.x;
@@ -255,8 +265,6 @@ public class Player extends JLabel implements JugadorEnemigos{
 			Enemy enemigo = Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.get(i);
 			Rectangle playerBounds = this.getBounds();
 			
-			colision = false;
-			
 			playerBounds.height = (int) playerBounds.getHeight() - 30;
 			playerBounds.y = (int) playerBounds.getY() + 20;
 			playerBounds.width = (int) playerBounds.getWidth() - 60;
@@ -264,19 +272,24 @@ public class Player extends JLabel implements JugadorEnemigos{
 			
 			if(playerBounds.intersects(enemigo.getBounds())) {
 				colision = true;
-				colisionando(playerX, playerY);
+				colisionando(playerX, playerY,enemigo);
+				enemigo.colision = true;
+			}else {
+				colision = false;
+				enemigo.colision = false;
 			}
 		}
 		
-		//Colision con el Boss
+		//Colision con el Rayo del Boss
 		if(Juego.ventana.paneles[Juego.ventana.panelActual].boss != null) {
 			colisionBoss();
 		}
 	}
 	
 	
-	private void colisionando(int playerX, int playerY) {
-		
+	private void colisionando(int playerX, int playerY, Enemy enemigo) {
+
+		//Corregir posicion del player
 		if(this.up && !this.down && !this.left && !this.right) {
 			this.setLocation(playerX, playerY + Player.speed);
 		}else if(!this.up && this.down && !this.left && !this.right) {
@@ -294,9 +307,38 @@ public class Player extends JLabel implements JugadorEnemigos{
 		}else if(this.up && !this.down && this.left && !this.right) {
 			this.setLocation(playerX + Player.speed, playerY + Player.speed);
 		}
+		
+		//Corregir posicion del enemigo
+		if(enemigo.name >= 20) {
+			if(enemigo.up && !enemigo.left && !enemigo.right && !enemigo.down) {//Enviar hacia abajo
+				enemigo.setLocation(enemigo.x, enemigo.y + enemigo.speed );
+				
+			}else if(enemigo.left && !enemigo.up && !enemigo.right && !enemigo.down) {//Enviar hacia la derecha
+				enemigo.setLocation(enemigo.x + enemigo.speed  , enemigo.y);
+				
+			}else if(enemigo.right && !enemigo.left && !enemigo.up && !enemigo.down) {//Enviar hacia la izquierda
+				enemigo.setLocation(enemigo.x  - enemigo.speed , enemigo.y);
+				
+			}else if(enemigo.down && !enemigo.left && !enemigo.right && !enemigo.up) {//Enviar hacia arriba
+				enemigo.setLocation(enemigo.x, enemigo.y - enemigo.speed );
+				
+			}else if(enemigo.up && enemigo.left && !enemigo.right && !enemigo.down) {//Enviar abajo a la derecha
+				enemigo.setLocation(enemigo.x + enemigo.speed , enemigo.y + enemigo.speed );
+				
+			}else if(enemigo.up && !enemigo.left && enemigo.right && !enemigo.down) {//Enviar abajo a la izquierda
+				enemigo.setLocation(enemigo.x - enemigo.speed , enemigo.y + enemigo.speed );
+				
+			}else if(!enemigo.up && enemigo.left && !enemigo.right && enemigo.down) {//Enviar arriba a la derecha
+				enemigo.setLocation(enemigo.x + enemigo.speed , enemigo.y - enemigo.speed );
+				
+			}else if(!enemigo.up && !enemigo.left && enemigo.right && enemigo.down) {//Enviar arriba a la izquierda
+				enemigo.setLocation(enemigo.x - enemigo.speed , enemigo.y - enemigo.speed );
+			}
+		}
 	}
 	
 	//Colision con el boss
+	@SuppressWarnings("unused")
 	private void colisionBoss() {
 		
 		if(Juego.ventana.paneles[Juego.ventana.panelActual].boss.currImg == 7) {

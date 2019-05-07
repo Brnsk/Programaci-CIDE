@@ -6,6 +6,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+@SuppressWarnings("serial")
 public class Corazones extends JLabel{
 	protected Image img;
 	protected ImageIcon icon;

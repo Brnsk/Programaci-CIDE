@@ -22,14 +22,14 @@ public class TriEnemy extends Enemy{
 	
 	private void corregirPos() {
 		//Corregir x
-		if(this.x < Ventana.WIDTH-this.WIDTH - 500) {
+		if(this.x < Ventana.WIDTH - TriEnemy.WIDTH - 500) {
 			this.x += 300;
 		}else {
 			this.x -= 300;
 		}
 		
 		//Corregir y
-		if(this.y < Ventana.HEIGHT-this.HEIGHT- 500) {
+		if(this.y < Ventana.HEIGHT - TriEnemy.HEIGHT- 500) {
 			this.y += 300;
 		}else {
 			this.y -= 300;
@@ -90,13 +90,13 @@ public class TriEnemy extends Enemy{
 			down= false;
 		}
 		
-		if(right && !left && !up && !down) {//derecha
+		if(right && !left && !up && !down && !colision) {//derecha
 			x += speed;
-		}else if(!right && left && !up && !down) {//izquierda
+		}else if(!right && left && !up && !down && !colision) {//izquierda
 			x -= speed;
-		}else if(!right && !left && up && !down) {//arriba
+		}else if(!right && !left && up && !down && !colision) {//arriba
 			y -= speed;
-		}else if(!right && !left && !up && down) {//abajo
+		}else if(!right && !left && !up && down && !colision) {//abajo
 			y += speed;
 		}
 	}
@@ -135,16 +135,16 @@ public class TriEnemy extends Enemy{
 		
 		this.comprobarColision();
 		
-		if(right && !left && up && !down) {//arriba derecha
+		if(right && !left && up && !down && !colision) {//arriba derecha
 			y -= speed-1;
 			x += speed-1;
-		}else if(!right && left && up && !down) {//arriba izquierda
+		}else if(!right && left && up && !down && !colision) {//arriba izquierda
 			y -= speed-1;
 			x -= speed-1;
-		}else if(!right && left && !up && down) {//abajo izquierda
+		}else if(!right && left && !up && down && !colision) {//abajo izquierda
 			y += speed-1;
 			x -= speed-1;
-		}else if(right && !left && !up && down) {//abajo derecha
+		}else if(right && !left && !up && down && !colision) {//abajo derecha
 			y += speed-1;
 			x += speed-1;
 		}

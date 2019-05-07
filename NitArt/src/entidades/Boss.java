@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import game.Juego;
 import game.Ventana;
 
+@SuppressWarnings("serial")
 public class Boss extends JLabel{
 	public Image[] imagenes;
 	protected ImageIcon icon;
@@ -104,8 +105,8 @@ public class Boss extends JLabel{
 		
 		Rectangle bossBounds = this.getBounds();
 		
-		bossBounds.width = (int)bossBounds.getWidth()-200;
-		bossBounds.height =(int) bossBounds.getHeight() - 400;
+		bossBounds.width = (int)bossBounds.getWidth() - 400;
+		bossBounds.height =(int) bossBounds.getHeight() - 200;
 		bossBounds.x = (int)bossBounds.getX() + 200;
 		//bossBounds.y = (int)bossBounds.getY();
 		

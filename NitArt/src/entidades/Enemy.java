@@ -3,6 +3,7 @@ package entidades;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -44,6 +45,10 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	
 	public boolean colision = false;
 	
+	//Cargador de balas
+	private ArrayList<Bala> cargador = new ArrayList<Bala>();
+	public boolean disparando = false;
+	
 	//Spawn points
 	private int[][] spawns = {{150,Ventana.WIDTH -150 - Enemy.WIDTH, 300,400,500,600,700},
 							  {150,Ventana.HEIGHT-150 - Enemy.HEIGHT,300,400,500,600,700}};
@@ -59,7 +64,6 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 		this.name = name;
 	}
 	
-	@SuppressWarnings("static-access")
 	private void iniciar() {
 		imagenes();
 		
@@ -135,13 +139,13 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 			down= false;
 		}
 		
-		if(right && !left && !up && !down) {//derecha
+		if(right && !left && !up && !down && !colision) {//derecha
 			x += speed;
-		}else if(!right && left && !up && !down) {//izquierda
+		}else if(!right && left && !up && !down && !colision) {//izquierda
 			x -= speed;
-		}else if(!right && !left && up && !down) {//arriba
+		}else if(!right && !left && up && !down && !colision) {//arriba
 			y -= speed;
-		}else if(!right && !left && !up && down) {//abajo
+		}else if(!right && !left && !up && down && !colision) {//abajo
 			y += speed;
 		}
 		
@@ -155,8 +159,39 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 
 	@Override
 	public void disparar() {
-		// TODO Auto-generated method stub
+		String direccion = "";
 		
+		if(this.x >= 985) {
+			direccion = "left";
+		}else if(this.x <= 150) {
+			direccion = "right";
+		}else if(this.y <= 150) {
+			direccion = "down";
+		}else if(this.y >= Ventana.HEIGHT - Enemy.HEIGHT) {
+			direccion = "up";
+		}
+		
+		cargador.add(new Bala(this.getX(),this.getY(),direccion));
+		
+		if(disparando = false) {
+			disparando = true;
+			
+			for(int i = 0; i < cargador.size(); i++) {
+				switch(cargador.get(i).direccion) {
+				case "left":
+					
+					cargador.get(i).setLocation(cargador.get(i).getX() - 7, cargador.get(i).getY());
+					Juego.ventana.paneles[Juego.ventana.panelActual].add(cargador.get(i));
+					
+					break;
+				case "right":
+					break;
+				case "down":
+					break;
+				case "up":
+				}
+			}
+		}
 	}
 
 	
@@ -165,7 +200,6 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 		//boolean colision = false;
 		
 		for(int i = 0; i < Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.size(); i++) {
-			colision = false;
 			for(int j = 0; j < Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.size(); j++) {
 				
 				Enemy enemigo = Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.get(i);
@@ -182,15 +216,14 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 					
 					//Hitbox del player
 					playerBounds = Juego.ventana.paneles[Juego.ventana.panelActual].player.getBounds();
-					
-					/*playerBounds.height = (int) playerBounds.getHeight() - 30;
-					playerBounds.y = (int) playerBounds.getY() + 20;
-					playerBounds.width = (int) playerBounds.getWidth() - 60;
-					playerBounds.x = (int) playerBounds.getX() + 30;*/
 						
-					if(enemigoBounds.intersects(otroEnemigo.getBounds()) || enemigoBounds.intersects(playerBounds)) {
-						colision = true;
+					if(enemigoBounds.intersects(otroEnemigo.getBounds())) {
+						enemigo.colision = true;
+						otroEnemigo.colision = true;
 						colisionando(enemigo, otroEnemigo);
+					}else {
+						enemigo.colision = false;
+						otroEnemigo.colision = false;
 					}
 				}
 			}
@@ -201,7 +234,7 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	public void colisionando(Enemy enemigo, Enemy otroEnemigo) {
 		//Colision entre enemigos ==========================================
 		//Enemigo
-		/*if(enemigo.up && !enemigo.left && !enemigo.right && !enemigo.down) {//Enviar hacia abajo
+		if(enemigo.up && !enemigo.left && !enemigo.right && !enemigo.down) {//Enviar hacia abajo
 			enemigo.setLocation(enemigo.x, enemigo.y + this.speed );
 			
 		}else if(enemigo.left && !enemigo.up && !enemigo.right && !enemigo.down) {//Enviar hacia la derecha
@@ -224,30 +257,32 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 			
 		}else if(!enemigo.up && !enemigo.left && enemigo.right && enemigo.down) {//Enviar arriba a la izquierda
 			enemigo.setLocation(enemigo.x - this.speed , enemigo.y - this.speed );
-		}*/
-		
-		enemigo.up = false;
-		enemigo.down = false;
-		enemigo.left = false;
-		enemigo.right = false;
+		}
 		
 		//Otro enemigo
-		/*if(otroEnemigo.up && !otroEnemigo.left && !otroEnemigo.right && !otroEnemigo.down) {
+		if(otroEnemigo.up && !otroEnemigo.left && !otroEnemigo.right && !otroEnemigo.down) {
 			otroEnemigo.setLocation(otroEnemigo.x, otroEnemigo.y - this.speed);
+			
 		}else if(otroEnemigo.left && !otroEnemigo.up && !otroEnemigo.right && !otroEnemigo.down) {
 			otroEnemigo.setLocation(otroEnemigo.x - this.speed , otroEnemigo.y);
+			
 		}else if(otroEnemigo.right && !otroEnemigo.left && !otroEnemigo.up && !otroEnemigo.down) {
 			otroEnemigo.setLocation(otroEnemigo.x  + this.speed , otroEnemigo.y);
+			
 		}else if(otroEnemigo.down && !otroEnemigo.left && !otroEnemigo.right && !otroEnemigo.up) {
 			otroEnemigo.setLocation(otroEnemigo.x, otroEnemigo.y + this.speed);
+			
 		}else if(otroEnemigo.up && otroEnemigo.left && !otroEnemigo.right && !otroEnemigo.down) {
 			otroEnemigo.setLocation(otroEnemigo.x - this.speed, otroEnemigo.y - this.speed);
+			
 		}else if(otroEnemigo.up && !otroEnemigo.left && otroEnemigo.right && !otroEnemigo.down) {
 			otroEnemigo.setLocation(otroEnemigo.x + this.speed, otroEnemigo.y - this.speed);
+			
 		}else if(!otroEnemigo.up && otroEnemigo.left && !otroEnemigo.right && otroEnemigo.down) {
 			otroEnemigo.setLocation(otroEnemigo.x - this.speed, otroEnemigo.y + this.speed);
+			
 		}else if(!otroEnemigo.up && !otroEnemigo.left && otroEnemigo.right && otroEnemigo.down) {
 			otroEnemigo.setLocation(otroEnemigo.x + this.speed, otroEnemigo.y + this.speed);
-		}*/
+		}
 	}
 }

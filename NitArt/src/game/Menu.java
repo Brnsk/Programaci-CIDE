@@ -16,11 +16,12 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import java.awt.Cursor;
 
+@SuppressWarnings("serial")
 public class Menu extends JPanel {
 
 
-	private static DefaultListModel<String> opciones = new DefaultListModel();	
-	private static JList lista = new JList();
+	private static DefaultListModel<String> opciones = new DefaultListModel<String>();	
+	private static JList<String> lista = new JList<String>();
 	JLabel img = new JLabel();
 	static UIResource posicion = new UIResource();
 
@@ -82,8 +83,8 @@ public class Menu extends JPanel {
 					case 0: 
 						Juego.start = true;
 						Juego.ventana.menu.setVisible(false);
-						Juego.ventana.menu.lista.removeKeyListener(this);
-						Juego.ventana.menu.lista.setFocusable(false);
+						Menu.lista.removeKeyListener(this);
+						Menu.lista.setFocusable(false);
 						Juego.ventana.menu.setFocusable(false);
 						Juego.ventana.addPanel();
 						break;

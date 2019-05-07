@@ -29,8 +29,10 @@ public class Panel extends JPanel implements KeyListener{
 	public ArrayList <Enemy> enemigos = new ArrayList<Enemy>();
 	
 	protected Image suelo;
+	
+	protected Image suelo2;
 
-	protected Image pared;
+	protected Image fondo;
 	
 	public Boss boss;
 	
@@ -78,6 +80,8 @@ public class Panel extends JPanel implements KeyListener{
 		}
 		
 		suelo = new ImageIcon("D:\\git\\repository\\NitArt\\img\\suelo.jpg").getImage();
+		suelo2 = new ImageIcon("D:\\git\\repository\\NitArt\\img\\suelo_2.jpg").getImage();
+		fondo = new ImageIcon("D:\\git\\repository\\NitArt\\img\\fondo.jpg").getImage();
 	}
 	
 	//Añadir enemigos
@@ -182,8 +186,11 @@ public class Panel extends JPanel implements KeyListener{
 				player.bulletUp = true;
 				
 				player.bala = new Bala(player.getX() + (player.WIDTH/2),(player.getY()+player.HEIGHT / 2 -20),"up");
+				player.bala.setIcon(icon);
 				player.cargador.add(player.bala);
 				Juego.ventana.paneles[Juego.ventana.panelActual].add(player.bala);
+				
+				player.disparando = true;
 			break;
 			case KeyEvent.VK_DOWN:
 				player.bulletDown = true;
@@ -191,6 +198,8 @@ public class Panel extends JPanel implements KeyListener{
 				player.bala = new Bala(player.getX() + (player.WIDTH/2), (player.getY()+player.HEIGHT / 2 -20),"down");
 				player.cargador.add(player.bala);
 				Juego.ventana.paneles[Juego.ventana.panelActual].add(player.bala);
+				
+				player.disparando = true;
 			break;
 			case KeyEvent.VK_LEFT:
 				player.bulletLeft = true;
@@ -198,6 +207,8 @@ public class Panel extends JPanel implements KeyListener{
 				player.bala = new Bala(player.getX() + (player.WIDTH/2), (player.getY()+player.HEIGHT / 2 -20),"left");
 				player.cargador.add(player.bala);
 				Juego.ventana.paneles[Juego.ventana.panelActual].add(player.bala);
+				
+				player.disparando = true;
 			break;
 			case KeyEvent.VK_RIGHT:
 				player.bulletRight = true;
@@ -205,8 +216,9 @@ public class Panel extends JPanel implements KeyListener{
 				player.bala = new Bala(player.getX() + (player.WIDTH/2), (player.getY()+player.HEIGHT / 2 -20),"right");
 				player.cargador.add(player.bala);
 				Juego.ventana.paneles[Juego.ventana.panelActual].add(player.bala);
+				
+				player.disparando = true;
 			}
-			player.disparando = true;
 		}
 	}
 

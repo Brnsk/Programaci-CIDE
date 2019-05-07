@@ -6,15 +6,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import game.Juego;
-import game.Panel;
+import game.Ventana;
 
+@SuppressWarnings("serial")
 public class Bala extends JLabel {
 	//Imagen
 	Image img;
 	ImageIcon icon;
-	
-	//Rango de la bala
-	private int maxRange;
 	
 	//Velocidad de la bala
 	protected static int speed;
@@ -42,13 +40,13 @@ public class Bala extends JLabel {
 	}
 	
 	private void iniciar() {
-		maxRange = 700;
 		speed = 15;
 	}
 	
 	private void imagen() {
 		img  = new ImageIcon("D:\\git\\repository\\NitArt\\img\\bala.png").getImage();
 		icon = new ImageIcon(img.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
+
 	}
 	
 	//Comprobar donde esta la bala
@@ -69,7 +67,7 @@ public class Bala extends JLabel {
 	private boolean comprobarX() {
 		boolean posicionX = false;
 		
-		if(this.x <= 150 - Juego.ventana.paneles[Juego.ventana.panelActual].player.WIDTH || this.x >= Juego.ventana.WIDTH - 150 - this.WIDTH + Juego.ventana.paneles[Juego.ventana.panelActual].player.WIDTH) {
+		if(this.x <= 150 - Juego.ventana.paneles[Juego.ventana.panelActual].player.WIDTH || this.x >= Ventana.WIDTH - 150 - this.WIDTH + Juego.ventana.paneles[Juego.ventana.panelActual].player.WIDTH) {
 			posicionX = false;
 		}else {
 			posicionX = true;
@@ -82,7 +80,7 @@ public class Bala extends JLabel {
 	private boolean comprobarY() {
 		boolean posicionY = false;
 		
-		if(this.y >= Juego.ventana.HEIGHT - 150 - this.HEIGHT + Juego.ventana.paneles[Juego.ventana.panelActual].player.HEIGHT || this.y <= 150 - this.HEIGHT - Juego.ventana.paneles[Juego.ventana.panelActual].player.HEIGHT) {
+		if(this.y >= Ventana.HEIGHT - 150 - this.HEIGHT + Juego.ventana.paneles[Juego.ventana.panelActual].player.HEIGHT || this.y <= 150 - this.HEIGHT - Juego.ventana.paneles[Juego.ventana.panelActual].player.HEIGHT) {
 			posicionY = false;
 		}else {
 			posicionY = true;

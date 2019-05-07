@@ -9,7 +9,7 @@ import entidades.Enemy;
 import entidades.Player;
 import entidades.TriEnemy;
 
-@SuppressWarnings("static-access")
+@SuppressWarnings({ "static-access", "unused" })
 public class Juego {
 	public static Ventana ventana;
 	
@@ -43,11 +43,7 @@ public class Juego {
 					fps++;
 				}
 				
-				if(bossEnemies == 200) {
-					bossEnemies = 0;
-				}else {
-					bossEnemies++;
-				}
+				repintar();
 				
 				movimiento();
 				
@@ -63,9 +59,7 @@ public class Juego {
 				
 				cambiarHabitacion();
 				
-				if(ventana.paneles[ventana.panelActual].boss != null && bossEnemies == 200) {
-					ventana.paneles[ventana.panelActual].boss.spawnEnemy();
-				}
+				bossSkills();
 				
 				//pausa();
 				
@@ -77,14 +71,21 @@ public class Juego {
 		}
 	}
 	
+	//Repintar si es necesario
+	private void repintar() {
+		if(ventana.panelActual == 10) {
+			ventana.paneles[ventana.panelActual].repaint();
+		}
+	}
+	
 	//Movimiento de entidades
 	private void movimiento() {
 		ventana.paneles[ventana.panelActual].player.mover();
 		
-		/*for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
+		for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
 				ventana.paneles[ventana.panelActual].enemigos.get(i).mover();
 				ventana.paneles[ventana.panelActual].enemigos.get(i).moverDiagonal();
-		}*/
+		}
 		if(ventana.paneles[ventana.panelActual].boss != null) {
 			ventana.paneles[ventana.panelActual].boss.mover();
 		}
@@ -93,12 +94,16 @@ public class Juego {
 	//Comprobar si se puede disparar
 	private void comprobarDisparo() {
 		if(ventana.paneles[ventana.panelActual].player.disparando) {
-			
 			if(tempDisparos < 10) {
 				tempDisparos++;
 				
 			}else {
 				ventana.paneles[ventana.panelActual].player.disparando = false;
+				
+				/*for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
+					ventana.paneles[ventana.panelActual].enemigos.get(i).disparando = false;
+				}*/
+				
 				tempDisparos = 0;
 			}	
 		}
@@ -109,6 +114,10 @@ public class Juego {
 		if(ventana.paneles[ventana.panelActual].player.cargador.size() > 0) {
 			ventana.paneles[ventana.panelActual].player.disparar();
 		}
+		
+		/*for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size();i++) {
+			ventana.paneles[ventana.panelActual].enemigos.get(i).disparar();
+		}*/
 	}
 	
 	//Metodo para dormir el thread durante 30 ms
@@ -159,8 +168,15 @@ public class Juego {
 			if(ventana.paneles[ventana.panelActual].boss.pv == 0) {
 				ventana.paneles[ventana.panelActual].boss.setIcon(null);
 				ventana.paneles[ventana.panelActual].remove(ventana.paneles[ventana.panelActual].boss);
+				ventana.paneles[ventana.panelActual].boss = null;
+				win();
 			}
 		}
+	}
+	
+	//Has Ganado!
+	private void win() {
+		cambiarHabitacion();
 	}
 	
 	//Inmunidad del personaje si le han dañado
@@ -391,11 +407,24 @@ public class Juego {
 		}
 	}
 	
+	//Skills del boss
+	private void bossSkills() {
+		
+		if(bossEnemies == 200) {
+			bossEnemies = 0;
+		}else {
+			bossEnemies++;
+		}
+		
+		if(ventana.paneles[ventana.panelActual].boss != null && bossEnemies == 200) {
+			ventana.paneles[ventana.panelActual].boss.spawnEnemy();
+		}
+	}
+	
 	//Metodo Pausa
 	
 	
 	//MAIN======================
-	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Juego juego = new Juego();
 		
