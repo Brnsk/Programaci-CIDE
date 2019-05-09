@@ -12,15 +12,19 @@ public class Juego {
 	protected static boolean start = false;
 	public static boolean gameover = false;
 	
+	//Controla la inmunidad del personaje
 	private static int cont = 0;
 
 	static boolean pause;
 	
+	//Controla la ejecucion del metodo para los sprites
 	private int fps = 0;
 	
+	//Controlan los disparos para que no se puedan spamear
 	private int tempDisparos = 0;
 	private int tempDisparosEnemies = 0;
 	
+	//Controla la ejecucion del metodo que hace que el boss spawnee enemigos
 	private int bossEnemies = 0;
 	
 	protected static boolean win = false;
@@ -34,7 +38,7 @@ public class Juego {
 		
 		System.out.println();
 		
-		while(!Juego.gameover && start && ventana.panelActual > -1 && ventana.panelActual < 11) {
+		while(!Juego.gameover && start && ventana.panelActual > -1 && ventana.panelActual <= 11) {
 			try {
 				
 				if(fps == 4) {
@@ -54,16 +58,16 @@ public class Juego {
 				
 				disparos();
 				
-				comprobarVidas();
-				
 				inmunidad();
-				
+				System.out.println("CHETAR AL BOSSSS");
 				cambiarHabitacion();
+				
+				comprobarVidas();
 				
 				bossSkills();
 				
 				pause();
-				
+
 				esperar();
 			}catch(Exception e) {
 				System.out.println("Error en el bucle principal");
@@ -74,22 +78,34 @@ public class Juego {
 	
 	//Repintar si es necesario
 	private void repintar() {
-		if(ventana.panelActual == 10) {
+		if(ventana.panelActual == 10 && !Juego.win || (ventana.paneles[ventana.panelActual].enemigos.size() <= 0 && !Juego.win)) {//Para pintar la "puerta"
 			ventana.paneles[ventana.panelActual].repaint();
-		}
-		if(ventana.paneles[ventana.panelActual].enemigos.size() <= 0) {
+			
+		}else if(Juego.win || Juego.gameover) {//En caso de ganar o perder
+			for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
+				ventana.paneles[ventana.panelActual].enemigos.get(i).setVisible(false);
+			}
+			
+			for(int i = 0; i < Panel.vidas; i++) {
+				ventana.paneles[ventana.panelActual].corazones[i].setVisible(false);;
+			}
+			ventana.paneles[ventana.panelActual].player.setVisible(false);
 			ventana.paneles[ventana.panelActual].repaint();
 		}
 	}
 	
 	//Movimiento de entidades
 	private void movimiento() {
+		//player
 		ventana.paneles[ventana.panelActual].player.mover();
 		
+		//Enemigos
 		for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
 				ventana.paneles[ventana.panelActual].enemigos.get(i).mover();
 				ventana.paneles[ventana.panelActual].enemigos.get(i).moverDiagonal();
 		}
+		
+		//Boss
 		if(ventana.paneles[ventana.panelActual].boss != null) {
 			ventana.paneles[ventana.panelActual].boss.mover();
 		}
@@ -99,7 +115,7 @@ public class Juego {
 	private void comprobarDisparo() {
 		//Limitar los disparos del player
 		if(ventana.paneles[ventana.panelActual].player.disparando) {
-			if(tempDisparos < 10) {
+			if(tempDisparos < 25) {
 				tempDisparos++;
 				
 			}else {
@@ -128,12 +144,12 @@ public class Juego {
 	
 	//Disparos de entidades
 	private void disparos() {	
-		//Disparos del player
+		//Player
 		if(ventana.paneles[ventana.panelActual].player.cargador.size() > 0) {
 			ventana.paneles[ventana.panelActual].player.disparar();
 		}
 		
-		//Disparos de los enemigos
+		//Enemigos
 		for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size();i++) {
 			ventana.paneles[ventana.panelActual].enemigos.get(i).disparar();
 		}
@@ -169,8 +185,7 @@ public class Juego {
 		//Player
 		if(Player.pv == 0) {
 			gameover = true;
-			System.out.println("ADIOS");
-			System.exit(0);
+			ventana.addPanel();
 		}
 		
 		//Enemigos
@@ -193,7 +208,7 @@ public class Juego {
 		
 		//Boss
 		for(int j = 0; j < ventana.paneles[ventana.panelActual].bossList.size(); j++) {
-				if(ventana.paneles[ventana.panelActual].boss.pv == 0) {
+				if(ventana.paneles[ventana.panelActual].boss.pv == 0 && ventana.paneles[ventana.panelActual].enemigos.size() <= 0) {
 					
 					ventana.paneles[ventana.panelActual].bossList.get(0).setIcon(null);
 					ventana.paneles[ventana.panelActual].bossList.remove(0);
@@ -206,7 +221,6 @@ public class Juego {
 	private void win() {
 		win = true;
 		ventana.addPanel();
-		ventana.paneles[ventana.panelActual].repaint();
 	}
 	
 	//Inmunidad del personaje si le han dañado
@@ -216,19 +230,19 @@ public class Juego {
 			cont++;
 		}
 		
+		//Quitar vidas (icono del CIDE)
 		if(!ventana.paneles[ventana.panelActual].player.inmunidad && 
-				(Player.pv < ventana.paneles[ventana.panelActual].player.vidaRestante)) {
+				(Player.pv < Player.vidaRestante)) {
 			
-			//System.out.println(Player.pv);
-			//System.out.println(ventana.paneles[ventana.panelActual].player.vidaRestante);
 			
 			Panel.vidas--;
+			Player.vidaRestante--;
+			System.out.println(Panel.vidas);
 			ventana.paneles[ventana.panelActual].removeVidas();
 			ventana.paneles[ventana.panelActual].player.inmunidad = true;
 			
-		}else if(cont > 75){
+		}else if(cont > 75){ //Quitar de nuevo la inmunidad
 			
-			ventana.paneles[ventana.panelActual].player.vidaRestante--;
 			cont = 0;
 			ventana.paneles[ventana.panelActual].player.inmunidad = false;
 		}
@@ -502,18 +516,15 @@ public class Juego {
 	
 	//Metodo Pausa
 	public void pause() {
-		
 		while (Juego.pause) {
 			System.out.println("");
 		}
-
 	}
 	
 	//MAIN======================
 	public static void main(String[] args) {
 		Juego juego = new Juego();
-		
-		while((!Juego.start || Juego.start) && Juego.ventana.panelActual < 11) {
+		while((!Juego.start || Juego.start) && Juego.ventana.panelActual <= 11) {
 			juego.running();
 		}
 	}

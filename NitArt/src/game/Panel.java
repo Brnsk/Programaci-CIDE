@@ -38,12 +38,23 @@ public class Panel extends JPanel implements KeyListener{
 
 	protected Image fondo;
 	
+	protected String sueloUrl = "img\\Transparente.png";
+	protected String suelo2Url = "img\\suelo2.png";
+	
+	protected String pausaUrl = "img\\Tezto.png";
+	protected String pausavUrl;
+	protected String pausabUrl = "img\\boton.png";
+	
+	protected String fondoUrl = "img\\fondo.jpg";
+	
+	
 	public Boss boss;
 	
-	private Corazones[] corazones;
+	Corazones[] corazones;
 	private int contador_pausa;
 	
 	protected static int vidas = 6;
+	
 	
 	
 	//CONSTRUCTOR
@@ -67,10 +78,10 @@ public class Panel extends JPanel implements KeyListener{
 		corazones = new Corazones[6];
 		
 		//Añadir entidades
-		if(Juego.ventana.panelActual <= 0) {
+		if(Juego.ventana.panelActual <= 0 && !Juego.gameover) {
 			player = new Player();
 			this.add(player);
-		}else {
+		}else if(!Juego.gameover){
 			player = Juego.ventana.paneles[Juego.ventana.panelActual-1].player;
 			this.add(player);
 			
@@ -82,17 +93,17 @@ public class Panel extends JPanel implements KeyListener{
 			player.left = false;
 		}
 		
-		suelo = new ImageIcon("D:\\git\\repository\\NitArt\\img\\Transparente.png").getImage();
-		suelo2 = new ImageIcon("D:\\git\\repository\\NitArt\\img\\suelo2.jpg").getImage();
-		fondo = new ImageIcon("D:\\git\\repository\\NitArt\\img\\fondo.jpg").getImage();
-		pausa = new ImageIcon("img\\Tezto.png").getImage(); 
-		pausab = new ImageIcon("img\\boton.png").getImage();
+		suelo = new ImageIcon(sueloUrl).getImage();
+		suelo2 = new ImageIcon(suelo2Url).getImage();
+		fondo = new ImageIcon(fondoUrl).getImage();
+		pausa = new ImageIcon(pausaUrl).getImage(); 
+		pausab = new ImageIcon(pausabUrl).getImage();
 	}
 	
 	//Añadir enemigos
 	private void addEnemies() {
 
-		if (Juego.ventana.panelActual == 0) {//A partir del primer panel con enemigos
+		if (Juego.ventana.panelActual == 0 && !Juego.gameover) {//A partir del primer panel con enemigos
 			int random = (int)(Math.random()*2 +1);
 			
 			for(int i = 0; i < random; i++) {
@@ -100,7 +111,7 @@ public class Panel extends JPanel implements KeyListener{
 				enemigos.add(enemy);
 				this.add(enemy);
 			}
-		}else if(Juego.ventana.panelActual >= 1 && Juego.ventana.panelActual < 3) {
+		}else if(Juego.ventana.panelActual >= 1 && Juego.ventana.panelActual < 3 && !Juego.gameover) {
 			int random = (int)(Math.random()*3 +1);
 			
 			for(int i = 0; i < random; i+=2) {
@@ -113,7 +124,7 @@ public class Panel extends JPanel implements KeyListener{
 				this.add(enemy);
 				this.add(triEnemy);
 			}
-		}else if(Juego.ventana.panelActual >= 3 && Juego.ventana.panelActual < 6) {
+		}else if(Juego.ventana.panelActual >= 3 && Juego.ventana.panelActual < 6 && !Juego.gameover) {
 			int random = (int)(Math.random()*4 +2);
 			
 			for(int i = 0; i < random; i+=2) {
@@ -126,7 +137,7 @@ public class Panel extends JPanel implements KeyListener{
 				this.add(enemy);
 				this.add(triEnemy);
 			}
-		}else if(Juego.ventana.panelActual >= 6 && Juego.ventana.panelActual < 9) {
+		}else if(Juego.ventana.panelActual >= 6 && Juego.ventana.panelActual < 9 && !Juego.gameover) {
 			int random = (int)(Math.random()*5 +2);
 			
 			for(int i = 0; i < random; i+=2) {
@@ -139,7 +150,7 @@ public class Panel extends JPanel implements KeyListener{
 				this.add(enemy);
 				this.add(triEnemy);
 			}
-		}else if(Juego.ventana.panelActual == 9){
+		}else if(Juego.ventana.panelActual == 9 && !Juego.gameover){
 			boss = new Boss();
 			
 			bossList.add(boss);

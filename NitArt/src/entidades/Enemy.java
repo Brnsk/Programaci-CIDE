@@ -33,7 +33,7 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	protected int speed;
 	
 	//Vida
-	public int pv = 1;
+	public int pv = 3;
 	
 	//Movimiento
 	public boolean up;
@@ -48,6 +48,7 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	//Cargador de balas
 	public ArrayList<Bala> cargador = new ArrayList<Bala>();
 	public boolean disparando = false;
+	private Bala bala;
 	
 	//Spawn points
 	private int[][] spawns = {{0,Ventana.WIDTH -50 - Enemy.WIDTH, 300,400,500},
@@ -91,33 +92,33 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 		imagenes = new Image[11];
 		
 		//Preparar imagen principal
-		imagenes[0] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadfront.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[0] = new ImageIcon("img\\sadEnemy\\sadfront.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		icon = new ImageIcon(imagenes[0]);
 		currImg = 0;
 		
 		//Caminando de frente paso1
-		imagenes[1] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadFrontPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[1] = new ImageIcon("img\\sadEnemy\\sadFrontPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		
 		//Caminando de frente paso2
-		imagenes[2] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadFrontPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[2] = new ImageIcon("img\\sadEnemy\\sadFrontPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		
 		//Caminando de espaldas paso1
-		imagenes[3] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadBackPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[3] = new ImageIcon("img\\sadEnemy\\sadBackPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 				
 		//Caminando de espaldas paso2
-		imagenes[4] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadBackPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[4] = new ImageIcon("img\\sadEnemy\\sadBackPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		
-		imagenes[5] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadEnemyright.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[5] = new ImageIcon("img\\sadEnemy\\sadEnemyright.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		
-		imagenes[6] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadEnemyright1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[6] = new ImageIcon("img\\sadEnemy\\sadEnemyright1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		
-		imagenes[7] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadEnemyright2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[7] = new ImageIcon("img\\sadEnemy\\sadEnemyright2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		
-		imagenes[8] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadEnemyleft.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[8] = new ImageIcon("img\\sadEnemy\\sadEnemyleft.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		
-		imagenes[9] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadEnemyleft1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[9] = new ImageIcon("img\\sadEnemy\\sadEnemyleft1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		
-		imagenes[10] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\sadEnemy\\sadEnemyleft2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[10] = new ImageIcon("img\\sadEnemy\\sadEnemyleft2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 	}
 
 	@Override
@@ -173,18 +174,20 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	public void disparar() {
 		String direccion = "";
 		
-		if(this.x >= 985) {
+		if(down) {
 			direccion = "left";
-		}else if(this.x <= 150) {
+		}else if(up) {
 			direccion = "right";
-		}else if(this.y <= 150) {
+		}else if(right) {
 			direccion = "down";
-		}else if(this.y >= Ventana.HEIGHT - Enemy.HEIGHT) {
+		}else if(left) {
 			direccion = "up";
 		}
 		
 		if(!this.disparando) {
-			cargador.add(new Bala(this.getX(),this.getY(),direccion));
+			bala = new Bala(this.getX(),this.getY(),direccion);
+			cargador.add(bala);
+			Juego.ventana.paneles[Juego.ventana.panelActual].add(bala);
 			disparando = true;
 		}
 		
@@ -195,27 +198,27 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 				
 				switch(cargador.get(i).direccion) {
 				case "left":
+					
 					cargador.get(i).setIcon(new ImageIcon(cargador.get(i).img[4]));
 					cargador.get(i).setLocation(cargador.get(i).getX() - 7, cargador.get(i).getY());
-					Juego.ventana.paneles[Juego.ventana.panelActual].add(cargador.get(i));
 					
 					break;
 				case "right":
+
 					cargador.get(i).setIcon(new ImageIcon(cargador.get(i).img[4]));
 					cargador.get(i).setLocation(cargador.get(i).getX() + 7, cargador.get(i).getY());
-					Juego.ventana.paneles[Juego.ventana.panelActual].add(cargador.get(i));
 					
 					break;
 				case "down":
+
 					cargador.get(i).setIcon(new ImageIcon(cargador.get(i).img[4]));
 					cargador.get(i).setLocation(cargador.get(i).getX(), cargador.get(i).getY() +7);
-					Juego.ventana.paneles[Juego.ventana.panelActual].add(cargador.get(i));
 					
 					break;
 				case "up":
+
 					cargador.get(i).setIcon(new ImageIcon(cargador.get(i).img[4]));
 					cargador.get(i).setLocation(cargador.get(i).getX(), cargador.get(i).getY() -7);
-					Juego.ventana.paneles[Juego.ventana.panelActual].add(cargador.get(i));
 				}
 				
 				//Eliminar la bala si sale del mapa o si impacta con el jugador
@@ -231,16 +234,9 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 						cargador.get(i).setIcon(null);
 						cargador.remove(i);
 					}
-				}else {
-					moverBala();
 				}
 			}
 		}
-	}
-	
-	//Mover la baladel enemigo
-	private void moverBala() {
-		
 	}
 	
 	@Override

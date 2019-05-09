@@ -34,7 +34,7 @@ public class Boss extends JLabel{
 	public static int cambio = 0;
 	
 	//Puntos de vida
-	public int pv = 3;
+	public int pv = 30;
 	
 	//Skill
 	private int enemyType = 0;
@@ -56,23 +56,23 @@ public class Boss extends JLabel{
 		imagenes = new Image[8];
 		
 		//Imagen por defecto
-		imagenes[0] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\bossEnemy\\bossChargeNo.png").getImage().getScaledInstance(Boss.WIDTH, Boss.HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[0] = new ImageIcon("img\\bossEnemy\\bossChargeNo.png").getImage().getScaledInstance(Boss.WIDTH, Boss.HEIGHT, Image.SCALE_SMOOTH);
 		icon = new ImageIcon(imagenes[0]);
 		currImg = 0;
 		
-		imagenes[1] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\bossEnemy\\bossAnimated\\bossChargeNo.png").getImage().getScaledInstance(Boss.WIDTH, Boss.HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[1] = new ImageIcon("img\\bossEnemy\\bossAnimated\\bossChargeNo.png").getImage().getScaledInstance(Boss.WIDTH, Boss.HEIGHT, Image.SCALE_SMOOTH);
 		
-		imagenes[2] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\bossEnemy\\bossChargingLow.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[2] = new ImageIcon("img\\bossEnemy\\bossChargingLow.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		
-		imagenes[3] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\bossEnemy\\bossAnimated\\bossChargingLow.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[3] = new ImageIcon("img\\bossEnemy\\bossAnimated\\bossChargingLow.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		
-		imagenes[4] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\bossEnemy\\bossChargingWarning.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[4] = new ImageIcon("img\\bossEnemy\\bossChargingWarning.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		
-		imagenes[5] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\bossEnemy\\bossAnimated\\bossChargingWarning.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[5] = new ImageIcon("img\\bossEnemy\\bossAnimated\\bossChargingWarning.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		
-		imagenes[6] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\bossEnemy\\bossShooting.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[6] = new ImageIcon("img\\bossEnemy\\bossShooting.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		
-		imagenes[7] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\bossEnemy\\bossAnimated\\bossShooting6.png").getImage().getScaledInstance(WIDTH, HEIGHT +560, Image.SCALE_SMOOTH);
+		imagenes[7] = new ImageIcon("img\\bossEnemy\\bossAnimated\\bossShooting6.png").getImage().getScaledInstance(WIDTH, HEIGHT +560, Image.SCALE_SMOOTH);
 	}
 	
 	//Movimiento

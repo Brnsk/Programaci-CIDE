@@ -34,7 +34,6 @@ public class Ventana extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setMinimumSize(new Dimension(this.VENTANA_WIDTH,this.VENTANA_HEIGHT));
-		//this.setMaximumSize(new Dimension(this.WIDTH,this.HEIGHT)); // NOT WORKING
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.add(menu);
 		this.setVisible(true);
@@ -45,13 +44,16 @@ public class Ventana extends JFrame {
 		menu = new Menu();
 	}
 	
+	
+	
 	//Metodo paint
 	public void paint(Graphics2D g) {
-		if(panelActual <= 10) {
+		
+		if(panelActual <= 10 && panelActual >= 0) {
 			g.drawImage(this.paneles[panelActual].fondo, 0, 0, Ventana.WIDTH, Ventana.HEIGHT, Color.pink.darker(), null);
 			
 			if(panelActual == 10) {
-				g.drawImage(this.paneles[panelActual].suelo2, 150, Ventana.HEIGHT / 2, 928, 330, Color.pink.darker(), null);
+				g.drawImage(this.paneles[panelActual].suelo2, 150, Ventana.HEIGHT / 2, 928, 330, null);
 			}else {
 				g.drawImage(this.paneles[panelActual].suelo, 150, 90, 928, 660, null);
 				
@@ -66,19 +68,22 @@ public class Ventana extends JFrame {
 				g.drawImage(Panel.pausa, 150, 0, 928, 150, null);
 				g.drawImage(Panel.pausab, 25, 25, 100, 100, null);
 			}
-			
-			if(Juego.win) {
-				g.drawImage(VictoryPanel.img, 0, 0, 100, 100, null);
-			}
+		}
+		
+		if(Juego.win && panelActual == 11) {
+			g.drawImage(VictoryPanel.img, 0, 0, Ventana.WIDTH, Ventana.HEIGHT, null);
+		}else if (Juego.gameover) {
+			g.drawImage(GameOverPanel.gover, 0, 0, Ventana.WIDTH, Ventana.HEIGHT, null);
 		}
 	}
 	
 	protected void addPanel() {
 		System.out.println("Habitacion: "+panelActual);
 		
-		if(panelActual < 10) {
+		if(panelActual < 10 && !Juego.gameover) {
 			panel = new Panel();
-			
+		}else if(Juego.gameover){
+			panel = new GameOverPanel();
 		}else {
 			panel = new VictoryPanel();
 		}

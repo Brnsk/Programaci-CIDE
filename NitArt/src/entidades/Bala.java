@@ -40,16 +40,16 @@ public class Bala extends JLabel {
 	}
 	
 	private void iniciar() {
-		speed = 30;
+		speed = 10;
 	}
 	
 	private void imagen() {
 		img = new Image[5];
-		img[0]  = new ImageIcon("D:\\git\\repository\\NitArt\\img\\balas\\balaArriba.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-		img[1]  = new ImageIcon("D:\\git\\repository\\NitArt\\img\\balas\\balaAbajo.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-		img[2]  = new ImageIcon("D:\\git\\repository\\NitArt\\img\\balas\\balaIzquierda.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-		img[3]  = new ImageIcon("D:\\git\\repository\\NitArt\\img\\balas\\balaDerecha.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-		img[4]  = new ImageIcon("D:\\git\\repository\\NitArt\\img\\bala.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		img[0]  = new ImageIcon("img\\balas\\balaArriba.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		img[1]  = new ImageIcon("img\\balas\\balaAbajo.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		img[2]  = new ImageIcon("img\\balas\\balaIzquierda.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		img[3]  = new ImageIcon("img\\balas\\balaDerecha.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		img[4]  = new ImageIcon("img\\bala.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 	}
 	
 	//Comprobar donde esta la bala

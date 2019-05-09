@@ -1,20 +1,19 @@
 package game;
 
 import java.awt.Image;
-
 import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
-public class VictoryPanel extends Panel{
+public class GameOverPanel extends Panel{
 	
-	protected static Image img;
+	protected static Image gover;
 	
-	protected VictoryPanel() {
+	protected GameOverPanel() {
 		iniciar();
 		this.setVisible(true);
 	}
 	
 	private void iniciar() {
-		img = new ImageIcon("img\\win.jpg").getImage();
+		gover = new ImageIcon("img\\lose.jpg").getImage();
 	}
 }

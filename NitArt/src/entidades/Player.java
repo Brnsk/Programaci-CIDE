@@ -51,7 +51,7 @@ public class Player extends JLabel implements JugadorEnemigos{
 	
 	//Vidas
 	public static int pv;
-	public int vidaRestante;
+	public static int vidaRestante;
 	
 	//Inmunidad
 	public boolean inmunidad = false;
@@ -85,7 +85,7 @@ public class Player extends JLabel implements JugadorEnemigos{
 		contadorBalas = 0;
 		
 		//Velocidad
-		speed = 25;
+		speed = 7;
 		
 		//vidas
 		pv = 6;
@@ -98,23 +98,23 @@ public class Player extends JLabel implements JugadorEnemigos{
 	//Añadir imagen a jlabel
 	private void imagen() {
 		imagenes = new Image[14];
-		imagenes[0] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerFront.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[0] = new ImageIcon("img\\player\\playerFront.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		icon = new ImageIcon(imagenes[0]);
 		currImage = 0;
 		
-		imagenes[1] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerFrontPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de frente paso 1
-		imagenes[2] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerFrontPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de frente paso 2
-		imagenes[3] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerBackPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de espalda paso 1
-		imagenes[4] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerBackPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de espalda paso 2
-		imagenes[5] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerLeft.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la izquierda
-		imagenes[6] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerLeftPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la izquierda paso 1
-		imagenes[7] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerLeftPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la izquierda paso 2
-		imagenes[8] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerLeftPaso3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la izquierda paso 3
-		imagenes[9] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerRight.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la derecha
-		imagenes[10] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerRightPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la derecha paso 1
-		imagenes[11] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerRightPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la derecha paso 2
-		imagenes[12] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerRightPaso3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la derecha paso 3
-		imagenes[13] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\player\\playerBack.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de espalda
+		imagenes[1] = new ImageIcon("img\\player\\playerFrontPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de frente paso 1
+		imagenes[2] = new ImageIcon("img\\player\\playerFrontPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de frente paso 2
+		imagenes[3] = new ImageIcon("img\\player\\playerBackPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de espalda paso 1
+		imagenes[4] = new ImageIcon("img\\player\\playerBackPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de espalda paso 2
+		imagenes[5] = new ImageIcon("img\\player\\playerLeft.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la izquierda
+		imagenes[6] = new ImageIcon("img\\player\\playerLeftPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la izquierda paso 1
+		imagenes[7] = new ImageIcon("img\\player\\playerLeftPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la izquierda paso 2
+		imagenes[8] = new ImageIcon("img\\player\\playerLeftPaso3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la izquierda paso 3
+		imagenes[9] = new ImageIcon("img\\player\\playerRight.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la derecha
+		imagenes[10] = new ImageIcon("img\\player\\playerRightPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la derecha paso 1
+		imagenes[11] = new ImageIcon("img\\player\\playerRightPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la derecha paso 2
+		imagenes[12] = new ImageIcon("img\\player\\playerRightPaso3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la derecha paso 3
+		imagenes[13] = new ImageIcon("img\\player\\playerBack.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de espalda
 		
 	}
 	
@@ -276,7 +276,7 @@ public class Player extends JLabel implements JugadorEnemigos{
 				enemigo.colision = true;
 				
 				if(!this.inmunidad) {
-					//Player.pv--;
+					Player.pv--;
 				}
 			}else {
 				colision = false;

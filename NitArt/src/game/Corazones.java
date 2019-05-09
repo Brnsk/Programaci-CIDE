@@ -33,7 +33,7 @@ public class Corazones extends JLabel{
 	//Metodo para las imagenes
 	private void imagenes() {
 		
-		img = new ImageIcon("D:\\git\\repository\\NitArt\\img\\corazones\\vida.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		img = new ImageIcon("img\\corazones\\vida.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		icon = new ImageIcon(img);
 	}
 }

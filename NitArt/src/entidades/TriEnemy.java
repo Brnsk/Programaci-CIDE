@@ -42,15 +42,15 @@ public class TriEnemy extends Enemy{
 		this.imagenes = new Image[9];
 		
 		//Imagen de frente con el boss arriba
-		this.imagenes[0] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\triEnemy\\triEnemyFrontTop.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		this.imagenes[0] = new ImageIcon("img\\triEnemy\\triEnemyFrontTop.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		this.icon = new ImageIcon(imagenes[0]);
 		this.currImg = 0;
 		
 		//Imagen de frente con el boss abajo
-		this.imagenes[1] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\triEnemy\\triEnemyFrontBottom.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		this.imagenes[1] = new ImageIcon("img\\triEnemy\\triEnemyFrontBottom.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 		
 		//Imagen de frente con con todos en linea
-		this.imagenes[2] = new ImageIcon("D:\\git\\repository\\NitArt\\img\\triEnemy\\triEnemyFrontMiddle.png").getImage().getScaledInstance(WIDTH, HEIGHT / 2, Image.SCALE_SMOOTH);
+		this.imagenes[2] = new ImageIcon("img\\triEnemy\\triEnemyFrontMiddle.png").getImage().getScaledInstance(WIDTH, HEIGHT / 2, Image.SCALE_SMOOTH);
 		
 	}
 	
@@ -150,5 +150,10 @@ public class TriEnemy extends Enemy{
 		}
 		
 		this.setLocation(x, y);
+	}
+	
+	@Override
+	public void disparar() {
+		//Este enemigo no dispara
 	}
 }
