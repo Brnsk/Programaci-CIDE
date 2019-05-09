@@ -1,6 +1,5 @@
 package game;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -28,7 +27,12 @@ public class Panel extends JPanel implements KeyListener{
 	
 	public ArrayList <Enemy> enemigos = new ArrayList<Enemy>();
 	
+	public ArrayList<Boss> bossList = new ArrayList<Boss>();
+	
 	protected Image suelo;
+	protected static Image pausa;
+	protected static Image pausav;
+	protected static Image pausab;
 	
 	protected Image suelo2;
 
@@ -37,13 +41,14 @@ public class Panel extends JPanel implements KeyListener{
 	public Boss boss;
 	
 	private Corazones[] corazones;
+	private int contador_pausa;
+	
+	protected static int vidas = 6;
 	
 	
 	//CONSTRUCTOR
 	protected Panel() {
 		iniciar();
-		
-		this.setBackground(Color.PINK.darker());
 		
 		this.setLayout(null);
 		
@@ -59,11 +64,9 @@ public class Panel extends JPanel implements KeyListener{
 	private void iniciar() {
 		
 		//Añadir los corazones
-		
 		corazones = new Corazones[6];
 		
 		//Añadir entidades
-		
 		if(Juego.ventana.panelActual <= 0) {
 			player = new Player();
 			this.add(player);
@@ -79,9 +82,11 @@ public class Panel extends JPanel implements KeyListener{
 			player.left = false;
 		}
 		
-		suelo = new ImageIcon("D:\\git\\repository\\NitArt\\img\\suelo.jpg").getImage();
-		suelo2 = new ImageIcon("D:\\git\\repository\\NitArt\\img\\suelo_2.jpg").getImage();
+		suelo = new ImageIcon("D:\\git\\repository\\NitArt\\img\\Transparente.png").getImage();
+		suelo2 = new ImageIcon("D:\\git\\repository\\NitArt\\img\\suelo2.jpg").getImage();
 		fondo = new ImageIcon("D:\\git\\repository\\NitArt\\img\\fondo.jpg").getImage();
+		pausa = new ImageIcon("img\\Tezto.png").getImage(); 
+		pausab = new ImageIcon("img\\boton.png").getImage();
 	}
 	
 	//Añadir enemigos
@@ -134,18 +139,31 @@ public class Panel extends JPanel implements KeyListener{
 				this.add(enemy);
 				this.add(triEnemy);
 			}
-		}else if(Juego.ventana.panelActual >= 9){
+		}else if(Juego.ventana.panelActual == 9){
 			boss = new Boss();
+			
+			bossList.add(boss);
 			
 			this.add(boss);
 		}
 	}
 	
-	private void addVidas() {
-		for(int i = 0; i < corazones.length; i++) {
-			corazones[i] = new Corazones();
-			Corazones.x += 70;
-			this.add(corazones[i]);
+	protected void addVidas() {
+		System.out.println(vidas);
+		if(Juego.ventana.panelActual <= 10) {
+			for(int i = 0; i < vidas; i++) {
+				corazones[i] = new Corazones();
+				Corazones.x += 70;
+				this.add(corazones[i]);
+			}
+		}
+	}
+	
+	protected void removeVidas() {
+		System.out.println(vidas);
+		if(Juego.ventana.panelActual <= 10) {
+			corazones[vidas].setVisible(false);
+			this.remove(corazones[vidas]);
 		}
 	}
 	
@@ -177,6 +195,23 @@ public class Panel extends JPanel implements KeyListener{
 			player.right = true;
 		break;
 		case KeyEvent.VK_ESCAPE:
+			
+			Juego.pause=true;
+			contador_pausa ++;
+			
+			if (contador_pausa == 2) {
+				System.exit(0);
+			}
+			
+			Juego.ventana.paneles[Juego.ventana.panelActual].repaint();
+			suelo = new ImageIcon("img\\Transparente_pausa.png").getImage();
+		break;
+		case KeyEvent.VK_ENTER:
+			
+			Juego.pause=false;
+			contador_pausa = 0;
+			Juego.ventana.paneles[Juego.ventana.panelActual].repaint();
+			suelo = new ImageIcon("img\\Transparente.png").getImage();
 		}
 		//=========== Balas ===============
 		
@@ -186,7 +221,7 @@ public class Panel extends JPanel implements KeyListener{
 				player.bulletUp = true;
 				
 				player.bala = new Bala(player.getX() + (player.WIDTH/2),(player.getY()+player.HEIGHT / 2 -20),"up");
-				player.bala.setIcon(icon);
+				
 				player.cargador.add(player.bala);
 				Juego.ventana.paneles[Juego.ventana.panelActual].add(player.bala);
 				
@@ -196,6 +231,7 @@ public class Panel extends JPanel implements KeyListener{
 				player.bulletDown = true;
 				
 				player.bala = new Bala(player.getX() + (player.WIDTH/2), (player.getY()+player.HEIGHT / 2 -20),"down");
+				
 				player.cargador.add(player.bala);
 				Juego.ventana.paneles[Juego.ventana.panelActual].add(player.bala);
 				
@@ -205,6 +241,7 @@ public class Panel extends JPanel implements KeyListener{
 				player.bulletLeft = true;
 				
 				player.bala = new Bala(player.getX() + (player.WIDTH/2), (player.getY()+player.HEIGHT / 2 -20),"left");
+				
 				player.cargador.add(player.bala);
 				Juego.ventana.paneles[Juego.ventana.panelActual].add(player.bala);
 				
@@ -214,6 +251,7 @@ public class Panel extends JPanel implements KeyListener{
 				player.bulletRight = true;
 				
 				player.bala = new Bala(player.getX() + (player.WIDTH/2), (player.getY()+player.HEIGHT / 2 -20),"right");
+				
 				player.cargador.add(player.bala);
 				Juego.ventana.paneles[Juego.ventana.panelActual].add(player.bala);
 				
@@ -239,20 +277,6 @@ public class Panel extends JPanel implements KeyListener{
 		case KeyEvent.VK_D:
 			player.right = false;
 		}
-		//=========== Balas ===============
-		/*switch(key) {
-		case KeyEvent.VK_UP:
-			player.bulletUp = false;
-		break;
-		case KeyEvent.VK_DOWN:
-			player.bulletDown = false;
-		break;
-		case KeyEvent.VK_LEFT:
-			player.bulletLeft = false;
-		break;
-		case KeyEvent.VK_RIGHT:
-			player.bulletRight = false;
-		}*/
 	}
 
 	@Override

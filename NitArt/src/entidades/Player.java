@@ -50,7 +50,7 @@ public class Player extends JLabel implements JugadorEnemigos{
 	public final int HEIGHT = 100;
 	
 	//Vidas
-	public int pv;
+	public static int pv;
 	public int vidaRestante;
 	
 	//Inmunidad
@@ -85,11 +85,11 @@ public class Player extends JLabel implements JugadorEnemigos{
 		contadorBalas = 0;
 		
 		//Velocidad
-		speed = 15;
+		speed = 25;
 		
 		//vidas
 		pv = 6;
-		vidaRestante = 999;
+		vidaRestante = 6;
 		
 		//Insertar imagen
 		imagen();
@@ -118,14 +118,6 @@ public class Player extends JLabel implements JugadorEnemigos{
 		
 	}
 	
-	//Eliminar bala
-	/*private void eliminarBala() {
-		bulletUp = false;
-		bulletDown = false;
-		bulletRight = false;
-		bulletLeft = false;
-	}*/
-	
 	//Comprobar si el personaje se encuentra en el "Tablero"
 	private void comprobarPosicion() {
 		comprobarX();
@@ -143,15 +135,15 @@ public class Player extends JLabel implements JugadorEnemigos{
 	private void comprobarY() {
 		
 		if(Juego.ventana.panelActual == 10) {
-			if(y >= Ventana.HEIGHT - 150 - HEIGHT) {
+			if(y >= Ventana.HEIGHT - 133 - HEIGHT) {
 				down = false;
 			}else if( y <= Ventana.HEIGHT /2 - (HEIGHT/2) + 20) {
 				up = false;
 			}
 		}else {
-			if(y >= Ventana.HEIGHT - 150 - HEIGHT) {
+			if(y >= Ventana.HEIGHT - 133 - HEIGHT) {
 				down = false;
-			}else if( y <= 150 - HEIGHT + 20) {
+			}else if( y <= 90 - HEIGHT + 20) {
 				up = false;
 			}
 		}
@@ -168,18 +160,26 @@ public class Player extends JLabel implements JugadorEnemigos{
 			bala = cargador.get(contadorBalas);
 			
 			if(bala.direccion.equals("up")) {
+				bala.setIcon(new ImageIcon(bala.img[0]));
+				
 				bala.y -= Bala.speed;
 				bala.setLocation(bala.x, bala.y);
 				
 			}else if(bala.direccion.equals("down")) {
+				bala.setIcon(new ImageIcon(bala.img[1]));
+				
 				bala.y += Bala.speed;
 				bala.setLocation(bala.x, bala.y);
 				
 			}else if(bala.direccion.equals("left")) {
+				bala.setIcon(new ImageIcon(bala.img[2]));
+				
 				bala.x -= Bala.speed;
 				bala.setLocation(bala.x, bala.y);
 				
 			}else if(bala.direccion.equals("right")) {
+				bala.setIcon(new ImageIcon(bala.img[3]));
+				
 				bala.x += Bala.speed;
 				bala.setLocation(bala.x, bala.y);
 			}
@@ -274,6 +274,10 @@ public class Player extends JLabel implements JugadorEnemigos{
 				colision = true;
 				colisionando(playerX, playerY,enemigo);
 				enemigo.colision = true;
+				
+				if(!this.inmunidad) {
+					//Player.pv--;
+				}
 			}else {
 				colision = false;
 				enemigo.colision = false;
@@ -358,7 +362,7 @@ public class Player extends JLabel implements JugadorEnemigos{
 			
 			if(playerBounds.intersects(bossBounds)) {
 				colisionRayo = true;
-				this.pv = 0;
+				Player.pv = 0;
 			}
 			
 		}

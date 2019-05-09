@@ -11,7 +11,7 @@ import game.Ventana;
 @SuppressWarnings("serial")
 public class Bala extends JLabel {
 	//Imagen
-	Image img;
+	public Image img [];
 	ImageIcon icon;
 	
 	//Velocidad de la bala
@@ -31,7 +31,7 @@ public class Bala extends JLabel {
 	public Bala(int x, int y, String direccion) {
 		iniciar();
 		imagen();
-		this.setIcon(icon);
+
 		this.setSize(WIDTH, HEIGHT);
 		this.x = x;
 		this.y = y;
@@ -40,13 +40,16 @@ public class Bala extends JLabel {
 	}
 	
 	private void iniciar() {
-		speed = 15;
+		speed = 30;
 	}
 	
 	private void imagen() {
-		img  = new ImageIcon("D:\\git\\repository\\NitArt\\img\\bala.png").getImage();
-		icon = new ImageIcon(img.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
-
+		img = new Image[5];
+		img[0]  = new ImageIcon("D:\\git\\repository\\NitArt\\img\\balas\\balaArriba.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		img[1]  = new ImageIcon("D:\\git\\repository\\NitArt\\img\\balas\\balaAbajo.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		img[2]  = new ImageIcon("D:\\git\\repository\\NitArt\\img\\balas\\balaIzquierda.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		img[3]  = new ImageIcon("D:\\git\\repository\\NitArt\\img\\balas\\balaDerecha.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		img[4]  = new ImageIcon("D:\\git\\repository\\NitArt\\img\\bala.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 	}
 	
 	//Comprobar donde esta la bala
@@ -67,7 +70,7 @@ public class Bala extends JLabel {
 	private boolean comprobarX() {
 		boolean posicionX = false;
 		
-		if(this.x <= 150 - Juego.ventana.paneles[Juego.ventana.panelActual].player.WIDTH || this.x >= Ventana.WIDTH - 150 - this.WIDTH + Juego.ventana.paneles[Juego.ventana.panelActual].player.WIDTH) {
+		if(this.x <= -40 || this.x >= Ventana.WIDTH) {
 			posicionX = false;
 		}else {
 			posicionX = true;
@@ -80,7 +83,7 @@ public class Bala extends JLabel {
 	private boolean comprobarY() {
 		boolean posicionY = false;
 		
-		if(this.y >= Ventana.HEIGHT - 150 - this.HEIGHT + Juego.ventana.paneles[Juego.ventana.panelActual].player.HEIGHT || this.y <= 150 - this.HEIGHT - Juego.ventana.paneles[Juego.ventana.panelActual].player.HEIGHT) {
+		if(this.y >= Ventana.HEIGHT || this.y <= -40) {
 			posicionY = false;
 		}else {
 			posicionY = true;

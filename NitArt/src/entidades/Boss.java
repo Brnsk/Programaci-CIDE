@@ -34,7 +34,7 @@ public class Boss extends JLabel{
 	public static int cambio = 0;
 	
 	//Puntos de vida
-	public int pv = 20;
+	public int pv = 3;
 	
 	//Skill
 	private int enemyType = 0;

@@ -1,15 +1,11 @@
 package game;
 
-import java.awt.Image;
-
 import javax.swing.ImageIcon;
 
 import entidades.Boss;
 import entidades.Enemy;
 import entidades.Player;
-import entidades.TriEnemy;
 
-@SuppressWarnings({ "static-access", "unused" })
 public class Juego {
 	public static Ventana ventana;
 	
@@ -17,16 +13,21 @@ public class Juego {
 	public static boolean gameover = false;
 	
 	private static int cont = 0;
+
+	static boolean pause;
 	
 	private int fps = 0;
 	
 	private int tempDisparos = 0;
+	private int tempDisparosEnemies = 0;
 	
 	private int bossEnemies = 0;
 	
+	protected static boolean win = false;
+	
 	//CONSTRUCTOR
 	protected Juego() {
-		this.ventana = new Ventana();
+		Juego.ventana = new Ventana();
 	}
 	
 	private void running() {
@@ -61,7 +62,7 @@ public class Juego {
 				
 				bossSkills();
 				
-				//pausa();
+				pause();
 				
 				esperar();
 			}catch(Exception e) {
@@ -74,6 +75,9 @@ public class Juego {
 	//Repintar si es necesario
 	private void repintar() {
 		if(ventana.panelActual == 10) {
+			ventana.paneles[ventana.panelActual].repaint();
+		}
+		if(ventana.paneles[ventana.panelActual].enemigos.size() <= 0) {
 			ventana.paneles[ventana.panelActual].repaint();
 		}
 	}
@@ -93,6 +97,7 @@ public class Juego {
 	
 	//Comprobar si se puede disparar
 	private void comprobarDisparo() {
+		//Limitar los disparos del player
 		if(ventana.paneles[ventana.panelActual].player.disparando) {
 			if(tempDisparos < 10) {
 				tempDisparos++;
@@ -100,27 +105,41 @@ public class Juego {
 			}else {
 				ventana.paneles[ventana.panelActual].player.disparando = false;
 				
-				/*for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
-					ventana.paneles[ventana.panelActual].enemigos.get(i).disparando = false;
-				}*/
-				
 				tempDisparos = 0;
-			}	
+			}
+			
+		}
+		
+		//Limitar los disparos de los enemigos
+		for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
+			if(ventana.paneles[ventana.panelActual].enemigos.get(i).disparando) {
+
+				if(tempDisparosEnemies < 150) {
+					tempDisparosEnemies++;
+					
+				}else {
+					ventana.paneles[ventana.panelActual].enemigos.get(i).disparando = false;
+					
+					tempDisparosEnemies = 0;
+				}	
+			}
 		}
 	}
 	
 	//Disparos de entidades
 	private void disparos() {	
+		//Disparos del player
 		if(ventana.paneles[ventana.panelActual].player.cargador.size() > 0) {
 			ventana.paneles[ventana.panelActual].player.disparar();
 		}
 		
-		/*for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size();i++) {
+		//Disparos de los enemigos
+		for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size();i++) {
 			ventana.paneles[ventana.panelActual].enemigos.get(i).disparar();
-		}*/
+		}
 	}
 	
-	//Metodo para dormir el thread durante 30 ms
+	//Dormir el thread durante 30 ms
 	public static void esperar() {
 		try {
 			Thread.sleep(30);
@@ -148,48 +167,68 @@ public class Juego {
 	//Comprobar vida de entidades
 	private void comprobarVidas() {
 		//Player
-		if(ventana.paneles[ventana.panelActual].player.pv == 0) {
+		if(Player.pv == 0) {
 			gameover = true;
 			System.out.println("ADIOS");
+			System.exit(0);
 		}
 		
 		//Enemigos
 		for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
 			if(ventana.paneles[ventana.panelActual].enemigos.get(i).pv == 0) {
 				
+				//Eliminar las balas de los enemigos cuando mueren
+				if(ventana.paneles[ventana.panelActual].enemigos.get(i).cargador.size() > 0) {
+					for(int j = 0; j < ventana.paneles[ventana.panelActual].enemigos.get(i).cargador.size(); j++) {
+						ventana.paneles[ventana.panelActual].enemigos.get(i).cargador.get(j).setIcon(null);
+						ventana.paneles[ventana.panelActual].enemigos.get(i).cargador.remove(j);
+					}
+				}
+				
+				//Eliminar al enemigo en cuestion
 				ventana.paneles[ventana.panelActual].enemigos.get(i).setIcon(null);
 				ventana.paneles[ventana.panelActual].enemigos.remove(i);
 			}
 		}
 		
 		//Boss
-		if(ventana.paneles[ventana.panelActual].boss != null) {
-			
-			if(ventana.paneles[ventana.panelActual].boss.pv == 0) {
-				ventana.paneles[ventana.panelActual].boss.setIcon(null);
-				ventana.paneles[ventana.panelActual].remove(ventana.paneles[ventana.panelActual].boss);
-				ventana.paneles[ventana.panelActual].boss = null;
-				win();
-			}
+		for(int j = 0; j < ventana.paneles[ventana.panelActual].bossList.size(); j++) {
+				if(ventana.paneles[ventana.panelActual].boss.pv == 0) {
+					
+					ventana.paneles[ventana.panelActual].bossList.get(0).setIcon(null);
+					ventana.paneles[ventana.panelActual].bossList.remove(0);
+					win();
+				}
 		}
 	}
 	
 	//Has Ganado!
 	private void win() {
-		cambiarHabitacion();
+		win = true;
+		ventana.addPanel();
+		ventana.paneles[ventana.panelActual].repaint();
 	}
 	
 	//Inmunidad del personaje si le han dañado
 	private void inmunidad() {
-		cont++;
+		
+		if(ventana.paneles[ventana.panelActual].player.inmunidad) {
+			cont++;
+		}
 		
 		if(!ventana.paneles[ventana.panelActual].player.inmunidad && 
-				(ventana.paneles[ventana.panelActual].player.pv < ventana.paneles[ventana.panelActual].player.vidaRestante)) {
+				(Player.pv < ventana.paneles[ventana.panelActual].player.vidaRestante)) {
+			
+			//System.out.println(Player.pv);
+			//System.out.println(ventana.paneles[ventana.panelActual].player.vidaRestante);
+			
+			Panel.vidas--;
+			ventana.paneles[ventana.panelActual].removeVidas();
+			ventana.paneles[ventana.panelActual].player.inmunidad = true;
+			
+		}else if(cont > 75){
 			
 			ventana.paneles[ventana.panelActual].player.vidaRestante--;
-			ventana.paneles[ventana.panelActual].player.inmunidad = true;
-		}else if(cont > 50){
-			
 			cont = 0;
 			ventana.paneles[ventana.panelActual].player.inmunidad = false;
 		}
@@ -198,8 +237,9 @@ public class Juego {
 	//Cambiar de habitacion
 	private void cambiarHabitacion() {
 		if(ventana.paneles[ventana.panelActual].enemigos.size() == 0 && (ventana.paneles[ventana.panelActual].player.getX() >= 150 &&
-				ventana.paneles[ventana.panelActual].player.getX() <= 250) &&
-				(ventana.paneles[ventana.panelActual].player.getY() >= 350 && ventana.paneles[ventana.panelActual].player.getY() <= 450)) {
+				ventana.paneles[ventana.panelActual].player.getX() <= 200) &&
+				(ventana.paneles[ventana.panelActual].player.getY() >= 350 &&
+				ventana.paneles[ventana.panelActual].player.getY() <= 450) && ventana.paneles[ventana.panelActual].boss == null) {
 			
 			Corazones.x = 0;
 			ventana.addPanel();
@@ -209,15 +249,16 @@ public class Juego {
 	//Animaciones
 	private void sprites() {
 		//ENEMIGOS=========
-		
-		//SadEnemy
-		sadSprites();
-		
-		//TriEnemy
-		triSprites();
+		if(ventana.panelActual >= 0) {
+			//SadEnemy
+			sadSprites();
+			
+			//TriEnemy
+			triSprites();	
+		}
 		
 		//Boss
-		if(ventana.panelActual == 10) {
+		if(ventana.panelActual == 10 && ventana.paneles[ventana.panelActual].bossList.size() > 0) {
 			bossSprites();
 		}
 		
@@ -231,21 +272,59 @@ public class Juego {
 			for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
 				Enemy enemigo = ventana.paneles[ventana.panelActual].enemigos.get(i);
 				
-				if(enemigo.down && enemigo.name < 10) {
-					if(enemigo.currImg == 0 || enemigo.currImg == 2 || enemigo.currImg == 3 || enemigo.currImg == 4) {
-						enemigo.setIcon(new ImageIcon(enemigo.imagenes[1]));
-						enemigo.currImg = 1;
-					}else if(enemigo.currImg == 1){
-						enemigo.setIcon(new ImageIcon(enemigo.imagenes[2]));
-						enemigo.currImg = 2;
-					}
-				}else if(enemigo.up && enemigo.name < 10){
-					if(enemigo.currImg == 4 || enemigo.currImg == 2 || enemigo.currImg == 1 || enemigo.currImg == 0) {
-						enemigo.setIcon(new ImageIcon(enemigo.imagenes[3]));
-						enemigo.currImg = 3;
-					}else if(enemigo.currImg == 3) {
-						enemigo.setIcon(new ImageIcon(enemigo.imagenes[4]));
-						enemigo.currImg = 4;
+				if(enemigo.name < 10) {
+					if(enemigo.down) {
+						if(enemigo.currImg == 0 || enemigo.currImg == 2 || enemigo.currImg == 3 || enemigo.currImg == 4 || enemigo.currImg == 5
+								|| enemigo.currImg == 6 || enemigo.currImg == 7) {
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[1]));
+							enemigo.currImg = 1;
+						}else if(enemigo.currImg == 1){
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[2]));
+							enemigo.currImg = 2;
+						}
+					}else if(enemigo.up){
+						if(enemigo.currImg == 4 || enemigo.currImg == 2 || enemigo.currImg == 1 || enemigo.currImg == 0 || enemigo.currImg == 8
+								|| enemigo.currImg == 9 || enemigo.currImg == 10) {
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[3]));
+							enemigo.currImg = 3;
+						}else if(enemigo.currImg == 3) {
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[4]));
+							enemigo.currImg = 4;
+						}
+					}else if(enemigo.left) {
+						
+						if(enemigo.currImg == 1 || enemigo.currImg == 2 || enemigo.currImg == 0 || enemigo.currImg == 10) {
+							
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[8]));
+							enemigo.currImg = 8;
+							
+						}else if(enemigo.currImg == 5) {
+							
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[9]));
+							enemigo.currImg = 9;
+							
+						}else if(enemigo.currImg == 6) {
+							
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[10]));
+							enemigo.currImg = 10;
+						}
+					}else if(enemigo.right) {
+						
+						if(enemigo.currImg == 3 || enemigo.currImg == 4 || enemigo.currImg == 0 || enemigo.currImg == 7) {
+							
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[5]));
+							enemigo.currImg = 5;
+							
+						}else if(enemigo.currImg == 5) {
+							
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[6]));
+							enemigo.currImg = 6;
+							
+						}else if(enemigo.currImg == 6) {
+							
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[7]));
+							enemigo.currImg = 7;
+						}
 					}
 				}
 			}
@@ -371,7 +450,7 @@ public class Juego {
 				
 			}else if(boss.currImg == 2){
 				
-				boss.speed = 6;
+				Boss.speed = 6;
 				
 				boss.setIcon(new ImageIcon(boss.imagenes[4]));
 				boss.currImg = 4;
@@ -390,7 +469,7 @@ public class Juego {
 		
 		if(boss.currImg == 6){
 			
-			boss.speed = 10;
+			Boss.speed = 10;
 			
 			boss.setIcon(new ImageIcon(boss.imagenes[7]));
 			boss.setSize(Boss.WIDTH, Boss.HEIGHT + 585);
@@ -398,7 +477,7 @@ public class Juego {
 			
 		}else if(boss.currImg == 7 && Boss.cambio == 4){
 			
-			boss.speed = 4;
+			Boss.speed = 4;
 			
 			boss.setSize(Boss.WIDTH, Boss.HEIGHT);
 			boss.setIcon(new ImageIcon(boss.imagenes[0]));
@@ -416,19 +495,25 @@ public class Juego {
 			bossEnemies++;
 		}
 		
-		if(ventana.paneles[ventana.panelActual].boss != null && bossEnemies == 200) {
+		if(ventana.paneles[ventana.panelActual].bossList.size() > 0 && bossEnemies == 200) {
 			ventana.paneles[ventana.panelActual].boss.spawnEnemy();
 		}
 	}
 	
 	//Metodo Pausa
-	
+	public void pause() {
+		
+		while (Juego.pause) {
+			System.out.println("");
+		}
+
+	}
 	
 	//MAIN======================
 	public static void main(String[] args) {
 		Juego juego = new Juego();
 		
-		while((!juego.start || juego.start) && juego.ventana.panelActual < 10) {
+		while((!Juego.start || Juego.start) && Juego.ventana.panelActual < 11) {
 			juego.running();
 		}
 	}

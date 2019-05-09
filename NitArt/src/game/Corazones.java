@@ -11,8 +11,8 @@ public class Corazones extends JLabel{
 	protected Image img;
 	protected ImageIcon icon;
 	
-	private final int WIDTH = 50;
-	private final int HEIGHT = 50;
+	private final int WIDTH = 60;
+	private final int HEIGHT = 60;
 	
 	//Location
 	public static int x = 0;

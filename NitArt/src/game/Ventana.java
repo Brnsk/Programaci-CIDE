@@ -10,12 +10,12 @@ import javax.swing.JFrame;
 public class Ventana extends JFrame {
 	//Medidas de la ventana
 	private final int VENTANA_WIDTH = 1234;
-	private final int VENTANA_HEIGHT = 995;
+	private final int VENTANA_HEIGHT = 900;
 	public final static int WIDTH = 1228;
-	public final static int HEIGHT = 960;
+	public final static int HEIGHT = 865;
 	
 	//Paneles
-	private final String TITLE = "Isaac?";
+	private final String TITLE = "Space Dungeon";
 	public Panel panel;
 	
 	public Panel[] paneles;
@@ -41,26 +41,41 @@ public class Ventana extends JFrame {
 	}
 	
 	private void iniciar() {
-		paneles = new Panel[11];
+		paneles = new Panel[12];
 		menu = new Menu();
 	}
 	
 	//Metodo paint
 	public void paint(Graphics2D g) {
-		g.drawImage(this.paneles[panelActual].fondo, 0, 0, Ventana.WIDTH, Ventana.HEIGHT, Color.pink.darker(), null);
-		
-		if(panelActual == 10) {
-			g.drawImage(this.paneles[panelActual].suelo2, 150, Ventana.HEIGHT / 2, 928, 330, Color.pink.darker(), null);
-		}else {
-			g.drawImage(this.paneles[panelActual].suelo, 150, 150, 928, 660, Color.pink.darker(), null);
+		if(panelActual <= 10) {
+			g.drawImage(this.paneles[panelActual].fondo, 0, 0, Ventana.WIDTH, Ventana.HEIGHT, Color.pink.darker(), null);
 			
-			g.setColor(Color.BLACK);
-			g.fillRect(150, Ventana.HEIGHT / 2 -35, 70, 70);//Cambiar de sala
+			if(panelActual == 10) {
+				g.drawImage(this.paneles[panelActual].suelo2, 150, Ventana.HEIGHT / 2, 928, 330, Color.pink.darker(), null);
+			}else {
+				g.drawImage(this.paneles[panelActual].suelo, 150, 90, 928, 660, null);
+				
+				if(Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.size() <= 0) {
+					g.setColor(Color.BLACK);
+					g.fillRect(150, Ventana.HEIGHT / 2 -35, 70, 70);
+				}
+			}
+			
+			//Afegir imatges a la pausa
+			if (Juego.pause) {
+				g.drawImage(Panel.pausa, 150, 0, 928, 150, null);
+				g.drawImage(Panel.pausab, 25, 25, 100, 100, null);
+			}
+			
+			if(Juego.win) {
+				g.drawImage(VictoryPanel.img, 0, 0, 100, 100, null);
+			}
 		}
 	}
 	
 	protected void addPanel() {
-		System.out.println(panelActual);
+		System.out.println("Habitacion: "+panelActual);
+		
 		if(panelActual < 10) {
 			panel = new Panel();
 			
