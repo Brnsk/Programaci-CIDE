@@ -390,47 +390,47 @@ public class Juego {
 		
 		if(!player.down && !player.up && !player.left && !player.right) {//Si el personaje NO se mueve
 			
-			player.setIcon(new ImageIcon(player.imagenes[0]));
+			player.setIcon(new ImageIcon(player.imagenes[0].getImage()));
 		}else if(player.up) {//Si el personaje va hacia arriba
 			
 			if(player.currImage >= 0 && player.currImage <= 13 && player.currImage != 4) {//Paso 1
-				player.setIcon(new ImageIcon(player.imagenes[4]));
+				player.setIcon(new ImageIcon(player.imagenes[4].getImage()));
 				player.currImage = 4;
 			}else if(player.currImage == 4) {//Paso 2
-				player.setIcon(new ImageIcon(player.imagenes[3]));
+				player.setIcon(new ImageIcon(player.imagenes[3].getImage()));
 				player.currImage = 3;
 			}
 		}else if(player.down){//Si el personaje va hacia abajo
 			
 			if(player.currImage >= 0 && player.currImage <= 13 && player.currImage != 2) {//Paso 1
-				player.setIcon(new ImageIcon(player.imagenes[2]));
+				player.setIcon(new ImageIcon(player.imagenes[2].getImage()));
 				player.currImage = 2;
 			}else if(player.currImage == 2) {//Paso 2
-				player.setIcon(new ImageIcon(player.imagenes[1]));
+				player.setIcon(new ImageIcon(player.imagenes[1].getImage()));
 				player.currImage = 1;
 			}
 		}else if(!player.up && !player.down && player.left && !player.right){//Si el personaje va hacia la izquierda
 			
 			if(player.currImage >= 0 && player.currImage <= 13 && player.currImage != 6 && player.currImage != 7) {//Paso 1
-				player.setIcon(new ImageIcon(player.imagenes[6]));
+				player.setIcon(new ImageIcon(player.imagenes[6].getImage()));
 				player.currImage = 6;
 			}else if(player.currImage == 6) {//Paso 2
-				player.setIcon(new ImageIcon(player.imagenes[7]));
+				player.setIcon(new ImageIcon(player.imagenes[7].getImage()));
 				player.currImage = 7;
 			}else if(player.currImage == 7) {//Paso 3
-				player.setIcon(new ImageIcon(player.imagenes[8]));
+				player.setIcon(new ImageIcon(player.imagenes[8].getImage()));
 				player.currImage = 8;
 			}
 		}else if(!player.up && !player.down && !player.left && player.right){//Si el personaje va hacia la derecha
 			
 			if(player.currImage >= 0 && player.currImage <= 13 && player.currImage != 10 && player.currImage != 11) {//Paso 1
-				player.setIcon(new ImageIcon(player.imagenes[10]));
+				player.setIcon(new ImageIcon(player.imagenes[10].getImage()));
 				player.currImage = 10;
 			}else if(player.currImage == 10) {//Paso 2
-				player.setIcon(new ImageIcon(player.imagenes[11]));
+				player.setIcon(new ImageIcon(player.imagenes[11].getImage()));
 				player.currImage = 11;
 			}else if(player.currImage == 11) {//Paso 3
-				player.setIcon(new ImageIcon(player.imagenes[12]));
+				player.setIcon(new ImageIcon(player.imagenes[12].getImage()));
 				player.currImage = 12;
 			}
 		}
@@ -523,6 +523,7 @@ public class Juego {
 	
 	//MAIN======================
 	public static void main(String[] args) {
+
 		Juego juego = new Juego();
 		while((!Juego.start || Juego.start) && Juego.ventana.panelActual <= 11) {
 			juego.running();

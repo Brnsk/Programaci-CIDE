@@ -50,12 +50,12 @@ public class Ventana extends JFrame {
 	public void paint(Graphics2D g) {
 		
 		if(panelActual <= 10 && panelActual >= 0) {
-			g.drawImage(this.paneles[panelActual].fondo, 0, 0, Ventana.WIDTH, Ventana.HEIGHT, Color.pink.darker(), null);
+			g.drawImage(this.paneles[panelActual].fondo.getImage(), 0, 0, Ventana.WIDTH, Ventana.HEIGHT, Color.pink.darker(), null);
 			
 			if(panelActual == 10) {
-				g.drawImage(this.paneles[panelActual].suelo2, 150, Ventana.HEIGHT / 2, 928, 330, null);
+				g.drawImage(this.paneles[panelActual].suelo2.getImage(), 150, Ventana.HEIGHT / 2, 928, 330, null);
 			}else {
-				g.drawImage(this.paneles[panelActual].suelo, 150, 90, 928, 660, null);
+				g.drawImage(this.paneles[panelActual].suelo.getImage(), 150, 90, 928, 660, null);
 				
 				if(Juego.ventana.paneles[Juego.ventana.panelActual].enemigos.size() <= 0) {
 					g.setColor(Color.BLACK);
@@ -65,8 +65,8 @@ public class Ventana extends JFrame {
 			
 			//Afegir imatges a la pausa
 			if (Juego.pause) {
-				g.drawImage(Panel.pausa, 150, 0, 928, 150, null);
-				g.drawImage(Panel.pausab, 25, 25, 100, 100, null);
+				g.drawImage(Panel.pausa.getImage(), 150, 0, 928, 150, null);
+				g.drawImage(Panel.pausab.getImage(), 25, 25, 100, 100, null);
 			}
 		}
 		

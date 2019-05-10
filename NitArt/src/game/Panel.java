@@ -29,20 +29,20 @@ public class Panel extends JPanel implements KeyListener{
 	
 	public ArrayList<Boss> bossList = new ArrayList<Boss>();
 	
-	protected Image suelo;
-	protected static Image pausa;
-	protected static Image pausav;
-	protected static Image pausab;
+	protected ImageIcon suelo;
+	protected static ImageIcon pausa;
+	protected static ImageIcon pausav;
+	protected static ImageIcon pausab;
 	
-	protected Image suelo2;
+	protected ImageIcon suelo2;
 
-	protected Image fondo;
+	protected ImageIcon fondo;
 	
 	protected String sueloUrl = "img\\Transparente.png";
 	protected String suelo2Url = "img\\suelo2.png";
 	
 	protected String pausaUrl = "img\\Tezto.png";
-	protected String pausavUrl;
+	protected String pausavUrl = "img\\Transparente_pausa.png";
 	protected String pausabUrl = "img\\boton.png";
 	
 	protected String fondoUrl = "img\\fondo.jpg";
@@ -93,11 +93,11 @@ public class Panel extends JPanel implements KeyListener{
 			player.left = false;
 		}
 		
-		suelo = new ImageIcon(sueloUrl).getImage();
-		suelo2 = new ImageIcon(suelo2Url).getImage();
-		fondo = new ImageIcon(fondoUrl).getImage();
-		pausa = new ImageIcon(pausaUrl).getImage(); 
-		pausab = new ImageIcon(pausabUrl).getImage();
+		suelo = new ImageIcon(new ImageIcon(getClass().getResource(sueloUrl)).getImage());
+		suelo2 = new ImageIcon(new ImageIcon(getClass().getResource(suelo2Url)).getImage());
+		fondo = new ImageIcon(new ImageIcon(getClass().getResource(fondoUrl)).getImage());
+		pausa = new ImageIcon(new ImageIcon(getClass().getResource(pausaUrl)).getImage()); 
+		pausab = new ImageIcon(new ImageIcon(getClass().getResource(pausabUrl)).getImage());
 	}
 	
 	//Añadir enemigos
@@ -215,14 +215,14 @@ public class Panel extends JPanel implements KeyListener{
 			}
 			
 			Juego.ventana.paneles[Juego.ventana.panelActual].repaint();
-			suelo = new ImageIcon("img\\Transparente_pausa.png").getImage();
+			suelo = new ImageIcon(new ImageIcon(getClass().getResource(pausavUrl)).getImage());
 		break;
 		case KeyEvent.VK_ENTER:
 			
 			Juego.pause=false;
 			contador_pausa = 0;
 			Juego.ventana.paneles[Juego.ventana.panelActual].repaint();
-			suelo = new ImageIcon("img\\Transparente.png").getImage();
+			suelo = new ImageIcon(new ImageIcon(getClass().getResource(sueloUrl)).getImage());
 		}
 		//=========== Balas ===============
 		

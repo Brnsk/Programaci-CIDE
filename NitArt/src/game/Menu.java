@@ -3,7 +3,6 @@ package game;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -100,22 +99,19 @@ public class Menu extends JPanel {
 			
 			public void keyPressed(KeyEvent e) {
 				
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				switch(e.getKeyCode()) {
 					
-					switch(lista.getSelectedIndex()) {
-					
-					case 0: 
-						Juego.start = true;
-						Juego.ventana.menu.setVisible(false);
-						Menu.lista.removeKeyListener(this);
-						Menu.lista.setFocusable(false);
-						Juego.ventana.menu.setFocusable(false);
-						Juego.ventana.addPanel();
-						break;
-					case 1:	
-						System.exit(0);
-					}	
-				}
+				case KeyEvent.VK_ENTER: 
+					Juego.start = true;
+					Juego.ventana.menu.setVisible(false);
+					Menu.lista.removeKeyListener(this);
+					Menu.lista.setFocusable(false);
+					Juego.ventana.menu.setFocusable(false);
+					Juego.ventana.addPanel();
+					break;
+				case KeyEvent.VK_ESCAPE:
+					System.exit(0);
+				}	
 			}
 		});
 	}

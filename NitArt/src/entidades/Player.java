@@ -17,7 +17,7 @@ public class Player extends JLabel implements JugadorEnemigos{
 	//Atributos para la imagen del pj
 	public int currImage;
 	private ImageIcon icon;
-	public Image[] imagenes;
+	public ImageIcon[] imagenes;
 	
 	//Coordenadas
 	private int x;
@@ -97,24 +97,24 @@ public class Player extends JLabel implements JugadorEnemigos{
 	
 	//Añadir imagen a jlabel
 	private void imagen() {
-		imagenes = new Image[14];
-		imagenes[0] = new ImageIcon("img\\player\\playerFront.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-		icon = new ImageIcon(imagenes[0]);
+		imagenes = new ImageIcon[14];
+		imagenes[0] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerFront.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
+		icon = new ImageIcon(imagenes[0].getImage());
 		currImage = 0;
 		
-		imagenes[1] = new ImageIcon("img\\player\\playerFrontPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de frente paso 1
-		imagenes[2] = new ImageIcon("img\\player\\playerFrontPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de frente paso 2
-		imagenes[3] = new ImageIcon("img\\player\\playerBackPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de espalda paso 1
-		imagenes[4] = new ImageIcon("img\\player\\playerBackPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de espalda paso 2
-		imagenes[5] = new ImageIcon("img\\player\\playerLeft.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la izquierda
-		imagenes[6] = new ImageIcon("img\\player\\playerLeftPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la izquierda paso 1
-		imagenes[7] = new ImageIcon("img\\player\\playerLeftPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la izquierda paso 2
-		imagenes[8] = new ImageIcon("img\\player\\playerLeftPaso3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la izquierda paso 3
-		imagenes[9] = new ImageIcon("img\\player\\playerRight.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la derecha
-		imagenes[10] = new ImageIcon("img\\player\\playerRightPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la derecha paso 1
-		imagenes[11] = new ImageIcon("img\\player\\playerRightPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la derecha paso 2
-		imagenes[12] = new ImageIcon("img\\player\\playerRightPaso3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje mirando a la derecha paso 3
-		imagenes[13] = new ImageIcon("img\\player\\playerBack.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);//Personaje de espalda
+		imagenes[1] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerFrontPaso1.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje de frente paso 1
+		imagenes[2] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerFrontPaso2.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje de frente paso 2
+		imagenes[3] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerBackPaso1.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje de espalda paso 1
+		imagenes[4] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerBackPaso2.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje de espalda paso 2
+		imagenes[5] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerLeft.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la izquierda
+		imagenes[6] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerLeftPaso1.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la izquierda paso 1
+		imagenes[7] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerLeftPaso2.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la izquierda paso 2
+		imagenes[8] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerLeftPaso3.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la izquierda paso 3
+		imagenes[9] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerRight.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la derecha
+		imagenes[10] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerRightPaso1.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la derecha paso 1
+		imagenes[11] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerRightPaso2.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la derecha paso 2
+		imagenes[12] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerRightPaso3.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la derecha paso 3
+		imagenes[13] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerBack.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje de espalda
 		
 	}
 	
