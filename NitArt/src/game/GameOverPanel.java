@@ -1,12 +1,11 @@
 package game;
 
-import java.awt.Image;
 import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
 public class GameOverPanel extends Panel{
 	
-	protected static Image gover;
+	protected static ImageIcon ICON;
 	
 	protected GameOverPanel() {
 		iniciar();
@@ -14,6 +13,6 @@ public class GameOverPanel extends Panel{
 	}
 	
 	private void iniciar() {
-		gover = new ImageIcon("img\\lose.jpg").getImage();
+		ICON = new ImageIcon(getClass().getResource("lose.jpg"));
 	}
 }

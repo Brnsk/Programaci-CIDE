@@ -2,7 +2,6 @@ package game;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -29,23 +28,23 @@ public class Panel extends JPanel implements KeyListener{
 	
 	public ArrayList<Boss> bossList = new ArrayList<Boss>();
 	
-	protected ImageIcon suelo;
-	protected static ImageIcon pausa;
-	protected static ImageIcon pausav;
-	protected static ImageIcon pausab;
+	protected ImageIcon suelo = new ImageIcon(new ImageIcon(getClass().getResource("Transparente.png")).getImage());
+	protected ImageIcon pausa = new ImageIcon(new ImageIcon(getClass().getResource("Tezto.png")).getImage());
+	protected ImageIcon pausav = new ImageIcon(new ImageIcon(getClass().getResource("Transparente_pausa.png")).getImage());
+	protected ImageIcon pausab = new ImageIcon(new ImageIcon(getClass().getResource("boton.png")).getImage());
 	
-	protected ImageIcon suelo2;
+	protected ImageIcon suelo2 = new ImageIcon(new ImageIcon(getClass().getResource("suelo2.png")).getImage());;
 
-	protected ImageIcon fondo;
+	protected ImageIcon fondo = new ImageIcon(new ImageIcon(getClass().getResource("fondo.jpg")).getImage());;
 	
-	protected String sueloUrl = "img\\Transparente.png";
-	protected String suelo2Url = "img\\suelo2.png";
+	protected String sueloUrl = "Transparente.png";
+	protected String suelo2Url = "suelo2.png";
 	
-	protected String pausaUrl = "img\\Tezto.png";
-	protected String pausavUrl = "img\\Transparente_pausa.png";
-	protected String pausabUrl = "img\\boton.png";
+	protected String pausaUrl = "Tezto.png";
+	protected String pausavUrl = "Transparente_pausa.png";
+	protected String pausabUrl = "boton.png";
 	
-	protected String fondoUrl = "img\\fondo.jpg";
+	protected String fondoUrl = "fondo.jpg";
 	
 	
 	public Boss boss;
@@ -92,12 +91,6 @@ public class Panel extends JPanel implements KeyListener{
 			player.right = false;
 			player.left = false;
 		}
-		
-		suelo = new ImageIcon(new ImageIcon(getClass().getResource(sueloUrl)).getImage());
-		suelo2 = new ImageIcon(new ImageIcon(getClass().getResource(suelo2Url)).getImage());
-		fondo = new ImageIcon(new ImageIcon(getClass().getResource(fondoUrl)).getImage());
-		pausa = new ImageIcon(new ImageIcon(getClass().getResource(pausaUrl)).getImage()); 
-		pausab = new ImageIcon(new ImageIcon(getClass().getResource(pausabUrl)).getImage());
 	}
 	
 	//Añadir enemigos
@@ -155,7 +148,7 @@ public class Panel extends JPanel implements KeyListener{
 			
 			bossList.add(boss);
 			
-			this.add(boss);
+			this.add(bossList.get(0));
 		}
 	}
 	

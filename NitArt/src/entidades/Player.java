@@ -85,7 +85,7 @@ public class Player extends JLabel implements JugadorEnemigos{
 		contadorBalas = 0;
 		
 		//Velocidad
-		speed = 7;
+		speed = 10;
 		
 		//vidas
 		pv = 6;
@@ -98,23 +98,23 @@ public class Player extends JLabel implements JugadorEnemigos{
 	//Añadir imagen a jlabel
 	private void imagen() {
 		imagenes = new ImageIcon[14];
-		imagenes[0] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerFront.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
+		imagenes[0] = new ImageIcon(new ImageIcon(getClass().getResource("playerFront.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 		icon = new ImageIcon(imagenes[0].getImage());
 		currImage = 0;
 		
-		imagenes[1] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerFrontPaso1.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje de frente paso 1
-		imagenes[2] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerFrontPaso2.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje de frente paso 2
-		imagenes[3] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerBackPaso1.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje de espalda paso 1
-		imagenes[4] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerBackPaso2.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje de espalda paso 2
-		imagenes[5] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerLeft.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la izquierda
-		imagenes[6] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerLeftPaso1.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la izquierda paso 1
-		imagenes[7] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerLeftPaso2.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la izquierda paso 2
-		imagenes[8] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerLeftPaso3.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la izquierda paso 3
-		imagenes[9] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerRight.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la derecha
-		imagenes[10] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerRightPaso1.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la derecha paso 1
-		imagenes[11] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerRightPaso2.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la derecha paso 2
-		imagenes[12] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerRightPaso3.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la derecha paso 3
-		imagenes[13] = new ImageIcon(new ImageIcon(getClass().getResource("img.player\\playerBack.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje de espalda
+		imagenes[1] = new ImageIcon(new ImageIcon(getClass().getResource("playerFrontPaso1.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje de frente paso 1
+		imagenes[2] = new ImageIcon(new ImageIcon(getClass().getResource("playerFrontPaso2.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje de frente paso 2
+		imagenes[3] = new ImageIcon(new ImageIcon(getClass().getResource("playerBackPaso1.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje de espalda paso 1
+		imagenes[4] = new ImageIcon(new ImageIcon(getClass().getResource("playerBackPaso2.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje de espalda paso 2
+		imagenes[5] = new ImageIcon(new ImageIcon(getClass().getResource("playerLeft.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la izquierda
+		imagenes[6] = new ImageIcon(new ImageIcon(getClass().getResource("playerLeftPaso1.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la izquierda paso 1
+		imagenes[7] = new ImageIcon(new ImageIcon(getClass().getResource("playerLeftPaso2.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la izquierda paso 2
+		imagenes[8] = new ImageIcon(new ImageIcon(getClass().getResource("playerLeftPaso3.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la izquierda paso 3
+		imagenes[9] = new ImageIcon(new ImageIcon(getClass().getResource("playerRight.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la derecha
+		imagenes[10] = new ImageIcon(new ImageIcon(getClass().getResource("playerRightPaso1.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la derecha paso 1
+		imagenes[11] = new ImageIcon(new ImageIcon(getClass().getResource("playerRightPaso2.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la derecha paso 2
+		imagenes[12] = new ImageIcon(new ImageIcon(getClass().getResource("playerRightPaso3.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje mirando a la derecha paso 3
+		imagenes[13] = new ImageIcon(new ImageIcon(getClass().getResource("playerBack.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));//Personaje de espalda
 		
 	}
 	
@@ -160,25 +160,25 @@ public class Player extends JLabel implements JugadorEnemigos{
 			bala = cargador.get(contadorBalas);
 			
 			if(bala.direccion.equals("up")) {
-				bala.setIcon(new ImageIcon(bala.img[0]));
+				bala.setIcon(new ImageIcon(bala.img[0].getImage()));
 				
 				bala.y -= Bala.speed;
 				bala.setLocation(bala.x, bala.y);
 				
 			}else if(bala.direccion.equals("down")) {
-				bala.setIcon(new ImageIcon(bala.img[1]));
+				bala.setIcon(new ImageIcon(bala.img[1].getImage()));
 				
 				bala.y += Bala.speed;
 				bala.setLocation(bala.x, bala.y);
 				
 			}else if(bala.direccion.equals("left")) {
-				bala.setIcon(new ImageIcon(bala.img[2]));
+				bala.setIcon(new ImageIcon(bala.img[2].getImage()));
 				
 				bala.x -= Bala.speed;
 				bala.setLocation(bala.x, bala.y);
 				
 			}else if(bala.direccion.equals("right")) {
-				bala.setIcon(new ImageIcon(bala.img[3]));
+				bala.setIcon(new ImageIcon(bala.img[3].getImage()));
 				
 				bala.x += Bala.speed;
 				bala.setLocation(bala.x, bala.y);
@@ -253,7 +253,6 @@ public class Player extends JLabel implements JugadorEnemigos{
 		this.setLocation(x, y);
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	public void comprobarColision() {
 		int playerX = this.x;

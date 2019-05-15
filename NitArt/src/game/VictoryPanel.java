@@ -1,13 +1,11 @@
 package game;
 
-import java.awt.Image;
-
 import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
 public class VictoryPanel extends Panel{
 	
-	protected static Image img;
+	protected static ImageIcon ICON;
 	
 	protected VictoryPanel() {
 		iniciar();
@@ -15,6 +13,6 @@ public class VictoryPanel extends Panel{
 	}
 	
 	private void iniciar() {
-		img = new ImageIcon("img\\win.jpg").getImage();
+		ICON = new ImageIcon(getClass().getResource("win.jpg"));
 	}
 }

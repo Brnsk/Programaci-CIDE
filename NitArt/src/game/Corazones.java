@@ -8,32 +8,20 @@ import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
 public class Corazones extends JLabel{
-	protected Image img;
-	protected ImageIcon icon;
-	
+	//Tamaño
 	private final int WIDTH = 60;
 	private final int HEIGHT = 60;
+	
+	//Imagen
+	protected final ImageIcon ICON = new ImageIcon(new ImageIcon(getClass().getResource("vida.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 	
 	//Location
 	public static int x = 0;
 	
+	//CONSTRUCTOR
 	protected Corazones() {
-		iniciar();
-		
 		this.setSize(new Dimension(WIDTH, HEIGHT));
-		this.setIcon(icon);
+		this.setIcon(ICON);
 		this.setLocation(x, 0);
-	}
-	
-	
-	private void iniciar() {
-		imagenes();
-	}
-	
-	//Metodo para las imagenes
-	private void imagenes() {
-		
-		img = new ImageIcon("img\\corazones\\vida.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-		icon = new ImageIcon(img);
 	}
 }

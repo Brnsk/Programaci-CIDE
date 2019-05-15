@@ -9,25 +9,27 @@ import entidades.Player;
 public class Juego {
 	public static Ventana ventana;
 	
+	//Controlar el flujo del juego
 	protected static boolean start = false;
 	public static boolean gameover = false;
+	protected static boolean win = false;
+	private static boolean bossMuerto = false;
 	
 	//Controla la inmunidad del personaje
 	private static int cont = 0;
-
+	
+	//Pausa
 	static boolean pause;
 	
 	//Controla la ejecucion del metodo para los sprites
 	private int fps = 0;
 	
 	//Controlan los disparos para que no se puedan spamear
-	private int tempDisparos = 0;
+	private static int tempDisparos = 0;
 	private int tempDisparosEnemies = 0;
 	
 	//Controla la ejecucion del metodo que hace que el boss spawnee enemigos
 	private int bossEnemies = 0;
-	
-	protected static boolean win = false;
 	
 	//CONSTRUCTOR
 	protected Juego() {
@@ -38,7 +40,7 @@ public class Juego {
 		
 		System.out.println();
 		
-		while(!Juego.gameover && start && ventana.panelActual > -1 && ventana.panelActual <= 11) {
+		while(!Juego.gameover && !Juego.win && start && ventana.panelActual > -1 && ventana.panelActual <= 11) {
 			try {
 				
 				if(fps == 4) {
@@ -47,6 +49,8 @@ public class Juego {
 				}else {
 					fps++;
 				}
+				
+				comprobarVidas();
 				
 				repintar();
 				
@@ -59,14 +63,14 @@ public class Juego {
 				disparos();
 				
 				inmunidad();
-				System.out.println("CHETAR AL BOSSSS");
+
 				cambiarHabitacion();
-				
-				comprobarVidas();
 				
 				bossSkills();
 				
 				pause();
+				
+				System.out.println(Boss.pv);
 
 				esperar();
 			}catch(Exception e) {
@@ -82,12 +86,13 @@ public class Juego {
 			ventana.paneles[ventana.panelActual].repaint();
 			
 		}else if(Juego.win || Juego.gameover) {//En caso de ganar o perder
+			System.out.println("Jamonsito");
 			for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
 				ventana.paneles[ventana.panelActual].enemigos.get(i).setVisible(false);
 			}
 			
 			for(int i = 0; i < Panel.vidas; i++) {
-				ventana.paneles[ventana.panelActual].corazones[i].setVisible(false);;
+				ventana.paneles[ventana.panelActual].corazones[i].setVisible(false);
 			}
 			ventana.paneles[ventana.panelActual].player.setVisible(false);
 			ventana.paneles[ventana.panelActual].repaint();
@@ -115,7 +120,7 @@ public class Juego {
 	private void comprobarDisparo() {
 		//Limitar los disparos del player
 		if(ventana.paneles[ventana.panelActual].player.disparando) {
-			if(tempDisparos < 25) {
+			if(tempDisparos < 15) {
 				tempDisparos++;
 				
 			}else {
@@ -130,7 +135,7 @@ public class Juego {
 		for(int i = 0; i < ventana.paneles[ventana.panelActual].enemigos.size(); i++) {
 			if(ventana.paneles[ventana.panelActual].enemigos.get(i).disparando) {
 
-				if(tempDisparosEnemies < 150) {
+				if(tempDisparosEnemies < 90) {
 					tempDisparosEnemies++;
 					
 				}else {
@@ -207,13 +212,13 @@ public class Juego {
 		}
 		
 		//Boss
-		for(int j = 0; j < ventana.paneles[ventana.panelActual].bossList.size(); j++) {
-				if(ventana.paneles[ventana.panelActual].boss.pv == 0 && ventana.paneles[ventana.panelActual].enemigos.size() <= 0) {
-					
-					ventana.paneles[ventana.panelActual].bossList.get(0).setIcon(null);
-					ventana.paneles[ventana.panelActual].bossList.remove(0);
-					win();
-				}
+		if(Boss.pv == 0 && ventana.paneles[ventana.panelActual].bossList.size() > 0) {
+			ventana.paneles[ventana.panelActual].bossList.get(0).setIcon(null);
+			ventana.paneles[ventana.panelActual].bossList.remove(0);
+			bossMuerto = true;
+		}
+		if(ventana.paneles[ventana.panelActual].enemigos.size() <= 0 && bossMuerto) {
+			win();
 		}
 	}
 	
@@ -237,11 +242,10 @@ public class Juego {
 			
 			Panel.vidas--;
 			Player.vidaRestante--;
-			System.out.println(Panel.vidas);
 			ventana.paneles[ventana.panelActual].removeVidas();
 			ventana.paneles[ventana.panelActual].player.inmunidad = true;
 			
-		}else if(cont > 75){ //Quitar de nuevo la inmunidad
+		}else if(cont > 60){ //Quitar de nuevo la inmunidad
 			
 			cont = 0;
 			ventana.paneles[ventana.panelActual].player.inmunidad = false;
@@ -290,53 +294,53 @@ public class Juego {
 					if(enemigo.down) {
 						if(enemigo.currImg == 0 || enemigo.currImg == 2 || enemigo.currImg == 3 || enemigo.currImg == 4 || enemigo.currImg == 5
 								|| enemigo.currImg == 6 || enemigo.currImg == 7) {
-							enemigo.setIcon(new ImageIcon(enemigo.imagenes[1]));
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[1].getImage()));
 							enemigo.currImg = 1;
 						}else if(enemigo.currImg == 1){
-							enemigo.setIcon(new ImageIcon(enemigo.imagenes[2]));
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[2].getImage()));
 							enemigo.currImg = 2;
 						}
 					}else if(enemigo.up){
 						if(enemigo.currImg == 4 || enemigo.currImg == 2 || enemigo.currImg == 1 || enemigo.currImg == 0 || enemigo.currImg == 8
 								|| enemigo.currImg == 9 || enemigo.currImg == 10) {
-							enemigo.setIcon(new ImageIcon(enemigo.imagenes[3]));
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[3].getImage()));
 							enemigo.currImg = 3;
 						}else if(enemigo.currImg == 3) {
-							enemigo.setIcon(new ImageIcon(enemigo.imagenes[4]));
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[4].getImage()));
 							enemigo.currImg = 4;
 						}
 					}else if(enemigo.left) {
 						
 						if(enemigo.currImg == 1 || enemigo.currImg == 2 || enemigo.currImg == 0 || enemigo.currImg == 10) {
 							
-							enemigo.setIcon(new ImageIcon(enemigo.imagenes[8]));
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[8].getImage()));
 							enemigo.currImg = 8;
 							
 						}else if(enemigo.currImg == 5) {
 							
-							enemigo.setIcon(new ImageIcon(enemigo.imagenes[9]));
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[9].getImage()));
 							enemigo.currImg = 9;
 							
 						}else if(enemigo.currImg == 6) {
 							
-							enemigo.setIcon(new ImageIcon(enemigo.imagenes[10]));
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[10].getImage()));
 							enemigo.currImg = 10;
 						}
 					}else if(enemigo.right) {
 						
 						if(enemigo.currImg == 3 || enemigo.currImg == 4 || enemigo.currImg == 0 || enemigo.currImg == 7) {
 							
-							enemigo.setIcon(new ImageIcon(enemigo.imagenes[5]));
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[5].getImage()));
 							enemigo.currImg = 5;
 							
 						}else if(enemigo.currImg == 5) {
 							
-							enemigo.setIcon(new ImageIcon(enemigo.imagenes[6]));
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[6].getImage()));
 							enemigo.currImg = 6;
 							
 						}else if(enemigo.currImg == 6) {
 							
-							enemigo.setIcon(new ImageIcon(enemigo.imagenes[7]));
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[7].getImage()));
 							enemigo.currImg = 7;
 						}
 					}
@@ -355,24 +359,24 @@ public class Juego {
 				if(enemigo.name >=20 && enemigo.name <= 30 && enemigo.triFps == 1) {
 					if(enemigo.down) {//Si el enemigo esta yendo hacia abajo
 						if(enemigo.currImg == 0) {//TOP
-							enemigo.setIcon(new ImageIcon(enemigo.imagenes[2]));
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[2].getImage()));
 							enemigo.currImg = 2;
 						}else if(enemigo.currImg == 2) {//MIDDLE
-								enemigo.setIcon(new ImageIcon(enemigo.imagenes[1]));
+								enemigo.setIcon(new ImageIcon(enemigo.imagenes[1].getImage()));
 								enemigo.currImg = 1;
 						}else if(enemigo.currImg == 1) {//BOTTOM
-							enemigo.setIcon(new ImageIcon(enemigo.imagenes[2]));
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[2].getImage()));
 							enemigo.currImg = 2;
 						}
 					}else if(enemigo.up) {//Si el enemigo se esta moviendo hacia arriba
 						if(enemigo.currImg == 0) {//TOP
-							enemigo.setIcon(new ImageIcon(enemigo.imagenes[2]));
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[2].getImage()));
 							enemigo.currImg = 2;
 						}else if(enemigo.currImg == 2) {//MIDDLE
-								enemigo.setIcon(new ImageIcon(enemigo.imagenes[0]));
+								enemigo.setIcon(new ImageIcon(enemigo.imagenes[0].getImage()));
 								enemigo.currImg = 0;
 						}else if(enemigo.currImg == 1) {//BOTTOM
-							enemigo.setIcon(new ImageIcon(enemigo.imagenes[2]));
+							enemigo.setIcon(new ImageIcon(enemigo.imagenes[2].getImage()));
 							enemigo.currImg = 2;
 						}
 					}
@@ -449,34 +453,34 @@ public class Juego {
 		if(Boss.cambio == 4) {
 			if(boss.currImg == 0) {
 				
-				boss.setIcon(new ImageIcon(boss.imagenes[1]));
+				boss.setIcon(new ImageIcon(boss.imagenes[1].getImage()));
 				boss.currImg = 1;
 				
 			}else if(boss.currImg == 1){
 				
-				boss.setIcon(new ImageIcon(boss.imagenes[3]));
+				boss.setIcon(new ImageIcon(boss.imagenes[3].getImage()));
 				boss.currImg = 3;
 				
 			}else if(boss.currImg == 3){
 				
-				boss.setIcon(new ImageIcon(boss.imagenes[2]));
+				boss.setIcon(new ImageIcon(boss.imagenes[2].getImage()));
 				boss.currImg = 2;
 				
 			}else if(boss.currImg == 2){
 				
 				Boss.speed = 6;
 				
-				boss.setIcon(new ImageIcon(boss.imagenes[4]));
+				boss.setIcon(new ImageIcon(boss.imagenes[4].getImage()));
 				boss.currImg = 4;
 				
 			}else if(boss.currImg == 4){
 				
-				boss.setIcon(new ImageIcon(boss.imagenes[5]));
+				boss.setIcon(new ImageIcon(boss.imagenes[5].getImage()));
 				boss.currImg = 5;
 				
 			}else if(boss.currImg == 5){
 				
-				boss.setIcon(new ImageIcon(boss.imagenes[6]));
+				boss.setIcon(new ImageIcon(boss.imagenes[6].getImage()));
 				boss.currImg = 6;
 			}
 		}
@@ -485,7 +489,7 @@ public class Juego {
 			
 			Boss.speed = 10;
 			
-			boss.setIcon(new ImageIcon(boss.imagenes[7]));
+			boss.setIcon(new ImageIcon(boss.imagenes[7].getImage()));
 			boss.setSize(Boss.WIDTH, Boss.HEIGHT + 585);
 			boss.currImg = 7;
 			
@@ -494,7 +498,7 @@ public class Juego {
 			Boss.speed = 4;
 			
 			boss.setSize(Boss.WIDTH, Boss.HEIGHT);
-			boss.setIcon(new ImageIcon(boss.imagenes[0]));
+			boss.setIcon(new ImageIcon(boss.imagenes[0].getImage()));
 			boss.currImg = 0;
 			
 		}
@@ -503,14 +507,21 @@ public class Juego {
 	//Skills del boss
 	private void bossSkills() {
 		
-		if(bossEnemies == 200) {
-			bossEnemies = 0;
-		}else {
+		if(bossEnemies != 200) {
 			bossEnemies++;
 		}
 		
-		if(ventana.paneles[ventana.panelActual].bossList.size() > 0 && bossEnemies == 200) {
-			ventana.paneles[ventana.panelActual].boss.spawnEnemy();
+		if (Boss.pv > 10) {
+			if (ventana.paneles[ventana.panelActual].bossList.size() > 0 && bossEnemies >= 200) {
+				ventana.paneles[ventana.panelActual].boss.spawnEnemy();
+				bossEnemies = 0;
+			} 
+		}else {
+			if (ventana.paneles[ventana.panelActual].bossList.size() > 0 && bossEnemies >= 50) {
+				ventana.paneles[ventana.panelActual].boss.spawnEnemy();
+				Boss.speed = 6;
+				bossEnemies = 0;
+			}
 		}
 	}
 	

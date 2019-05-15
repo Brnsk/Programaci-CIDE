@@ -16,7 +16,7 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	//Fps de la clase triEnemy
 	public int triFps = 0;
 	
-	public Image[] imagenes;
+	public ImageIcon[] imagenes;
 	protected ImageIcon icon;
 	public int currImg;
 	
@@ -89,36 +89,36 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 	}
 	
 	protected void imagenes() {
-		imagenes = new Image[11];
+		imagenes = new ImageIcon[11];
 		
 		//Preparar imagen principal
-		imagenes[0] = new ImageIcon("img\\sadEnemy\\sadfront.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-		icon = new ImageIcon(imagenes[0]);
+		imagenes[0] = new ImageIcon(new ImageIcon(getClass().getResource("sadfront.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
+		icon = new ImageIcon(imagenes[0].getImage());
 		currImg = 0;
 		
 		//Caminando de frente paso1
-		imagenes[1] = new ImageIcon("img\\sadEnemy\\sadFrontPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[1] = new ImageIcon(new ImageIcon(getClass().getResource("sadFrontPaso1.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 		
 		//Caminando de frente paso2
-		imagenes[2] = new ImageIcon("img\\sadEnemy\\sadFrontPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[2] = new ImageIcon(new ImageIcon(getClass().getResource("sadFrontPaso2.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 		
 		//Caminando de espaldas paso1
-		imagenes[3] = new ImageIcon("img\\sadEnemy\\sadBackPaso1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[3] = new ImageIcon(new ImageIcon(getClass().getResource("sadBackPaso1.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 				
 		//Caminando de espaldas paso2
-		imagenes[4] = new ImageIcon("img\\sadEnemy\\sadBackPaso2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[4] = new ImageIcon(new ImageIcon(getClass().getResource("sadBackPaso2.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 		
-		imagenes[5] = new ImageIcon("img\\sadEnemy\\sadEnemyright.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[5] = new ImageIcon(new ImageIcon(getClass().getResource("sadEnemyright.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 		
-		imagenes[6] = new ImageIcon("img\\sadEnemy\\sadEnemyright1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[6] = new ImageIcon(new ImageIcon(getClass().getResource("sadEnemyright1.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 		
-		imagenes[7] = new ImageIcon("img\\sadEnemy\\sadEnemyright2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[7] = new ImageIcon(new ImageIcon(getClass().getResource("sadEnemyright2.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 		
-		imagenes[8] = new ImageIcon("img\\sadEnemy\\sadEnemyleft.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[8] = new ImageIcon(new ImageIcon(getClass().getResource("sadEnemyleft.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 		
-		imagenes[9] = new ImageIcon("img\\sadEnemy\\sadEnemyleft1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[9] = new ImageIcon(new ImageIcon(getClass().getResource("sadEnemyleft1.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 		
-		imagenes[10] = new ImageIcon("img\\sadEnemy\\sadEnemyleft2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[10] = new ImageIcon(new ImageIcon(getClass().getResource("sadEnemyleft2.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 	}
 
 	@Override
@@ -199,25 +199,25 @@ public class Enemy extends JLabel implements JugadorEnemigos{
 				switch(cargador.get(i).direccion) {
 				case "left":
 					
-					cargador.get(i).setIcon(new ImageIcon(cargador.get(i).img[4]));
+					cargador.get(i).setIcon(new ImageIcon(cargador.get(i).img[4].getImage()));
 					cargador.get(i).setLocation(cargador.get(i).getX() - 7, cargador.get(i).getY());
 					
 					break;
 				case "right":
 
-					cargador.get(i).setIcon(new ImageIcon(cargador.get(i).img[4]));
+					cargador.get(i).setIcon(new ImageIcon(cargador.get(i).img[4].getImage()));
 					cargador.get(i).setLocation(cargador.get(i).getX() + 7, cargador.get(i).getY());
 					
 					break;
 				case "down":
 
-					cargador.get(i).setIcon(new ImageIcon(cargador.get(i).img[4]));
+					cargador.get(i).setIcon(new ImageIcon(cargador.get(i).img[4].getImage()));
 					cargador.get(i).setLocation(cargador.get(i).getX(), cargador.get(i).getY() +7);
 					
 					break;
 				case "up":
 
-					cargador.get(i).setIcon(new ImageIcon(cargador.get(i).img[4]));
+					cargador.get(i).setIcon(new ImageIcon(cargador.get(i).img[4].getImage()));
 					cargador.get(i).setLocation(cargador.get(i).getX(), cargador.get(i).getY() -7);
 				}
 				

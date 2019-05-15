@@ -17,18 +17,18 @@ public class Ventana extends JFrame {
 	//Paneles
 	private final String TITLE = "Space Dungeon";
 	public Panel panel;
+	private VictoryPanel vPanel;
+	private GameOverPanel goPanel;
 	
-	public Panel[] paneles;
+	public Panel[] paneles = new Panel[13];
 	
 	public int panelActual = -1;
 	
 	//Menu
-	protected Menu menu;
+	protected Menu menu = new Menu();
 	
 	//CONSTRUCTOR
 	protected Ventana() {
-		iniciar();
-		
 		this.setSize(new Dimension(this.VENTANA_WIDTH,this.VENTANA_HEIGHT));
 		this.setTitle(this.TITLE);
 		this.setLocationRelativeTo(null);
@@ -39,17 +39,10 @@ public class Ventana extends JFrame {
 		this.setVisible(true);
 	}
 	
-	private void iniciar() {
-		paneles = new Panel[12];
-		menu = new Menu();
-	}
-	
-	
-	
 	//Metodo paint
 	public void paint(Graphics2D g) {
 		
-		if(panelActual <= 10 && panelActual >= 0) {
+		if(panelActual <= 10 && panelActual >= 0 && !Juego.gameover && !Juego.win) {
 			g.drawImage(this.paneles[panelActual].fondo.getImage(), 0, 0, Ventana.WIDTH, Ventana.HEIGHT, Color.pink.darker(), null);
 			
 			if(panelActual == 10) {
@@ -65,15 +58,15 @@ public class Ventana extends JFrame {
 			
 			//Afegir imatges a la pausa
 			if (Juego.pause) {
-				g.drawImage(Panel.pausa.getImage(), 150, 0, 928, 150, null);
-				g.drawImage(Panel.pausab.getImage(), 25, 25, 100, 100, null);
+				g.drawImage(paneles[panelActual].pausa.getImage(), 150, 0, 928, 150, null);
+				g.drawImage(paneles[panelActual].pausab.getImage(), 25, 25, 100, 100, null);
 			}
 		}
 		
 		if(Juego.win && panelActual == 11) {
-			g.drawImage(VictoryPanel.img, 0, 0, Ventana.WIDTH, Ventana.HEIGHT, null);
+			g.drawImage(vPanel.ICON.getImage(), 0, 0, Ventana.WIDTH, Ventana.HEIGHT, null);
 		}else if (Juego.gameover) {
-			g.drawImage(GameOverPanel.gover, 0, 0, Ventana.WIDTH, Ventana.HEIGHT, null);
+			g.drawImage(goPanel.ICON.getImage(), 0, 0, Ventana.WIDTH, Ventana.HEIGHT, null);
 		}
 	}
 	
@@ -85,6 +78,7 @@ public class Ventana extends JFrame {
 		}else if(Juego.gameover){
 			panel = new GameOverPanel();
 		}else {
+			System.out.println("Patatilla");
 			panel = new VictoryPanel();
 		}
 		

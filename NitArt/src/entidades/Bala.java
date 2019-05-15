@@ -11,7 +11,7 @@ import game.Ventana;
 @SuppressWarnings("serial")
 public class Bala extends JLabel {
 	//Imagen
-	public Image img [];
+	public ImageIcon img [];
 	ImageIcon icon;
 	
 	//Velocidad de la bala
@@ -40,16 +40,16 @@ public class Bala extends JLabel {
 	}
 	
 	private void iniciar() {
-		speed = 10;
+		speed = 20;
 	}
 	
 	private void imagen() {
-		img = new Image[5];
-		img[0]  = new ImageIcon("img\\balas\\balaArriba.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-		img[1]  = new ImageIcon("img\\balas\\balaAbajo.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-		img[2]  = new ImageIcon("img\\balas\\balaIzquierda.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-		img[3]  = new ImageIcon("img\\balas\\balaDerecha.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-		img[4]  = new ImageIcon("img\\bala.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		img = new ImageIcon[5];
+		img[0]  = new ImageIcon(new ImageIcon(getClass().getResource("balaArriba.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
+		img[1]  = new ImageIcon(new ImageIcon(getClass().getResource("balaAbajo.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
+		img[2]  = new ImageIcon(new ImageIcon(getClass().getResource("balaIzquierda.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
+		img[3]  = new ImageIcon(new ImageIcon(getClass().getResource("balaDerecha.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
+		img[4]  = new ImageIcon(new ImageIcon(getClass().getResource("bala.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 	}
 	
 	//Comprobar donde esta la bala

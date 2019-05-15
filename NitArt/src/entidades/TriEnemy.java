@@ -39,18 +39,18 @@ public class TriEnemy extends Enemy{
 	
 	@Override
 	protected void imagenes() {
-		this.imagenes = new Image[9];
+		this.imagenes = new ImageIcon[9];
 		
 		//Imagen de frente con el boss arriba
-		this.imagenes[0] = new ImageIcon("img\\triEnemy\\triEnemyFrontTop.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-		this.icon = new ImageIcon(imagenes[0]);
+		this.imagenes[0] = new ImageIcon(new ImageIcon(getClass().getResource("triEnemyFrontTop.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
+		this.icon = new ImageIcon(imagenes[0].getImage());
 		this.currImg = 0;
 		
 		//Imagen de frente con el boss abajo
-		this.imagenes[1] = new ImageIcon("img\\triEnemy\\triEnemyFrontBottom.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		this.imagenes[1] = new ImageIcon(new ImageIcon(getClass().getResource("triEnemyFrontBottom.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 		
 		//Imagen de frente con con todos en linea
-		this.imagenes[2] = new ImageIcon("img\\triEnemy\\triEnemyFrontMiddle.png").getImage().getScaledInstance(WIDTH, HEIGHT / 2, Image.SCALE_SMOOTH);
+		this.imagenes[2] = new ImageIcon(new ImageIcon(getClass().getResource("triEnemyFrontMiddle.png")).getImage().getScaledInstance(WIDTH, HEIGHT / 2, Image.SCALE_SMOOTH));
 		
 	}
 	

@@ -12,7 +12,7 @@ import game.Ventana;
 
 @SuppressWarnings("serial")
 public class Boss extends JLabel{
-	public Image[] imagenes;
+	public ImageIcon[] imagenes;
 	protected ImageIcon icon;
 	public int currImg;
 	
@@ -34,7 +34,7 @@ public class Boss extends JLabel{
 	public static int cambio = 0;
 	
 	//Puntos de vida
-	public int pv = 30;
+	public static int pv = 30;
 	
 	//Skill
 	private int enemyType = 0;
@@ -53,26 +53,26 @@ public class Boss extends JLabel{
 	}
 	
 	private void imagenes() {
-		imagenes = new Image[8];
+		imagenes = new ImageIcon[8];
 		
 		//Imagen por defecto
-		imagenes[0] = new ImageIcon("img\\bossEnemy\\bossChargeNo.png").getImage().getScaledInstance(Boss.WIDTH, Boss.HEIGHT, Image.SCALE_SMOOTH);
-		icon = new ImageIcon(imagenes[0]);
+		imagenes[0] = new ImageIcon(new ImageIcon(getClass().getResource("bossChargeNo.png")).getImage().getScaledInstance(Boss.WIDTH, Boss.HEIGHT, Image.SCALE_SMOOTH));
+		icon = new ImageIcon(imagenes[0].getImage());
 		currImg = 0;
 		
-		imagenes[1] = new ImageIcon("img\\bossEnemy\\bossAnimated\\bossChargeNo.png").getImage().getScaledInstance(Boss.WIDTH, Boss.HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[1] = new ImageIcon(new ImageIcon(getClass().getResource("bossChargeNoA.png")).getImage().getScaledInstance(Boss.WIDTH, Boss.HEIGHT, Image.SCALE_SMOOTH));
 		
-		imagenes[2] = new ImageIcon("img\\bossEnemy\\bossChargingLow.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[2] = new ImageIcon(new ImageIcon(getClass().getResource("bossChargingLow.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 		
-		imagenes[3] = new ImageIcon("img\\bossEnemy\\bossAnimated\\bossChargingLow.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[3] = new ImageIcon(new ImageIcon(getClass().getResource("bossChargingLowA.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 		
-		imagenes[4] = new ImageIcon("img\\bossEnemy\\bossChargingWarning.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[4] = new ImageIcon(new ImageIcon(getClass().getResource("bossChargingWarning.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 		
-		imagenes[5] = new ImageIcon("img\\bossEnemy\\bossAnimated\\bossChargingWarning.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[5] = new ImageIcon(new ImageIcon(getClass().getResource("bossChargingWarningA.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 		
-		imagenes[6] = new ImageIcon("img\\bossEnemy\\bossShooting.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		imagenes[6] = new ImageIcon(new ImageIcon(getClass().getResource("bossShooting6.png")).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH));
 		
-		imagenes[7] = new ImageIcon("img\\bossEnemy\\bossAnimated\\bossShooting6.png").getImage().getScaledInstance(WIDTH, HEIGHT +560, Image.SCALE_SMOOTH);
+		imagenes[7] = new ImageIcon(new ImageIcon(getClass().getResource("bossShooting6A.png")).getImage().getScaledInstance(WIDTH, HEIGHT +560, Image.SCALE_SMOOTH));
 	}
 	
 	//Movimiento
@@ -108,16 +108,15 @@ public class Boss extends JLabel{
 		bossBounds.width = (int)bossBounds.getWidth() - 400;
 		bossBounds.height =(int) bossBounds.getHeight() - 200;
 		bossBounds.x = (int)bossBounds.getX() + 200;
-		//bossBounds.y = (int)bossBounds.getY();
 		
 		if(this.currImg == 7) {
 			bossBounds.height =(int) bossBounds.getHeight() - 570;
 		}
 		
 		for(int i = 0; i < Juego.ventana.paneles[Juego.ventana.panelActual].player.cargador.size(); i++) {
-			if(Juego.ventana.paneles[Juego.ventana.panelActual].player.cargador.get(i).getBounds().intersects(bossBounds)) {
+			if(Juego.ventana.paneles[Juego.ventana.panelActual].player.cargador.get(i).getBounds().intersects(bossBounds) && Boss.pv > 0) {
 				Juego.ventana.paneles[Juego.ventana.panelActual].player.eliminarBala(i);
-				this.pv--;
+				Boss.pv--;
 			}
 		}
 	}
